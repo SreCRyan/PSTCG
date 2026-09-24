@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSTCG list.json Creator</title>
+<style>
+  * { box-sizing: border-box; }
+  body { 
+    margin: 0; padding: 0; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background: radial-gradient(circle at center, #1b4f72 0%, #0b132b 100%);
+    color: #e0e0e0; min-height: 100vh; 
+    display: flex; justify-content: center; align-items: center; padding: 20px;
+  }
+  
+  .aero-window {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    width: 100%; max-width: 650px; overflow: hidden;
+  }
+
+  header { 
+    background: rgba(0, 0, 0, 0.4); padding: 15px; text-align: center; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15); 
+  }
+  h1 { margin: 0; color: #fff; text-shadow: 0 0 10px rgba(0, 210, 255, 0.8); font-size: 22px; letter-spacing: 2px; font-weight: 300; }
+  h1 span { color: #00d9ff; font-weight: 700; }
+
+  .content { padding: 20px; }
+
+  .input-group { display: flex; gap: 10px; margin-bottom: 20px; }
+  
+  select {
+    padding: 10px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff; font-family: inherit; font-size: 13px; border-radius: 4px; outline: none;
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); cursor: pointer;
+  }
+  select:focus { border-color: #00d9ff; }
+
+  input[type="text"] { 
+    flex: 1; padding: 10px; background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.2); 
+    color: #fff; font-family: inherit; font-size: 14px; border-radius: 4px; outline: none; 
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+  }
+  input[type="text"]:focus { border-color: #00d9ff; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5), 0 0 8px rgba(0,217,255,0.4); }
+
+  button { 
+    font-family: inherit; cursor: pointer; 
+    background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
+    color: #fff; border: 1px solid #005c97; padding: 10px 20px; font-weight: 600; font-size: 14px; 
+    border-radius: 4px; transition: all 0.15s; text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+  button:hover { background: linear-gradient(180deg, #6dbbff 0%, #2af4ff 100%); }
+  button:active { transform: scale(0.97); box-shadow: inset 0 2px 5px rgba(0,0,0,0.4); }
+  
+  button.success { background: linear-gradient(180deg, #2ecc71 0%, #27ae60 100%); border-color: #1e8449; }
+  button.success:hover { background: linear-gradient(180deg, #55efc4 0%, #2ecc71 100%); }
+  
+  button.danger { background: linear-gradient(180deg, #e74c3c 0%, #c0392b 100%); border-color: #7b241c; padding: 4px 10px; font-size: 12px; }
+  button.danger:hover { background: linear-gradient(180deg, #ff6b5b 0%, #e74c3c 100%); }
+
+  ul { 
+    list-style: none; padding: 0; margin: 0 0 20px 0; 
+    max-height: 300px; overflow-y: auto; 
+    background: rgba(0,0,0,0.2); border-radius: 6px; border: 1px solid rgba(255,255,255,0.1);
+  }
+  li { 
+    display: flex; justify-content: space-between; align-items: center; 
+    padding: 10px 15px; border-bottom: 1px solid rgba(255,255,255,0.05); 
+    font-family: 'Consolas', monospace; font-size: 13px; color: #a9cce3;
+  }
+  li:last-child { border-bottom: none; }
+  li:hover { background: rgba(255,255,255,0.05); }
+  
+  .tag {
+    font-size: 10px; font-weight: bold; padding: 2px 8px; border-radius: 10px;
+    margin-right: 10px; text-transform: uppercase; letter-spacing: 1px;
+  }
+  .tag.card { background: #2277ee; color: #fff; }
+  .tag.item { background: #00897b; color: #fff; }
+
+  .empty-msg { text-align: center; padding: 20px; color: #556; font-style: italic; font-size: 13px; }
+  
+  .footer { text-align: center; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); }
+  
+  .flash-msg { 
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
+    background: linear-gradient(180deg, #2ecc71, #27ae60); color: #fff; 
+    padding: 10px 20px; border-radius: 6px; font-weight: bold; font-size: 14px; 
+    opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; 
+    border: 1px solid #1e8449; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  }
+  .flash-msg.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="aero-window">
+  <header>
+    <h1>PSTCG <span>list.json</span> CREATOR</h1>
+  </header>
+  
+  <div class="content">
+    <div class="input-group">
+      <select id="fileType">
+        <option value="card">CARD (.crd)</option>
+        <option value="item">ITEM (.itm)</option>
+      </select>
+      <input type="text" id="filenameInput" placeholder="Enter filename (e.g., kris_banana)" maxlength="50">
+      <button onclick="addFile()">ADD</button>
+    </div>
+
+    <ul id="fileList">
+      <li class="empty-msg">No files added yet.</li>
+    </ul>
+
+    <div class="footer">
+      <button class="success" onclick="downloadList()">DOWNLOAD list.json</button>
+    </div>
+  </div>
+</div>
+
+<div class="flash-msg" id="flashMsg"></div>
+
+<script>
+  let fileList = [];
+
+  function flash(msg) {
+    const el = document.getElementById('flashMsg');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2000);
+  }
+
+  function renderList() {
+    const ul = document.getElementById('fileList');
+    ul.innerHTML = '';
+    
+    if (fileList.length === 0) {
+      ul.innerHTML = '<li class="empty-msg">No files added yet.</li>';
+      return;
+    }
+
+    fileList.forEach((file, index) => {
+      const li = document.createElement('li');
+      const isCard = file.endsWith('.crd');
+      const tagClass = isCard ? 'card' : 'item';
+      const tagText = isCard ? 'CARD' : 'ITEM';
+      
+      li.innerHTML = `
+        <span><span class="tag ${tagClass}">${tagText}</span>${file}</span>
+        <button class="danger" onclick="removeFile(${index})">REMOVE</button>
+      `;
+      ul.appendChild(li);
+    });
+  }
+
+  function addFile() {
+    const input = document.getElementById('filenameInput');
+    const type = document.getElementById('fileType').value; // 'card' or 'item'
+    let value = input.value.trim();
+    
+    if (!value) {
+      flash("Enter a filename first!");
+      return;
+    }
+
+    const ext = type === 'card' ? '.crd' : '.itm';
+
+    // Automatically add extension if they forgot
+    if (!value.endsWith('.crd') && !value.endsWith('.itm')) {
+      value += ext;
+    }
+
+    if (fileList.includes(value)) {
+      flash("File already in the list!");
+      return;
+    }
+
+    fileList.push(value);
+    input.value = '';
+    renderList();
+    flash("Added: " + value);
+  }
+
+  function removeFile(index) {
+    const removed = fileList.splice(index, 1)[0];
+    renderList();
+    flash("Removed: " + removed);
+  }
+
+  function downloadList() {
+    if (fileList.length === 0) {
+      flash("Add some files first!");
+      return;
+    }
+
+    // Turn the array into a JSON string
+    const jsonString = JSON.stringify(fileList, null, 2);
+    
+    // Create a Blob and download it
+    const blob = new Blob([jsonString], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = "list.json";
+    a.click();
+    URL.revokeObjectURL(url);
+    
+    flash("Downloaded list.json! Put it in your cards folder.");
+  }
+
+  // Allow pressing Enter to add
+  document.getElementById('filenameInput').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') addFile();
+  });
+</script>
+</body>
+</html>

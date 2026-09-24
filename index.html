@@ -1,0 +1,1015 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSTCG - Papershop Trading Card Game</title>
+<script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { 
+    margin: 0; padding: 0; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background: radial-gradient(circle at center, #1b4f72 0%, #0b132b 100%);
+    color: #e0e0e0; min-height: 100vh; 
+  }
+  
+  .aero-panel {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+  }
+
+  header { 
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding: 15px; text-align: center; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15); 
+    display: flex; flex-direction: column; align-items: center; gap: 8px; 
+    position: relative;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+  }
+  h1 { margin: 0; color: #fff; text-shadow: 0 0 10px rgba(0, 210, 255, 0.8), 0 2px 4px rgba(0,0,0,0.5); font-size: 26px; letter-spacing: 4px; font-weight: 300; }
+  h1 span { color: #00d9ff; font-weight: 700; }
+  
+  .header-controls { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; align-items: center; }
+  [dir="rtl"] .header-controls { right: auto; left: 15px; }
+
+  .aura-display { 
+    background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+    border: 1px solid rgba(0, 217, 255, 0.5); color: #00d9ff; 
+    font-family: inherit; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 4px; 
+    box-shadow: 0 0 8px rgba(0, 217, 255, 0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+    text-shadow: 0 0 5px rgba(0, 217, 255, 0.5);
+  }
+
+  #langSelect { 
+    background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05));
+    border: 1px solid rgba(255,255,255,0.3); color: #fff; 
+    font-family: inherit; font-size: 12px; padding: 4px 8px; border-radius: 4px; cursor: pointer; outline: none;
+  }
+  #langSelect:focus { border-color: #00d9ff; box-shadow: 0 0 8px rgba(0, 217, 255, 0.5); }
+
+  #usernameInput { 
+    background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); 
+    color: #fff; padding: 6px 12px; font-family: inherit; font-size: 12px; 
+    border-radius: 4px; text-align: center; outline: none; width: 260px; 
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5);
+  }
+  #usernameInput:focus { border-color: #00d9ff; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5), 0 0 8px rgba(0,217,255,0.4); }
+
+  .tabs { display: flex; background: rgba(0, 0, 0, 0.3); overflow-x: auto; padding: 0 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .tab { 
+    flex: 1; padding: 12px 6px; text-align: center; cursor: pointer; border: none; 
+    background: transparent; color: #8899aa; font-family: inherit; font-size: 13px; 
+    font-weight: 600; border-bottom: 3px solid transparent; min-width: 80px; transition: all 0.2s; 
+  }
+  .tab.active { color: #fff; border-bottom-color: #00d9ff; background: rgba(255, 255, 255, 0.05); text-shadow: 0 0 8px #00d9ff; }
+  .tab:hover:not(.active) { color: #ccc; background: rgba(255, 255, 255, 0.03); }
+  
+  .page { display: none; padding: 20px; max-width: 1100px; margin: 0 auto; }
+  .page.active { display: block; }
+  h2 { color: #00d9ff; border-bottom: 1px solid rgba(0, 217, 255, 0.3); padding-bottom: 8px; font-weight: 300; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
+  
+  button { 
+    font-family: inherit; cursor: pointer; 
+    background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
+    color: #fff; border: 1px solid #005c97; 
+    padding: 8px 16px; font-weight: 600; font-size: 13px; 
+    border-radius: 4px; transition: all 0.15s; 
+    text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+  button:hover { background: linear-gradient(180deg, #6dbbff 0%, #2af4ff 100%); }
+  button:active { transform: scale(0.97); box-shadow: inset 0 2px 5px rgba(0,0,0,0.4); }
+  button:disabled { background: #444; color: #888; cursor: not-allowed; border-color: #222; box-shadow: none; text-shadow: none; }
+  
+  button.secondary { background: linear-gradient(180deg, #6c7a89 0%, #455a64 100%); border-color: #263238; }
+  button.secondary:hover { background: linear-gradient(180deg, #8a9aa8 0%, #546e7a 100%); }
+  
+  button.danger { background: linear-gradient(180deg, #e74c3c 0%, #c0392b 100%); border-color: #7b241c; }
+  button.danger:hover { background: linear-gradient(180deg, #ff6b5b 0%, #e74c3c 100%); }
+  
+  button.success { background: linear-gradient(180deg, #2ecc71 0%, #27ae60 100%); border-color: #1e8449; }
+  button.success:hover { background: linear-gradient(180deg, #55efc4 0%, #2ecc71 100%); }
+
+  .admin-btn {
+    background: linear-gradient(180deg, #f1c40f 0%, #d4ac0d 100%);
+    border-color: #9a7d0a; color: #000; text-shadow: none;
+    font-weight: 800;
+  }
+  .admin-btn:hover { background: linear-gradient(180deg, #f9e79f 0%, #f1c40f 100%); }
+
+  .card { 
+    width: 140px; 
+    background: linear-gradient(180deg, #ffffff 0%, #d4e4f7 100%);
+    border: 1px solid #a0c0e0; border-radius: 8px; 
+    padding: 6px; color: #222; font-size: 11px; 
+    position: relative; box-shadow: 0 6px 15px rgba(0,0,0,0.5); 
+    transition: transform 0.2s, box-shadow 0.2s; 
+  }
+  .card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px rgba(0, 217, 255, 0.4); }
+  .card-img { width: 100%; aspect-ratio: 1; background: linear-gradient(135deg, #dfe9f3, #ffffff); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #555; font-size: 36px; font-weight: bold; overflow: hidden; margin-bottom: 5px; border: 1px solid #b0c4de; }
+  .card-img img { width: 100%; height: 100%; object-fit: cover; }
+  .card-name { font-weight: 700; text-align: center; font-size: 12px; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #1a2a3a; }
+  .card-stats { display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; background: rgba(0,0,0,0.08); padding: 3px 5px; border-radius: 4px; margin-bottom: 4px; }
+  .card-hp { color: #c0392b; }
+  .card-attack { background: linear-gradient(180deg, #34495e, #2c3e50); color: #fff; padding: 4px 6px; border-radius: 4px; font-size: 10px; display: flex; justify-content: space-between; gap: 4px; box-shadow: inset 0 1px 0 rgba(255,255,255,0.2); }
+  .card-attack-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .card-attack-dmg { color: #f1c40f; font-weight: bold; }
+  .card-drop { position: absolute; top: -8px; right: -8px; background: #2c3e50; color: #fff; font-size: 9px; padding: 2px 7px; border-radius: 10px; font-weight: bold; letter-spacing: 1px; border: 1px solid #1a252f; }
+  [dir="rtl"] .card-drop { right: auto; left: -8px; }
+
+  .item { width: 140px; background: linear-gradient(180deg, #e8f4f8 0%, #b2dfdb 100%); border: 1px solid #80cbc4; border-radius: 8px; padding: 6px; color: #004d40; font-size: 11px; position: relative; box-shadow: 0 6px 15px rgba(0,0,0,0.4); }
+  .item-img { width: 100%; aspect-ratio: 1; background: rgba(255,255,255,0.5); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #00695c; font-size: 36px; overflow: hidden; margin-bottom: 5px; border: 1px solid #b2dfdb; }
+  .item-img img { width: 100%; height: 100%; object-fit: cover; }
+  .item-name { font-weight: 700; text-align: center; font-size: 12px; margin-bottom: 4px; }
+  .item-desc { font-size: 9px; text-align: center; color: #00695c; opacity: 0.8; }
+  .item-effect { background: #00897b; color: #fff; text-align: center; padding: 3px; border-radius: 4px; font-size: 10px; font-weight: bold; margin-top: 5px; }
+
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 25px 16px; padding: 20px 0; justify-items: center; }
+  #packReveal { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 20px; min-height: 200px; }
+  .pack-card { animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  @keyframes pop { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+
+  .creator-layout { display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: start; }
+  @media (max-width: 600px) { .creator-layout { grid-template-columns: 1fr; } }
+  .canvas-wrap { background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); border-radius: 6px; padding: 10px; text-align: center; backdrop-filter: blur(5px); }
+  #drawCanvas { background: #000; border-radius: 4px; cursor: crosshair; touch-action: none; display: block; margin: 0 auto; border: 1px solid #00d9ff; box-shadow: 0 0 10px rgba(0,217,255,0.3); }
+  .brush-controls { display: flex; gap: 6px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
+  .color-swatch { width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+  .color-swatch.active { border-color: #00d9ff; transform: scale(1.15); box-shadow: 0 0 10px #00d9ff; }
+  
+  .form-group { margin-bottom: 14px; }
+  .form-group label { display: block; font-size: 11px; color: #00d9ff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; font-weight: 600; }
+  .form-group input, .form-group select { width: 100%; padding: 8px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: #fff; font-family: inherit; font-size: 13px; border-radius: 4px; outline: none; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); }
+  .form-group input:focus, .form-group select:focus { border-color: #00d9ff; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5), 0 0 8px rgba(0,217,255,0.4); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .battle-area { background: radial-gradient(circle at center, #1b4f72 0%, #0b132b 100%); border: 1px solid rgba(255,255,255,0.2); border-radius: 8px; padding: 20px; min-height: 500px; display: flex; flex-direction: column; justify-content: space-between; position: relative; box-shadow: inset 0 0 50px rgba(0,0,0,0.8); }
+  .battle-row { display: flex; justify-content: center; gap: 20px; align-items: center; min-height: 180px; }
+  .battle-slot { width: 140px; height: 200px; border: 2px dashed rgba(0, 217, 255, 0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: rgba(0, 217, 255, 0.5); font-size: 12px; text-align: center; padding: 10px; background: rgba(0,0,0,0.2); }
+  .battle-slot.filled { border-style: solid; border-color: #00d9ff; padding: 0; background: transparent; box-shadow: 0 0 15px rgba(0,217,255,0.2); }
+  .battle-log { background: rgba(0,0,0,0.6); border: 1px solid rgba(255,255,255,0.1); border-radius: 4px; padding: 10px; font-size: 12px; max-height: 120px; overflow-y: auto; margin: 10px 0; color: #a9cce3; font-family: 'Consolas', monospace; }
+  [dir="rtl"] .battle-log { direction: rtl; text-align: right; }
+  .battle-log div { margin-bottom: 4px; }
+  .battle-controls { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; padding: 10px; }
+  .battle-controls button { font-size: 13px; padding: 10px 20px; }
+  .turn-indicator { text-align: center; font-size: 14px; font-weight: bold; color: #f1c40f; margin-bottom: 10px; text-shadow: 0 0 10px rgba(241, 196, 15, 0.5); letter-spacing: 1px; }
+  .hp-bar-bg { width: 100%; height: 12px; background: rgba(0,0,0,0.5); border-radius: 6px; overflow: hidden; margin-top: 5px; border: 1px solid rgba(255,255,255,0.1); box-shadow: inset 0 1px 3px rgba(0,0,0,0.8); }
+  .hp-bar-fill { height: 100%; background: linear-gradient(90deg, #e74c3c, #ff6b5b); transition: width 0.3s; box-shadow: 0 0 10px rgba(231, 76, 60, 0.6); }
+  .hand-area { display: flex; gap: 10px; justify-content: center; margin-top: 10px; min-height: 160px; }
+  .hand-area .card { cursor: pointer; transform: scale(0.8); transform-origin: bottom center; transition: transform 0.2s; }
+  .hand-area .card:hover { transform: scale(0.95) translateY(-10px); }
+  .empty-msg { text-align: center; padding: 40px; color: #556; font-style: italic; }
+  .flash-msg { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: linear-gradient(180deg, #2ecc71, #27ae60); color: #fff; padding: 12px 24px; border-radius: 6px; font-weight: bold; font-size: 14px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; border: 1px solid #1e8449; box-shadow: 0 5px 15px rgba(0,0,0,0.5); text-shadow: 0 1px 2px rgba(0,0,0,0.5); }
+  .flash-msg.show { opacity: 1; }
+  .hidden { display: none !important; }
+  
+  .mp-box { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); padding: 16px; border-radius: 6px; margin-top: 16px; text-align: center; backdrop-filter: blur(5px); }
+  .mp-box input { width: 100%; padding: 8px; margin-bottom: 10px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); color: #fff; text-align: center; font-family: inherit; border-radius: 4px; outline: none; }
+  .mp-box input:focus { border-color: #00d9ff; }
+  .drop-zone { border: 2px dashed rgba(0, 217, 255, 0.4); padding: 20px; text-align: center; border-radius: 6px; margin: 10px 0; color: #889; transition: all 0.2s; background: rgba(0,0,0,0.2); }
+  .drop-zone.dragover { border-color: #00d9ff; background: rgba(0, 217, 255, 0.1); color: #fff; box-shadow: 0 0 15px rgba(0,217,255,0.3); }
+  
+  .about-section { background: rgba(0,0,0,0.3); border: 1px solid rgba(255,255,255,0.15); border-radius: 6px; padding: 16px; margin-bottom: 16px; line-height: 1.6; backdrop-filter: blur(5px); }
+  .about-section h3 { margin-top: 0; color: #00d9ff; font-weight: 300; letter-spacing: 1px; }
+  .about-section code { background: rgba(0,0,0,0.6); color: #2ecc71; padding: 2px 6px; border-radius: 3px; font-family: 'Consolas', monospace; border: 1px solid rgba(46, 204, 113, 0.3); }
+  .about-section pre { background: rgba(0,0,0,0.8); padding: 10px; border-radius: 4px; color: #2ecc71; font-size: 11px; overflow-x: auto; border: 1px solid rgba(255,255,255,0.1); }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-controls">
+    <div class="aura-display">AURA: <span id="auraCount">50</span></div>
+    <select id="langSelect" onchange="setLanguage(this.value)">
+      <option value="en">English</option>
+      <option value="fa">فارسی</option>
+    </select>
+  </div>
+  <h1>P<span>STCG</span></h1>
+  <div style="font-size:10px; color:#889; letter-spacing:2px; font-weight:600;" data-i18n="subtitle">PAPERSHOP TRADING CARD GAME</div>
+  <input type="text" id="usernameInput" placeholder="Enter username..." maxlength="50" data-i18n-placeholder="usernamePlaceholder">
+</header>
+
+<div class="tabs">
+  <button class="tab active" data-page="play" data-i18n="tabPacks">PACKS</button>
+  <button class="tab" data-page="collection" data-i18n="tabCollection">MY CARDS</button>
+  <button class="tab" data-page="battle" data-i18n="tabBattle">BATTLE</button>
+  <button class="tab hidden" id="createTabBtn" data-page="create" data-i18n="tabCreate">CREATE</button>
+  <button class="tab" data-page="data" data-i18n="tabData">DATA</button>
+  <button class="tab" data-page="about" data-i18n="tabAbout">ABOUT</button>
+</div>
+
+<div id="play" class="page active">
+  <h2 data-i18n="openPackTitle">Open a Pack</h2>
+  <p style="font-size:12px; color:#a9cce3;" data-i18n="openPackDesc">5 cards per pack. Win battles to earn Aura!</p>
+  <button id="openPackBtn" style="font-size:16px; padding:14px 30px;" data-i18n="openPackBtn">OPEN PACK</button>
+  <button id="adminAuraBtn" class="admin-btn hidden" style="font-size:14px; padding:10px 20px; margin-left:10px; display: block; margin-top: 10px;">ADMIN: ADD 9999 AURA</button>
+  <div id="packReveal"></div>
+</div>
+
+<div id="collection" class="page">
+  <h2 data-i18n="collectionTitle">Your Collection</h2>
+  <p style="font-size:12px; color:#a9cce3;">
+    <span data-i18n="uniqueCards">Unique Cards:</span> <b id="uniqueCount">0</b> · 
+    <span data-i18n="totalCards">Total:</span> <b id="totalCount">0</b>
+  </p>
+  <div id="collectionGrid" class="card-grid"></div>
+  <h2 style="margin-top:30px;" data-i18n="itemsTitle">Your Items</h2>
+  <div id="itemGrid" class="card-grid"></div>
+</div>
+
+<div id="battle" class="page">
+  <h2 data-i18n="battleTitle">Battle</h2>
+  <div id="battleSetup">
+    <div class="mp-box">
+      <h3 style="color:#00d9ff; margin-top:0; font-weight:300;" data-i18n="playBotTitle">Play vs Neutral Bot</h3>
+      <p style="font-size:12px; color:#a9cce3;" data-i18n="playBotDesc">The bot doesn't try to win. It just exists.</p>
+      <button id="startBotBtn" class="success" style="width:100%; padding:12px;" data-i18n="playBotBtn">PLAY BOT</button>
+    </div>
+    <div class="mp-box">
+      <h3 style="color:#00d9ff; margin-top:0; font-weight:300;" data-i18n="mpTitle">Multiplayer (P2P)</h3>
+      <button id="hostBtn" class="secondary" style="width:100%; padding:12px; margin-bottom:8px;" data-i18n="hostBtn">HOST GAME</button>
+      <input type="text" id="joinCodeInput" placeholder="Enter Host Code (e.g., PSTCG-ABCD)" data-i18n-placeholder="joinPlaceholder">
+      <button id="joinBtn" class="secondary" style="width:100%; padding:12px;" data-i18n="joinBtn">JOIN GAME</button>
+    </div>
+    <div id="mpStatus" style="text-align:center; margin-top:10px; font-weight:bold; color:#f1c40f;"></div>
+  </div>
+
+  <div id="battleArena" class="hidden">
+    <div class="turn-indicator" id="turnIndicator">WAITING...</div>
+    <div class="battle-area">
+      <div style="text-align:center; color:#ff6b5b; font-weight:bold;"><span data-i18n="opponent">OPPONENT</span> (HP: <span id="botHP">20</span>)</div>
+      <div class="battle-row"><div class="battle-slot" id="botSlot">No Active Card</div></div>
+      <div class="hp-bar-bg"><div class="hp-bar-fill" id="botHPBar" style="width:100%;"></div></div>
+      <div class="battle-log" id="battleLog"></div>
+      <div class="battle-row"><div class="battle-slot" id="playerSlot">No Active Card</div></div>
+      <div style="text-align:center; color:#00d9ff; font-weight:bold;"><span data-i18n="you">YOU</span> (HP: <span id="playerHP">20</span>)</div>
+      <div class="hp-bar-bg"><div class="hp-bar-fill" id="playerHPBar" style="width:100%; background:#00d9ff; box-shadow:0 0 10px #00d9ff;"></div></div>
+    </div>
+    <div style="text-align:center; margin-top:10px; color:#a9cce3; font-size:12px;" data-i18n="handDesc">YOUR HAND (Click a card to play it)</div>
+    <div class="hand-area" id="playerHand"></div>
+    <div class="battle-controls" id="battleControls">
+      <button id="attackBtn" class="danger" disabled data-i18n="attackBtn">ATTACK</button>
+      <button id="passTurnBtn" class="secondary" disabled data-i18n="passBtn">PASS TURN</button>
+      <button id="useItemBtn" class="secondary" disabled data-i18n="itemBtn">USE ITEM</button>
+      <button id="leaveBattleBtn" class="danger" style="margin-left:20px;" data-i18n="leaveBtn">LEAVE</button>
+    </div>
+  </div>
+</div>
+
+<div id="create" class="page">
+  <h2 data-i18n="createTitle">Create Content (Admin Only)</h2>
+  <div style="display:flex; gap:20px; margin-bottom:20px;">
+    <button class="tab-btn active" onclick="switchCreator('card')" style="flex:1;" data-i18n="tabCardCreate">CARD</button>
+    <button class="tab-btn" onclick="switchCreator('item')" style="flex:1;" data-i18n="tabItemCreate">ITEM</button>
+  </div>
+
+  <div id="cardCreator" class="creator-layout">
+    <div>
+      <div class="canvas-wrap">
+        <canvas id="drawCanvas" width="180" height="180"></canvas>
+        <div class="brush-controls">
+          <div class="color-swatch active" data-color="#00ff88" style="background:#00ff88;"></div>
+          <div class="color-swatch" data-color="#ff3355" style="background:#ff3355;"></div>
+          <div class="color-swatch" data-color="#00d9ff" style="background:#00d9ff;"></div>
+          <div class="color-swatch" data-color="#ffcc00" style="background:#ffcc00;"></div>
+          <div class="color-swatch" data-color="#ffffff" style="background:#ffffff;"></div>
+          <div class="color-swatch" data-color="#000000" style="background:#000000; border-color:#555;"></div>
+        </div>
+        <div class="brush-controls">
+          <button class="secondary" id="clearCanvasBtn" style="font-size:11px; padding:4px 10px;" data-i18n="clearBtn">CLEAR</button>
+          <button class="secondary" id="eraserBtn" style="font-size:11px; padding:4px 10px;" data-i18n="eraserBtn">ERASER</button>
+        </div>
+        <div style="margin-top:10px; font-size:11px; color:#a9cce3;" data-i18n="importPng">OR IMPORT PNG:</div>
+        <input type="file" id="cardImageUpload" accept="image/png, image/jpeg" style="font-size:11px; color:#fff; margin-top:5px; width:100%;">
+      </div>
+    </div>
+    <div>
+      <div class="form-group"><label data-i18n="cardNameLabel">Card Name (1-30 chars)</label><input type="text" id="cardName" placeholder="Kris Get The Banana" maxlength="30"></div>
+      <div class="form-group"><label data-i18n="codenameLabel">Codename (No spaces)</label><input type="text" id="cardCodename" placeholder="kris_banana" maxlength="30"></div>
+      <div class="form-row">
+        <div class="form-group"><label data-i18n="hpLabel">HP</label><input type="number" id="cardHP" value="60" min="1" max="999"></div>
+        <div class="form-group"><label data-i18n="damageLabel">Damage</label><input type="number" id="cardDamage" value="20" min="0" max="999"></div>
+      </div>
+      <div class="form-group"><label data-i18n="attackNameLabel">Attack Name</label><input type="text" id="cardAttack" placeholder="Potassium" maxlength="20"></div>
+      <div class="form-group">
+        <label data-i18n="dropRateLabel">Drop Rate (%)</label>
+        <input type="number" id="cardDropRate" value="10" min="0.01" max="100" step="0.01">
+      </div>
+      <button id="saveCardBtn" class="success" style="width:100%; padding:14px; margin-bottom:8px;" data-i18n="saveCardBtn">SAVE CARD TO DB</button>
+      <button id="exportCardBtn" class="secondary" style="width:100%; padding:14px;" data-i18n="exportCardBtn">EXPORT AS .crd FILE</button>
+    </div>
+  </div>
+
+  <div id="itemCreator" class="creator-layout hidden">
+    <div>
+      <div class="canvas-wrap">
+        <div style="font-size:40px; padding:60px 0;">ITEM</div>
+        <div style="margin-top:10px; font-size:11px; color:#a9cce3;" data-i18n="importPng">OR IMPORT PNG:</div>
+        <input type="file" id="itemImageUpload" accept="image/png, image/jpeg" style="font-size:11px; color:#fff; margin-top:5px; width:100%;">
+      </div>
+    </div>
+    <div>
+      <div class="form-group"><label data-i18n="itemNameLabel">Item Name</label><input type="text" id="itemName" placeholder="Health Potion" maxlength="20"></div>
+      <div class="form-group"><label data-i18n="itemDescLabel">Description</label><input type="text" id="itemDesc" placeholder="Heals your active card" maxlength="50"></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label data-i18n="itemTypeLabel">Effect Type</label>
+          <select id="itemType"><option value="heal">Heal</option><option value="damage">Damage</option><option value="buff">Buff (Attack +10)</option></select>
+        </div>
+        <div class="form-group"><label data-i18n="itemValueLabel">Value</label><input type="number" id="itemValue" value="20" min="1" max="999"></div>
+      </div>
+      <button id="saveItemBtn" class="success" style="width:100%; padding:14px;" data-i18n="saveItemBtn">SAVE ITEM</button>
+    </div>
+  </div>
+</div>
+
+<div id="data" class="page">
+  <h2 data-i18n="dataTitle">Data & Files</h2>
+  
+  <div class="about-section" style="margin-bottom:16px;">
+    <h3 data-i18n="loadGithubTitle">LOAD CARDS FROM GITHUB (list.json)</h3>
+    <p style="font-size:12px; color:#a9cce3;" data-i18n="loadGithubDesc">If you host this on GitHub, put a list.json file in your cards folder.</p>
+    <button id="loadGithubBtn" class="success" style="width:100%; margin-bottom:8px;" data-i18n="fetchBtn">FETCH CARDS FROM SERVER</button>
+    <div class="drop-zone" id="crdDropZone">
+      <input type="file" id="crdFileInput" multiple accept=".crd" style="display:none;">
+      <p data-i18n="dropZoneDesc">Drag & Drop .crd files here or browse</p>
+    </div>
+  </div>
+
+  <div class="about-section" style="margin-bottom:16px;">
+    <h3 data-i18n="saveDatTitle">SAVE / LOAD GAME DATA (.dat)</h3>
+    <p style="font-size:12px; color:#a9cce3;" data-i18n="saveDatDesc">This file saves your card counts, items, Aura, and username.</p>
+    <button id="saveDatBtn" class="success" style="width:100%; margin-bottom:8px;" data-i18n="downloadDatBtn">DOWNLOAD SAVE FILE (.dat)</button>
+    <input type="file" id="loadDatInput" accept=".dat" style="color:#fff; width:100%;">
+  </div>
+
+  <div class="about-section" style="border-color: rgba(231, 76, 60, 0.4);">
+    <h3 style="color:#e74c3c;" data-i18n="dangerTitle">DANGER ZONE</h3>
+    <button class="danger" id="wipeBtn" style="width:100%;" data-i18n="wipeBtn">ERASE ALL DATA</button>
+  </div>
+</div>
+
+<div id="about" class="page">
+  <h2 data-i18n="aboutTitle">About PSTCG</h2>
+  <div id="aboutContent"></div>
+</div>
+
+<div class="flash-msg" id="flashMsg"></div>
+
+<script>
+// ================================================================
+// TRANSLATIONS DICTIONARY
+// ================================================================
+const translations = {
+  en: {
+    subtitle: "PAPERSHOP TRADING CARD GAME", usernamePlaceholder: "Enter username...",
+    tabPacks: "PACKS", tabCollection: "MY CARDS", tabBattle: "BATTLE", tabCreate: "CREATE", tabData: "DATA", tabAbout: "ABOUT",
+    openPackTitle: "Open a Pack", openPackDesc: "5 cards per pack. Win battles to earn Aura!", openPackBtn: "OPEN PACK",
+    collectionTitle: "Your Collection", uniqueCards: "Unique Cards:", totalCards: "Total:", itemsTitle: "Your Items",
+    battleTitle: "Battle", playBotTitle: "Play vs Neutral Bot", playBotDesc: "The bot doesn't try to win. It just exists.", playBotBtn: "PLAY BOT", mpTitle: "Multiplayer (P2P)", hostBtn: "HOST GAME", joinPlaceholder: "Enter Host Code (e.g., PSTCG-ABCD)", joinBtn: "JOIN GAME",
+    opponent: "OPPONENT", you: "YOU", handDesc: "YOUR HAND (Click a card to play it)", attackBtn: "ATTACK", passBtn: "PASS TURN", itemBtn: "USE ITEM", leaveBtn: "LEAVE",
+    createTitle: "Create Content (Admin Only)", tabCardCreate: "CARD", tabItemCreate: "ITEM", clearBtn: "CLEAR", eraserBtn: "ERASER", importPng: "OR IMPORT PNG:", cardNameLabel: "Card Name (1-30 chars)", codenameLabel: "Codename (No spaces)", hpLabel: "HP", damageLabel: "Damage", attackNameLabel: "Attack Name", dropRateLabel: "Drop Rate (%)", saveCardBtn: "SAVE CARD TO DB", exportCardBtn: "EXPORT AS .crd FILE", itemNameLabel: "Item Name", itemDescLabel: "Description", itemTypeLabel: "Effect Type", itemValueLabel: "Value", saveItemBtn: "SAVE ITEM",
+    dataTitle: "Data & Files", loadGithubTitle: "LOAD CARDS FROM GITHUB (list.json)", loadGithubDesc: "If you host this on GitHub, put a list.json file in your cards folder.", fetchBtn: "FETCH CARDS FROM SERVER", dropZoneDesc: "Drag & Drop .crd files here or browse", saveDatTitle: "SAVE / LOAD GAME DATA (.dat)", saveDatDesc: "This file saves your card counts, items, Aura, and username.", downloadDatBtn: "DOWNLOAD SAVE FILE (.dat)", dangerTitle: "DANGER ZONE", wipeBtn: "ERASE ALL DATA",
+    aboutTitle: "About PSTCG", adminManual: "ADMIN MANUAL", playerManual: "PLAYER MANUAL",
+    adminDesc: "You are logged in as Admin. Here is how to manage the game:", playerDesc: "Welcome to PSTCG! Here is how to play:",
+    makeCards: "1. Making Cards", makeCardsDesc: "Go to the CREATE tab. You can draw an image or upload a PNG. Every card needs a Name and a Codename (no spaces, used by the save file).",
+    exportGithub: "2. Exporting to GitHub", exportGithubDesc: "When you click EXPORT AS .crd FILE, it downloads a file like kris_banana.crd. Put this in your cards folder on GitHub.",
+    manifestDesc: "Then, create a file called list.json inside the cards folder. It looks like this:", manifestExample: '["kris_banana.crd", "pikachu.crd"]',
+    autoLoad: "The game will auto-load these when someone opens your GitHub Pages link!",
+    saveDatAdmin: "3. The .dat Save File", saveDatAdminDesc: "When a player saves, they get a .dat file. This file only stores how many of each card they own. It does NOT store the card data itself.",
+    gettingCards: "1. Getting Cards", gettingCardsDesc: "Go to the PACKS tab and click OPEN PACK. You get 5 random cards. The border color shows how rare the card is (Gold = Legendary, Gray = Common).",
+    battling: "2. Battling", battlingDesc: "Go to the BATTLE tab. You can fight a neutral bot or play online with a friend using the P2P multiplayer! On your turn, click a card in your hand to play it, then click ATTACK to deal damage. Winning gives you 50 Aura!",
+    savingProgress: "3. Saving Your Progress", savingProgressDesc: "Go to the DATA tab and click DOWNLOAD SAVE FILE (.dat). Keep this file safe! If you clear your browser cache, you can load this file back in to get all your cards back."
+  },
+  fa: {
+    subtitle: "بازی کارتی فروشگاه کاغذی", usernamePlaceholder: "نام کاربری را وارد کنید...",
+    tabPacks: "پک‌ها", tabCollection: "کارت‌های من", tabBattle: "نبرد", tabCreate: "ساخت", tabData: "داده‌ها", tabAbout: "درباره",
+    openPackTitle: "باز کردن یک پک", openPackDesc: "هر پک ۵ کارت دارد. برای کسب آئورا بجنگید!", openPackBtn: "باز کردن پک",
+    collectionTitle: "مجموعه شما", uniqueCards: "کارت‌های منحصر به فرد:", totalCards: "مجموع:", itemsTitle: "آیتم‌های شما",
+    battleTitle: "نبرد", playBotTitle: "بازی با ربات خنثی", playBotDesc: "ربات سعی نمی‌کند ببرد. فقط وجود دارد.", playBotBtn: "بازی با ربات", mpTitle: "چند نفره (P2P)", hostBtn: "میزبانی بازی", joinPlaceholder: "کد میزبان را وارد کنید", joinBtn: "ورود به بازی",
+    opponent: "حریف", you: "شما", handDesc: "دست شما (برای بازی روی کارت کلیک کنید)", attackBtn: "حمله", passBtn: "رد کردن نوبت", itemBtn: "استفاده از آیتم", leaveBtn: "خروج",
+    createTitle: "ساخت محتوا (فقط ادمین)", tabCardCreate: "کارت", tabItemCreate: "آیتم", clearBtn: "پاک کردن", eraserBtn: "پاک‌کن", importPng: "یا وارد کردن PNG:", cardNameLabel: "نام کارت (۱-۳۰ حرف)", codenameLabel: "نام رمز (بدون فاصله)", hpLabel: "جان", damageLabel: "آسیب", attackNameLabel: "نام حمله", dropRateLabel: "نرخ افت (%)", saveCardBtn: "ذخیره کارت", exportCardBtn: "خروجی .crd", itemNameLabel: "نام آیتم", itemDescLabel: "توضیحات", itemTypeLabel: "نوع اثر", itemValueLabel: "مقدار", saveItemBtn: "ذخیره آیتم",
+    dataTitle: "داده‌ها و فایل‌ها", loadGithubTitle: "بارگذاری کارت‌ها از گیت‌هاب (list.json)", loadGithubDesc: "اگر این را روی گیت‌هاب میزبانی می‌کنید، یک فایل list.json در پوشه cards قرار دهید.", fetchBtn: "دریافت کارت‌ها از سرور", dropZoneDesc: "فایل‌های .crd را اینجا رها کنید", saveDatTitle: "ذخیره / بارگذاری داده‌های بازی (.dat)", saveDatDesc: "این فایل کارت‌ها، آیتم‌ها، آئورا و نام کاربری شما را ذخیره می‌کند.", downloadDatBtn: "دانلود فایل ذخیره", dangerTitle: "منطقه خطر", wipeBtn: "پاک کردن همه داده‌ها",
+    aboutTitle: "درباره PSTCG", adminManual: "راهنمای ادمین", playerManual: "راهنمای بازیکن",
+    adminDesc: "شما به عنوان ادمین وارد شده‌اید. نحوه مدیریت بازی:", playerDesc: "به PSTCG خوش آمدید! نحوه بازی:",
+    makeCards: "۱. ساخت کارت‌ها", makeCardsDesc: "به تب ساخت بروید. می‌توانید تصویر بکشید یا PNG آپلود کنید. هر کارت نیاز به یک نام و یک نام رمز دارد.",
+    exportGithub: "۲. خروجی به گیت‌هاب", exportGithubDesc: "وقتی روی خروجی .crd کلیک می‌کنید، فایلی مانند kris_banana.crd دانلود می‌شود. آن را در پوشه cards قرار دهید.",
+    manifestDesc: "سپس فایلی به نام list.json در پوشه cards بسازید:", manifestExample: '["kris_banana.crd", "pikachu.crd"]',
+    autoLoad: "بازی به طور خودکار این‌ها را بارگذاری می‌کند!",
+    saveDatAdmin: "۳. فایل ذخیره .dat", saveDatAdminDesc: "این فایل فقط تعداد هر کارت را ذخیره می‌کند. داده‌های خود کارت را ذخیره نمی‌کند.",
+    gettingCards: "۱. دریافت کارت‌ها", gettingCardsDesc: "به تب پک‌ها بروید و روی باز کردن پک کلیک کنید. ۵ کارت تصادفی می‌گیرید.",
+    battling: "۲. نبرد", battlingDesc: "به تب نبرد بروید. می‌توانید با یک ربات بجنگید یا با دوستتان بازی کنید. بردن ۵۰ آئورا می‌دهد!",
+    savingProgress: "۳. ذخیره پیشرفت", savingProgressDesc: "به تب داده‌ها بروید و فایل ذخیره را دانلود کنید."
+  }
+};
+
+let currentLang = localStorage.getItem('pstcg_lang') || 'en';
+function t(key) { return translations[currentLang][key] || key; }
+
+function setLanguage(lang) {
+  currentLang = lang; localStorage.setItem('pstcg_lang', lang);
+  document.documentElement.dir = lang === 'fa' ? 'rtl' : 'ltr';
+  document.documentElement.lang = lang;
+  document.querySelectorAll('[data-i18n]').forEach(el => {
+    const key = el.getAttribute('data-i18n');
+    if (translations[lang][key]) el.textContent = translations[lang][key];
+  });
+  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+    const key = el.getAttribute('data-i18n-placeholder');
+    if (translations[lang][key]) el.placeholder = translations[lang][key];
+  });
+  updateAboutPage();
+  updateAuraUI();
+}
+
+// ================================================================
+// PSTCG CORE STATE
+// ================================================================
+let cards = []; let items = []; let collection = {}; let itemCollection = {}; let isAdmin = false; let username = "";
+let aura = 50; let freePackAvailable = true; let battleState = null; let peer = null; let conn = null;
+
+function loadData() {
+  try {
+    const c = localStorage.getItem('pstcg_card_cache'); if (c) cards = JSON.parse(c);
+    const i = localStorage.getItem('pstcg_item_cache'); if (i) items = JSON.parse(i);
+    const col = localStorage.getItem('pstcg_collection'); if (col) collection = JSON.parse(col);
+    const icol = localStorage.getItem('pstcg_itemCollection'); if (icol) itemCollection = JSON.parse(icol);
+    const u = localStorage.getItem('pstcg_username');
+    if (u) { username = u; document.getElementById('usernameInput').value = u; checkAdmin(); }
+    const a = localStorage.getItem('pstcg_aura'); if (a) aura = parseInt(a);
+    const f = localStorage.getItem('pstcg_freePack'); if (f) freePackAvailable = f === 'true';
+  } catch(e) { console.error(e); }
+}
+function saveData() {
+  try {
+    localStorage.setItem('pstcg_card_cache', JSON.stringify(cards));
+    localStorage.setItem('pstcg_item_cache', JSON.stringify(items));
+    localStorage.setItem('pstcg_collection', JSON.stringify(collection));
+    localStorage.setItem('pstcg_itemCollection', JSON.stringify(itemCollection));
+    localStorage.setItem('pstcg_aura', aura.toString());
+    localStorage.setItem('pstcg_freePack', freePackAvailable.toString());
+  } catch(e) { alert("Storage full!"); }
+}
+
+function updateAuraUI() {
+  document.getElementById('auraCount').textContent = aura;
+  const btn = document.getElementById('openPackBtn');
+  if (freePackAvailable) {
+    btn.textContent = "OPEN FREE PACK";
+  } else {
+    btn.textContent = "OPEN PACK (50 AURA)";
+  }
+}
+
+const ADMIN_KEY = "1234567890qwertyuiopasdfghjklzxcvbnm";
+function checkAdmin() {
+  const input = document.getElementById('usernameInput').value.trim();
+  username = input; localStorage.setItem('pstcg_username', username);
+  if (input === ADMIN_KEY) { 
+    isAdmin = true; 
+    document.getElementById('createTabBtn').classList.remove('hidden'); 
+    document.getElementById('adminAuraBtn').classList.remove('hidden');
+  }
+  else { 
+    isAdmin = false; 
+    document.getElementById('createTabBtn').classList.add('hidden'); 
+    document.getElementById('adminAuraBtn').classList.add('hidden');
+  }
+  updateAboutPage();
+}
+document.getElementById('usernameInput').addEventListener('input', checkAdmin);
+
+// ADMIN AURA BUTTON
+document.getElementById('adminAuraBtn').addEventListener('click', () => {
+  if (!isAdmin) return;
+  aura += 9999;
+  saveData();
+  updateAuraUI();
+  flash("Admin Aura granted! +9999");
+});
+
+function updateAboutPage() {
+  const content = document.getElementById('aboutContent');
+  if (isAdmin) {
+    content.innerHTML = `
+      <div class="about-section"><h3>${t('adminManual')}</h3><p>${t('adminDesc')}</p></div>
+      <div class="about-section"><h3>${t('makeCards')}</h3><p>${t('makeCardsDesc')}</p></div>
+      <div class="about-section"><h3>${t('exportGithub')}</h3><p>${t('exportGithubDesc')}</p><p>${t('manifestDesc')}</p><pre>${t('manifestExample')}</pre><p>${t('autoLoad')}</p></div>
+      <div class="about-section"><h3>${t('saveDatAdmin')}</h3><p>${t('saveDatAdminDesc')}</p></div>
+    `;
+  } else {
+    content.innerHTML = `
+      <div class="about-section"><h3>${t('playerManual')}</h3><p>${t('playerDesc')}</p></div>
+      <div class="about-section"><h3>${t('gettingCards')}</h3><p>${t('gettingCardsDesc')}</p></div>
+      <div class="about-section"><h3>${t('battling')}</h3><p>${t('battlingDesc')}</p></div>
+      <div class="about-section"><h3>${t('savingProgress')}</h3><p>${t('savingProgressDesc')}</p></div>
+    `;
+  }
+}
+
+// ---------- TABS ----------
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active'); document.getElementById(tab.dataset.page).classList.add('active');
+    if (tab.dataset.page === 'collection') renderCollection();
+    if (tab.dataset.page === 'about') updateAboutPage();
+  });
+});
+
+// ================================================================
+// LOAD CARDS AND ITEMS FROM GITHUB (list.json)
+// ================================================================
+async function loadRemoteData() {
+  try {
+    const res = await fetch('cards/list.json', { cache: "no-store" }); 
+    if (!res.ok) throw new Error("No list.json found");
+    const filenames = await res.json();
+    let loadedCards = 0;
+    let loadedItems = 0;
+    
+    for (const file of filenames) {
+      try {
+        const fileRes = await fetch(`cards/${file}`, { cache: "no-store" });
+        const data = await fileRes.json();
+        
+        if (file.endsWith('.crd') && data.codename && data.name) {
+          if (!cards.find(c => c.codename === data.codename)) {
+            cards.push(data); loadedCards++;
+          }
+        } 
+        else if (file.endsWith('.itm') && data.codename && data.name) {
+          if (!items.find(i => i.codename === data.codename)) {
+            items.push(data); loadedItems++;
+          }
+        }
+      } catch(e) { console.error("Failed to load:", file, e); }
+    }
+    saveData(); renderCollection();
+    flash(`Loaded ${loadedCards} cards and ${loadedItems} items!`);
+  } catch(e) {
+    flash("No list.json found. Using local cache.");
+  }
+}
+document.getElementById('loadGithubBtn').addEventListener('click', loadRemoteData);
+
+// ================================================================
+// CUSTOM RARITY & PACK OPENING
+// ================================================================
+function getRarityColor(dropRate) {
+  if (dropRate >= 50) return '#888'; if (dropRate >= 20) return '#22aa44';
+  if (dropRate >= 5) return '#2277ee'; if (dropRate >= 1) return '#aa22cc'; return '#ffaa00';
+}
+function getRarityName(dropRate) {
+  if (dropRate >= 50) return 'common'; if (dropRate >= 20) return 'uncommon';
+  if (dropRate >= 5) return 'rare'; if (dropRate >= 1) return 'epic'; return 'legendary';
+}
+function pickWeightedCard() {
+  if (cards.length === 0) return null;
+  const totalWeight = cards.reduce((s, c) => s + (c.dropRate || 10), 0);
+  let roll = Math.random() * totalWeight;
+  for (const card of cards) { roll -= (card.dropRate || 10); if (roll <= 0) return card; }
+  return cards[cards.length - 1];
+}
+function pickRandomItem() {
+  if (items.length === 0) return null;
+  return items[Math.floor(Math.random() * items.length)];
+}
+
+document.getElementById('openPackBtn').addEventListener('click', () => {
+  const PACK_COST = 50;
+  if (!freePackAvailable) {
+    if (aura < PACK_COST) {
+      alert("Not enough Aura! You need " + PACK_COST + " Aura. Win a battle to earn more!");
+      return;
+    }
+    aura -= PACK_COST;
+  } else {
+    freePackAvailable = false;
+  }
+  saveData(); updateAuraUI();
+
+  const reveal = document.getElementById('packReveal'); reveal.innerHTML = '';
+  if (cards.length === 0) { alert("No cards loaded! Load some .crd files first."); return; }
+  const pulled = [];
+  for (let i = 0; i < 4; i++) {
+    const c = pickWeightedCard();
+    if (c) { pulled.push({ type: 'card', data: c }); collection[c.codename] = (collection[c.codename] || 0) + 1; }
+  }
+  const it = pickRandomItem();
+  if (it) { pulled.push({ type: 'item', data: it }); itemCollection[it.id] = (itemCollection[it.id] || 0) + 1; }
+  
+  saveData();
+  pulled.forEach((p, i) => {
+    setTimeout(() => {
+      let el = p.type === 'card' ? makeCardElement(p.data) : makeItemElement(p.data);
+      el.classList.add('pack-card'); reveal.appendChild(el);
+    }, i * 180);
+  });
+  flash("Opened a pack!");
+});
+
+// ================================================================
+// RENDERING
+// ================================================================
+function makeCardElement(card) {
+  const div = document.createElement('div'); div.className = 'card';
+  const rName = getRarityName(card.dropRate || 10);
+  const rColor = getRarityColor(card.dropRate || 10);
+  div.style.borderColor = rColor; div.style.boxShadow = `0 6px 15px ${rColor}88`;
+  div.innerHTML = `
+    <div class="card-drop" style="background:${rColor}; color:${rName==='legendary'?'#000':'#fff'}">${(card.dropRate || 10).toFixed(2)}%</div>
+    <div class="card-img">${card.image ? `<img src="${card.image}">` : (card.name||'?')[0].toUpperCase()}</div>
+    <div class="card-name">${card.name || 'Unnamed'}</div>
+    <div class="card-stats"><span class="card-hp">HP ${card.hp}</span></div>
+    <div class="card-attack"><span class="card-attack-name">${card.attack || '-'}</span><span class="card-attack-dmg">${card.damage}</span></div>
+  `;
+  if (!card.image) div.querySelector('.card-img').style.color = rColor;
+  return div;
+}
+
+function makeItemElement(item) {
+  const div = document.createElement('div'); div.className = 'item';
+  div.innerHTML = `
+    <div class="item-img">${item.image ? `<img src="${item.image}">` : 'ITEM'}</div>
+    <div class="item-name">${item.name || 'Item'}</div>
+    <div class="item-desc">${item.desc || ''}</div>
+    <div class="item-effect">${item.type.toUpperCase()} ${item.value}</div>
+  `;
+  return div;
+}
+
+function renderCollection() {
+  const grid = document.getElementById('collectionGrid'); grid.innerHTML = '';
+  const owned = cards.filter(c => collection[c.codename] > 0);
+  document.getElementById('uniqueCount').textContent = owned.length;
+  document.getElementById('totalCount').textContent = Object.values(collection).reduce((a, b) => a + b, 0);
+  
+  if (owned.length === 0) grid.innerHTML = `<div class="empty-msg">No cards yet. Open a pack or load .crd files!</div>`;
+  else {
+    owned.sort((a, b) => (a.dropRate || 10) - (b.dropRate || 10));
+    owned.forEach(card => {
+      const wrap = document.createElement('div'); wrap.style.position = 'relative';
+      wrap.appendChild(makeCardElement(card));
+      const badge = document.createElement('div'); badge.textContent = 'x' + collection[card.codename];
+      badge.style.cssText = 'position:absolute; bottom:-8px; left:50%; transform:translateX(-50%); background:#2c3e50; color:#00d9ff; font-size:11px; font-weight:bold; padding:2px 10px; border-radius:10px; border:1px solid #00d9ff; box-shadow:0 0 10px rgba(0,217,255,0.5);';
+      wrap.appendChild(badge); grid.appendChild(wrap);
+    });
+  }
+
+  const iGrid = document.getElementById('itemGrid'); iGrid.innerHTML = '';
+  const ownedItems = items.filter(i => itemCollection[i.id] > 0);
+  if (ownedItems.length === 0) iGrid.innerHTML = `<div class="empty-msg">No items yet.</div>`;
+  else {
+    ownedItems.forEach(item => {
+      const wrap = document.createElement('div'); wrap.style.position = 'relative';
+      wrap.appendChild(makeItemElement(item));
+      const badge = document.createElement('div'); badge.textContent = 'x' + itemCollection[item.id];
+      badge.style.cssText = 'position:absolute; bottom:-8px; left:50%; transform:translateX(-50%); background:#00695c; color:#fff; font-size:11px; font-weight:bold; padding:2px 10px; border-radius:10px;';
+      wrap.appendChild(badge); iGrid.appendChild(wrap);
+    });
+  }
+}
+
+// ================================================================
+// CREATOR
+// ================================================================
+let creatorMode = 'card';
+function switchCreator(mode) {
+  creatorMode = mode;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  event.target.classList.add('active');
+  document.getElementById('cardCreator').classList.toggle('hidden', mode !== 'card');
+  document.getElementById('itemCreator').classList.toggle('hidden', mode !== 'item');
+}
+
+const canvas = document.getElementById('drawCanvas');
+const ctx = canvas.getContext('2d');
+let drawing = false, lastX = 0, lastY = 0, brushColor = '#00ff88', brushSize = 6, isErasing = false;
+ctx.lineCap = 'round'; ctx.lineJoin = 'round';
+function getPos(e) {
+  const r = canvas.getBoundingClientRect();
+  return { x: ((e.clientX||e.touches[0].clientX) - r.left) * (canvas.width/r.width), y: ((e.clientY||e.touches[0].clientY) - r.top) * (canvas.height/r.height) };
+}
+canvas.addEventListener('pointerdown', e => { if(!isAdmin)return; drawing=true; const p=getPos(e); lastX=p.x; lastY=p.y; canvas.setPointerCapture(e.pointerId); });
+canvas.addEventListener('pointermove', e => {
+  if(!drawing||!isAdmin)return; const p=getPos(e);
+  ctx.strokeStyle = isErasing ? '#000' : brushColor; ctx.lineWidth = isErasing ? brushSize*3 : brushSize;
+  ctx.beginPath(); ctx.moveTo(lastX,lastY); ctx.lineTo(p.x,p.y); ctx.stroke(); lastX=p.x; lastY=p.y;
+});
+canvas.addEventListener('pointerup', () => drawing=false);
+canvas.addEventListener('pointerleave', () => drawing=false);
+document.querySelectorAll('.color-swatch').forEach(sw => sw.addEventListener('click', () => {
+  document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('active')); sw.classList.add('active');
+  brushColor = sw.dataset.color; isErasing = false; document.getElementById('eraserBtn').style.background='';
+}));
+document.getElementById('clearCanvasBtn').addEventListener('click', () => { ctx.fillStyle='#000'; ctx.fillRect(0,0,canvas.width,canvas.height); });
+document.getElementById('eraserBtn').addEventListener('click', () => { isErasing=!isErasing; document.getElementById('eraserBtn').style.background=isErasing?'#e94560':''; });
+ctx.fillStyle='#000'; ctx.fillRect(0,0,canvas.width,canvas.height);
+
+let uploadedCardImage = null;
+let uploadedItemImage = null;
+
+document.getElementById('cardImageUpload').addEventListener('change', e => {
+  const file = e.target.files[0]; if(!file)return;
+  const reader = new FileReader();
+  reader.onload = ev => { uploadedCardImage = ev.target.result;
+    const img = new Image(); img.onload = () => { ctx.drawImage(img, 0, 0, canvas.width, canvas.height); }; img.src = uploadedCardImage;
+  };
+  reader.readAsDataURL(file);
+});
+document.getElementById('itemImageUpload').addEventListener('change', e => {
+  const file = e.target.files[0]; if(!file)return;
+  const reader = new FileReader();
+  reader.onload = ev => { uploadedItemImage = ev.target.result; flash("Item image loaded!"); };
+  reader.readAsDataURL(file);
+});
+
+function buildCardObject() {
+  const name = document.getElementById('cardName').value.trim();
+  const codename = document.getElementById('cardCodename').value.trim().replace(/\s/g, '_').toLowerCase();
+  if (!name) { alert("Give your card a name!"); return null; }
+  if (!codename) { alert("Give your card a codename (no spaces)!"); return null; }
+  return {
+    codename: codename, name: name,
+    hp: parseInt(document.getElementById('cardHP').value) || 10,
+    attack: document.getElementById('cardAttack').value.trim() || 'Tackle',
+    damage: parseInt(document.getElementById('cardDamage').value) || 5,
+    dropRate: parseFloat(document.getElementById('cardDropRate').value) || 10,
+    image: uploadedCardImage || canvas.toDataURL('image/png')
+  };
+}
+
+document.getElementById('saveCardBtn').addEventListener('click', () => {
+  if (!isAdmin) { alert("Only admin can create cards!"); return; }
+  const card = buildCardObject(); if (!card) return;
+  if (cards.find(c => c.codename === card.codename)) { alert("Codename already exists!"); return; }
+  cards.push(card); collection[card.codename] = (collection[card.codename] || 0) + 1;
+  saveData(); flash("Card saved: " + card.name); resetCardForm();
+});
+
+document.getElementById('exportCardBtn').addEventListener('click', () => {
+  if (!isAdmin) { alert("Only admin can create cards!"); return; }
+  const card = buildCardObject(); if (!card) return;
+  cards.push(card); collection[card.codename] = (collection[card.codename] || 0) + 1; saveData();
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(card, null, 2));
+  const dlAnchor = document.createElement('a');
+  dlAnchor.setAttribute("href", dataStr); dlAnchor.setAttribute("download", card.codename + ".crd"); dlAnchor.click();
+  flash("Downloaded " + card.codename + ".crd"); resetCardForm();
+});
+
+function resetCardForm() {
+  document.getElementById('cardName').value = ''; document.getElementById('cardCodename').value = '';
+  document.getElementById('cardAttack').value = ''; uploadedCardImage = null;
+  ctx.fillStyle='#000'; ctx.fillRect(0,0,canvas.width,canvas.height);
+  document.getElementById('cardImageUpload').value = '';
+}
+
+document.getElementById('saveItemBtn').addEventListener('click', () => {
+  if (!isAdmin) { alert("Only admin can create items!"); return; }
+  const name = document.getElementById('itemName').value.trim();
+  const codename = document.getElementById('itemCodename') ? document.getElementById('itemCodename').value.trim().replace(/\s/g, '_').toLowerCase() : 'item_' + Date.now();
+  if (!name) { alert("Give your item a name!"); return; }
+  const item = {
+    id: 'item_' + codename, codename: codename,
+    name: name, desc: document.getElementById('itemDesc').value.trim() || 'A mysterious item',
+    type: document.getElementById('itemType').value, value: parseInt(document.getElementById('itemValue').value) || 10,
+    image: uploadedItemImage || null
+  };
+  if (items.find(i => i.codename === item.codename)) { alert("Codename already exists!"); return; }
+  items.push(item); itemCollection[item.id] = (itemCollection[item.id] || 0) + 1;
+  saveData(); flash("Item saved: " + item.name);
+  document.getElementById('itemName').value = ''; document.getElementById('itemDesc').value = '';
+  uploadedItemImage = null; document.getElementById('itemImageUpload').value = '';
+});
+
+// ================================================================
+// DATA MANAGEMENT
+// ================================================================
+document.getElementById('crdFileInput').addEventListener('change', e => {
+  const files = e.target.files; if (files.length === 0) return;
+  let added = 0;
+  Array.from(files).forEach(file => {
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const data = JSON.parse(ev.target.result);
+        if (file.name.endsWith('.crd') && data.codename && data.name && !cards.find(c => c.codename === data.codename)) { cards.push(data); added++; }
+        else if (file.name.endsWith('.itm') && data.codename && data.name && !items.find(i => i.codename === data.codename)) { items.push(data); added++; }
+      } catch(err) {}
+      saveData(); renderCollection();
+    };
+    reader.readAsText(file);
+  });
+  flash(`Loaded ${added} files!`); e.target.value = '';
+});
+
+const dropZone = document.getElementById('crdDropZone');
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
+dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('drop', e => {
+  e.preventDefault(); dropZone.classList.remove('dragover');
+  const files = e.dataTransfer.files; let added = 0;
+  Array.from(files).forEach(file => {
+    if (file.name.endsWith('.crd') || file.name.endsWith('.itm')) {
+      const reader = new FileReader();
+      reader.onload = ev => {
+        try {
+          const data = JSON.parse(ev.target.result);
+          if (file.name.endsWith('.crd') && data.codename && data.name && !cards.find(c => c.codename === data.codename)) { cards.push(data); added++; }
+          else if (file.name.endsWith('.itm') && data.codename && data.name && !items.find(i => i.codename === data.codename)) { items.push(data); added++; }
+        } catch(err) {}
+        saveData(); renderCollection();
+      };
+      reader.readAsText(file);
+    }
+  });
+  flash(`Loaded ${added} files from dropped files!`);
+});
+
+document.getElementById('saveDatBtn').addEventListener('click', () => {
+  const saveData = { collection: collection, itemCollection: itemCollection, username: username, aura: aura, freePackAvailable: freePackAvailable, timestamp: new Date().toISOString() };
+  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(saveData, null, 2));
+  const dlAnchor = document.createElement('a');
+  dlAnchor.setAttribute("href", dataStr); dlAnchor.setAttribute("download", "pstcg_save.dat"); dlAnchor.click();
+  flash("Downloaded pstcg_save.dat");
+});
+document.getElementById('loadDatInput').addEventListener('change', e => {
+  const file = e.target.files[0]; if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if (data.collection) collection = data.collection;
+      if (data.itemCollection) itemCollection = data.itemCollection;
+      if (data.username) { username = data.username; document.getElementById('usernameInput').value = username; checkAdmin(); }
+      if (data.aura !== undefined) aura = data.aura;
+      if (data.freePackAvailable !== undefined) freePackAvailable = data.freePackAvailable;
+      saveData(); renderCollection(); updateAuraUI(); flash("Save data loaded!");
+    } catch(err) { alert("Invalid .dat file!"); }
+  };
+  reader.readAsText(file); e.target.value = '';
+});
+document.getElementById('wipeBtn').addEventListener('click', () => {
+  if (!confirm("Erase ALL data? This cannot be undone.")) return;
+  localStorage.clear(); cards = []; items = []; collection = {}; itemCollection = {};
+  aura = 50; freePackAvailable = true;
+  saveData(); renderCollection(); updateAuraUI(); flash("Everything erased");
+});
+
+// ================================================================
+// BATTLE SYSTEM
+// ================================================================
+function makeBattleCard(card) { return { id: card.id, codename: card.codename, name: card.name, hp: card.hp, maxHp: card.hp, attack: card.attack, damage: card.damage, dropRate: card.dropRate, image: card.image }; }
+function logBattle(msg) { const log = document.getElementById('battleLog'); const div = document.createElement('div'); div.textContent = '> ' + msg; log.appendChild(div); log.scrollTop = log.scrollHeight; }
+function updateBattleUI() {
+  if (!battleState) return;
+  const ps = document.getElementById('playerSlot'), bs = document.getElementById('botSlot');
+  if (battleState.playerCard) { ps.className = 'battle-slot filled'; ps.innerHTML = ''; ps.appendChild(makeCardElement(battleState.playerCard)); }
+  else { ps.className = 'battle-slot'; ps.textContent = 'No Active Card'; }
+  if (battleState.botCard) { bs.className = 'battle-slot filled'; bs.innerHTML = ''; bs.appendChild(makeCardElement(battleState.botCard)); }
+  else { bs.className = 'battle-slot'; bs.textContent = 'No Active Card'; }
+  document.getElementById('playerHP').textContent = battleState.playerHP;
+  document.getElementById('botHP').textContent = battleState.botHP;
+  document.getElementById('playerHPBar').style.width = Math.max(0, (battleState.playerHP / 20) * 100) + '%';
+  document.getElementById('botHPBar').style.width = Math.max(0, (battleState.botHP / 20) * 100) + '%';
+  const ind = document.getElementById('turnIndicator');
+  if (battleState.over) { ind.textContent = "GAME OVER"; ind.style.color = "#f1c40f"; }
+  else if (battleState.turn === 'player') { ind.textContent = "YOUR TURN"; ind.style.color = "#00d9ff"; }
+  else { ind.textContent = "OPPONENT'S TURN..."; ind.style.color = "#e74c3c"; }
+  const canAct = !battleState.over && battleState.turn === 'player';
+  document.getElementById('attackBtn').disabled = !canAct; document.getElementById('passTurnBtn').disabled = !canAct; document.getElementById('useItemBtn').disabled = !canAct;
+  const handDiv = document.getElementById('playerHand'); handDiv.innerHTML = '';
+  if (battleState.playerHand) { battleState.playerHand.forEach((card, idx) => { const el = makeCardElement(card); el.onclick = () => { if (canAct) playCardFromHand(idx); }; handDiv.appendChild(el); }); }
+}
+function playCardFromHand(index) {
+  const card = battleState.playerHand[index]; if (!card) return;
+  battleState.playerCard = makeBattleCard(card); battleState.playerHand.splice(index, 1);
+  logBattle(`You played ${battleState.playerCard.name}!`); updateBattleUI();
+}
+document.getElementById('startBotBtn').addEventListener('click', () => {
+  if (cards.length === 0) { alert("Create some cards first!"); return; }
+  const playerDeck = [...cards], botDeck = [...cards];
+  battleState = { mode: 'bot', playerHP: 20, botHP: 20, playerCard: null, botCard: null, playerHand: [], turn: 'player', over: false, playerDeck, botDeck };
+  for(let i=0; i<3; i++) if(playerDeck.length > 0) battleState.playerHand.push(playerDeck[Math.floor(Math.random()*playerDeck.length)]);
+  battleState.playerCard = makeBattleCard(playerDeck[Math.floor(Math.random()*playerDeck.length)]);
+  battleState.botCard = makeBattleCard(botDeck[Math.floor(Math.random()*botDeck.length)]);
+  document.getElementById('battleSetup').classList.add('hidden'); document.getElementById('battleArena').classList.remove('hidden');
+  document.getElementById('battleLog').innerHTML = '';
+  logBattle("Battle started! You have 20 HP, bot has 20 HP.");
+  logBattle(`You sent out ${battleState.playerCard.name}!`); logBattle(`Bot sent out ${battleState.botCard.name}!`);
+  updateBattleUI();
+});
+document.getElementById('attackBtn').onclick = () => {
+  if (!battleState || battleState.over || battleState.turn !== 'player') return;
+  if (battleState.mode === 'multiplayer') {
+    const p = battleState.playerCard; conn.send({ type: 'MOVE', action: 'ATTACK', cardName: p.name, damage: p.damage });
+    logBattle(`You sent ${p.name} to attack for ${p.damage} damage!`); battleState.turn = 'bot'; updateBattleUI();
+  } else {
+    const p = battleState.playerCard, b = battleState.botCard;
+    if (p && b) {
+      b.hp -= p.damage; logBattle(`YOUR ${p.name} used ${p.attack} for ${p.damage} damage!`);
+      if (b.hp <= 0) { 
+        logBattle(`OPPONENT's ${b.name} was Knocked Out! YOU WIN! +50 AURA`); 
+        battleState.over = true; 
+        aura += 50; saveData(); updateAuraUI();
+        updateBattleUI(); return; 
+      }
+      logBattle(`Opponent's ${b.name} has ${b.hp} HP left.`); battleState.turn = 'bot'; updateBattleUI(); setTimeout(botTurn, 1500);
+    }
+  }
+};
+document.getElementById('passTurnBtn').onclick = () => {
+  if (!battleState || battleState.over || battleState.turn !== 'player') return;
+  logBattle("You passed your turn."); battleState.turn = 'bot'; updateBattleUI(); setTimeout(botTurn, 1500);
+};
+document.getElementById('useItemBtn').onclick = () => {
+  if (!battleState || battleState.over || battleState.turn !== 'player') return;
+  if (items.length === 0) { logBattle("You have no items!"); return; }
+  const item = items[Math.floor(Math.random() * items.length)];
+  logBattle(`You used ${item.name}!`);
+  if (item.type === 'heal') { battleState.playerHP += item.value; logBattle(`Healed ${item.value} HP!`); }
+  else if (item.type === 'damage') { battleState.botHP -= item.value; logBattle(`Dealt ${item.value} damage to opponent!`); }
+  else if (item.type === 'buff') { battleState.playerCard.damage += item.value; logBattle(`Attack increased by ${item.value}!`); }
+  updateBattleUI();
+};
+function botTurn() {
+  if (!battleState || battleState.over) return;
+  const b = battleState.botCard;
+  const actions = [ () => logBattle("The bot is thinking..."), () => logBattle("The bot plays with its cards."), () => logBattle("The bot looks at you."), () => { if (b) { b.hp += 5; logBattle("The bot healed 5 HP."); } }, () => { if (b) { logBattle("The bot does a little dance."); } } ];
+  actions[Math.floor(Math.random() * actions.length)]();
+  battleState.turn = 'player'; updateBattleUI();
+}
+
+// ================================================================
+// MULTIPLAYER (PEERJS)
+// ================================================================
+function initPeer() {
+  if (peer) return;
+  peer = new Peer('PSTCG-' + Math.floor(1000 + Math.random() * 9000), { debug: 2 });
+  peer.on('open', id => { document.getElementById('mpStatus').textContent = "Hosting! Code: " + id; flash("Share code: " + id); });
+  peer.on('connection', connection => {
+    conn = connection; document.getElementById('mpStatus').textContent = "Player connected!"; logBattle("Opponent connected!");
+    conn.on('data', data => handleNetworkData(data));
+    conn.on('close', () => { logBattle("Opponent disconnected."); battleState.over = true; updateBattleUI(); });
+  });
+}
+document.getElementById('hostBtn').addEventListener('click', () => { if (cards.length === 0) { alert("Create some cards first!"); return; } initPeer(); document.getElementById('mpStatus').textContent = "Starting host..."; });
+document.getElementById('joinBtn').addEventListener('click', () => {
+  const code = document.getElementById('joinCodeInput').value.trim();
+  if (!code) { alert("Enter a host code!"); return; }
+  if (cards.length === 0) { alert("Create some cards first!"); return; }
+  initPeer(); conn = peer.connect(code);
+  conn.on('open', () => { document.getElementById('mpStatus').textContent = "Connected! Waiting for host to sync..."; conn.send({ type: 'SYNC', cards: cards }); });
+  conn.on('data', data => handleNetworkData(data));
+});
+function handleNetworkData(data) {
+  if (data.type === 'SYNC') { cards = data.cards; saveData(); renderCollection(); conn.send({ type: 'SYNC_ACK', cards: cards }); startMultiplayerBattle(true); }
+  else if (data.type === 'SYNC_ACK') { cards = data.cards; saveData(); renderCollection(); startMultiplayerBattle(false); }
+  else if (data.type === 'MOVE') { applyNetworkMove(data); }
+}
+function startMultiplayerBattle(isHost) {
+  battleState = { mode: 'multiplayer', isHost: isHost, playerHP: 20, botHP: 20, playerCard: null, botCard: null, playerHand: [], turn: isHost ? 'player' : 'bot', over: false, playerDeck: [...cards], botDeck: [...cards] };
+  for(let i=0; i<3; i++) battleState.playerHand.push(cards[Math.floor(Math.random()*cards.length)]);
+  battleState.playerCard = makeBattleCard(cards[Math.floor(Math.random()*cards.length)]);
+  battleState.botCard = makeBattleCard(cards[Math.floor(Math.random()*cards.length)]);
+  document.getElementById('battleSetup').classList.add('hidden'); document.getElementById('battleArena').classList.remove('hidden');
+  document.getElementById('battleLog').innerHTML = ''; logBattle("Multiplayer battle started!"); updateBattleUI();
+}
+function applyNetworkMove(data) {
+  if (data.action === 'ATTACK') {
+    battleState.playerHP -= data.damage; logBattle(`Opponent's ${data.cardName} attacked for ${data.damage} damage!`);
+    if (battleState.playerHP <= 0) { 
+      logBattle("You were Knocked Out! Opponent wins!"); 
+      battleState.over = true; 
+    }
+    else { battleState.turn = 'player'; }
+    updateBattleUI();
+  }
+}
+document.getElementById('leaveBattleBtn').addEventListener('click', () => {
+  if (conn) { conn.close(); conn = null; }
+  if (peer) { peer.destroy(); peer = null; }
+  battleState = null; document.getElementById('battleSetup').classList.remove('hidden');
+  document.getElementById('battleArena').classList.add('hidden'); document.getElementById('mpStatus').textContent = ""; flash("Left battle");
+});
+
+// ================================================================
+// BOOT
+// ================================================================
+setLanguage(currentLang);
+document.getElementById('langSelect').value = currentLang;
+loadData(); renderCollection(); checkAdmin(); loadRemoteData(); updateAuraUI();
+console.log("PSTCG loaded. Admin:", isAdmin, "Cards:", cards.length, "Items:", items.length, "Lang:", currentLang, "Aura:", aura);
+</script>
+</body>
+</html>

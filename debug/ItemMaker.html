@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>PSTCG Item Creator</title>
+<style>
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body { 
+    margin: 0; padding: 0; 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background: radial-gradient(circle at center, #1b4f72 0%, #0b132b 100%);
+    color: #e0e0e0; min-height: 100vh; 
+    display: flex; justify-content: center; align-items: center; padding: 20px;
+  }
+  
+  .aero-window {
+    background: rgba(255, 255, 255, 0.08);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.25);
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    width: 100%; max-width: 800px; overflow: hidden;
+  }
+
+  header { 
+    background: rgba(0, 0, 0, 0.4); padding: 15px; text-align: center; 
+    border-bottom: 1px solid rgba(255, 255, 255, 0.15); 
+  }
+  h1 { margin: 0; color: #fff; text-shadow: 0 0 10px rgba(0, 210, 255, 0.8); font-size: 22px; letter-spacing: 2px; font-weight: 300; }
+  h1 span { color: #00d9ff; font-weight: 700; }
+
+  .content { padding: 20px; display: grid; grid-template-columns: 240px 1fr; gap: 24px; }
+  @media (max-width: 650px) { .content { grid-template-columns: 1fr; } }
+
+  .canvas-wrap { 
+    background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.2); 
+    border-radius: 6px; padding: 10px; text-align: center; 
+  }
+  #drawCanvas { 
+    background: #000; border-radius: 4px; cursor: crosshair; touch-action: none; 
+    display: block; margin: 0 auto; border: 1px solid #00d9ff; 
+    box-shadow: 0 0 10px rgba(0,217,255,0.3); width: 100%; height: auto;
+  }
+  
+  .brush-controls { display: flex; gap: 6px; justify-content: center; margin-top: 10px; flex-wrap: wrap; }
+  .color-swatch { width: 26px; height: 26px; border-radius: 50%; border: 2px solid rgba(255,255,255,0.3); cursor: pointer; box-shadow: 0 2px 5px rgba(0,0,0,0.5); }
+  .color-swatch.active { border-color: #00d9ff; transform: scale(1.15); box-shadow: 0 0 10px #00d9ff; }
+
+  .form-group { margin-bottom: 14px; }
+  .form-group label { display: block; font-size: 11px; color: #00d9ff; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 5px; font-weight: 600; }
+  .form-group input, .form-group select, .form-group textarea { 
+    width: 100%; padding: 8px; background: rgba(0,0,0,0.4); 
+    border: 1px solid rgba(255,255,255,0.2); color: #fff; 
+    font-family: inherit; font-size: 13px; border-radius: 4px; outline: none; 
+    box-shadow: inset 0 2px 5px rgba(0,0,0,0.5); resize: none;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: #00d9ff; box-shadow: inset 0 2px 5px rgba(0,0,0,0.5), 0 0 8px rgba(0,217,255,0.4); }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  button { 
+    font-family: inherit; cursor: pointer; 
+    background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
+    color: #fff; border: 1px solid #005c97; padding: 8px 16px; font-weight: 600; font-size: 13px; 
+    border-radius: 4px; transition: all 0.15s; text-shadow: 0 1px 2px rgba(0,0,0,0.4);
+    box-shadow: 0 2px 5px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.6);
+  }
+  button:hover { background: linear-gradient(180deg, #6dbbff 0%, #2af4ff 100%); }
+  button:active { transform: scale(0.97); box-shadow: inset 0 2px 5px rgba(0,0,0,0.4); }
+  
+  button.secondary { background: linear-gradient(180deg, #6c7a89 0%, #455a64 100%); border-color: #263238; }
+  button.secondary:hover { background: linear-gradient(180deg, #8a9aa8 0%, #546e7a 100%); }
+  
+  button.success { background: linear-gradient(180deg, #2ecc71 0%, #27ae60 100%); border-color: #1e8449; width: 100%; margin-top: 10px; padding: 12px; font-size: 15px; }
+  button.success:hover { background: linear-gradient(180deg, #55efc4 0%, #2ecc71 100%); }
+
+  .flash-msg { 
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); 
+    background: linear-gradient(180deg, #2ecc71, #27ae60); color: #fff; 
+    padding: 10px 20px; border-radius: 6px; font-weight: bold; font-size: 14px; 
+    opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; 
+    border: 1px solid #1e8449; box-shadow: 0 5px 15px rgba(0,0,0,0.5);
+  }
+  .flash-msg.show { opacity: 1; }
+</style>
+</head>
+<body>
+
+<div class="aero-window">
+  <header>
+    <h1>PSTCG <span>ITEM CREATOR</span></h1>
+  </header>
+  
+  <div class="content">
+    <!-- Left Side: Drawing & Image -->
+    <div>
+      <div class="canvas-wrap">
+        <canvas id="drawCanvas" width="200" height="200"></canvas>
+        <div class="brush-controls">
+          <div class="color-swatch active" data-color="#00ff88" style="background:#00ff88;"></div>
+          <div class="color-swatch" data-color="#ff3355" style="background:#ff3355;"></div>
+          <div class="color-swatch" data-color="#00d9ff" style="background:#00d9ff;"></div>
+          <div class="color-swatch" data-color="#ffcc00" style="background:#ffcc00;"></div>
+          <div class="color-swatch" data-color="#ffffff" style="background:#ffffff;"></div>
+          <div class="color-swatch" data-color="#000000" style="background:#000000; border-color:#555;"></div>
+        </div>
+        <div class="brush-controls">
+          <button class="secondary" id="clearCanvasBtn" style="font-size:11px; padding:4px 10px;">CLEAR</button>
+          <button class="secondary" id="eraserBtn" style="font-size:11px; padding:4px 10px;">ERASER</button>
+        </div>
+        <div style="margin-top:15px; font-size:11px; color:#a9cce3;">OR IMPORT PNG:</div>
+        <input type="file" id="imageUpload" accept="image/png, image/jpeg" style="font-size:11px; color:#fff; margin-top:5px; width:100%;">
+      </div>
+    </div>
+
+    <!-- Right Side: Form Data -->
+    <div>
+      <div class="form-group">
+        <label>Item Name</label>
+        <input type="text" id="itemName" placeholder="Health Potion" maxlength="20">
+      </div>
+      <div class="form-group">
+        <label>Codename (No spaces, e.g. health_potion)</label>
+        <input type="text" id="itemCodename" placeholder="health_potion" maxlength="30">
+      </div>
+      <div class="form-group">
+        <label>Description</label>
+        <textarea id="itemDesc" rows="2" placeholder="Heals your active card" maxlength="80"></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Effect Type</label>
+          <select id="itemType">
+            <option value="heal">Heal</option>
+            <option value="damage">Damage</option>
+            <option value="buff">Buff (Attack +10)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Value</label>
+          <input type="number" id="itemValue" value="20" min="1" max="999">
+        </div>
+      </div>
+      
+      <button class="success" id="exportBtn">DOWNLOAD .itm FILE</button>
+    </div>
+  </div>
+</div>
+
+<div class="flash-msg" id="flashMsg"></div>
+
+<script>
+  const canvas = document.getElementById('drawCanvas');
+  const ctx = canvas.getContext('2d');
+  let drawing = false, lastX = 0, lastY = 0;
+  let brushColor = '#00ff88', brushSize = 6, isErasing = false;
+  let uploadedImage = null;
+
+  ctx.lineCap = 'round'; 
+  ctx.lineJoin = 'round';
+  ctx.fillStyle = '#000'; 
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+  // --- Drawing Logic ---
+  function getPos(e) {
+    const r = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / r.width;
+    const scaleY = canvas.height / r.height;
+    const clientX = e.clientX || e.touches[0].clientX;
+    const clientY = e.clientY || e.touches[0].clientY;
+    return { x: (clientX - r.left) * scaleX, y: (clientY - r.top) * scaleY };
+  }
+
+  canvas.addEventListener('pointerdown', e => { 
+    drawing = true; 
+    const p = getPos(e); 
+    lastX = p.x; lastY = p.y; 
+    canvas.setPointerCapture(e.pointerId); 
+  });
+
+  canvas.addEventListener('pointermove', e => {
+    if (!drawing) return;
+    const p = getPos(e);
+    ctx.strokeStyle = isErasing ? '#000000' : brushColor;
+    ctx.lineWidth = isErasing ? brushSize * 3 : brushSize;
+    ctx.beginPath(); ctx.moveTo(lastX, lastY); ctx.lineTo(p.x, p.y); ctx.stroke();
+    lastX = p.x; lastY = p.y;
+  });
+
+  canvas.addEventListener('pointerup', () => drawing = false);
+  canvas.addEventListener('pointerleave', () => drawing = false);
+
+  // --- UI Controls ---
+  document.querySelectorAll('.color-swatch').forEach(sw => sw.addEventListener('click', () => {
+    document.querySelectorAll('.color-swatch').forEach(s => s.classList.remove('active')); 
+    sw.classList.add('active');
+    brushColor = sw.dataset.color; 
+    isErasing = false; 
+    document.getElementById('eraserBtn').style.background = '';
+  }));
+
+  document.getElementById('clearCanvasBtn').addEventListener('click', () => { 
+    ctx.fillStyle = '#000'; 
+    ctx.fillRect(0, 0, canvas.width, canvas.height); 
+    uploadedImage = null;
+    document.getElementById('imageUpload').value = '';
+  });
+
+  document.getElementById('eraserBtn').addEventListener('click', () => { 
+    isErasing = !isErasing; 
+    document.getElementById('eraserBtn').style.background = isErasing ? '#e94560' : ''; 
+  });
+
+  // --- Image Upload ---
+  document.getElementById('imageUpload').addEventListener('change', e => {
+    const file = e.target.files[0]; if (!file) return;
+    const reader = new FileReader();
+    reader.onload = ev => { 
+      uploadedImage = ev.target.result;
+      const img = new Image(); 
+      img.onload = () => { 
+        ctx.drawImage(img, 0, 0, canvas.width, canvas.height); 
+      }; 
+      img.src = uploadedImage;
+    };
+    reader.readAsDataURL(file);
+  });
+
+  // --- Flash Message ---
+  function flash(msg) {
+    const el = document.getElementById('flashMsg');
+    el.textContent = msg;
+    el.classList.add('show');
+    setTimeout(() => el.classList.remove('show'), 2000);
+  }
+
+  // --- Export Logic ---
+  document.getElementById('exportBtn').addEventListener('click', () => {
+    const name = document.getElementById('itemName').value.trim();
+    const codename = document.getElementById('itemCodename').value.trim().replace(/\s/g, '_').toLowerCase();
+    const desc = document.getElementById('itemDesc').value.trim() || 'A mysterious item';
+    
+    if (!name) { flash("Give your item a name!"); return; }
+    if (!codename) { flash("Give your item a codename!"); return; }
+
+    const item = {
+      id: 'item_' + codename,
+      codename: codename,
+      name: name,
+      desc: desc,
+      type: document.getElementById('itemType').value,
+      value: parseInt(document.getElementById('itemValue').value) || 10,
+      image: uploadedImage || canvas.toDataURL('image/png')
+    };
+
+    const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(item, null, 2));
+    const dlAnchor = document.createElement('a');
+    dlAnchor.setAttribute("href", dataStr);
+    dlAnchor.setAttribute("download", codename + ".itm");
+    dlAnchor.click();
+    
+    flash("Downloaded " + codename + ".itm");
+    
+    // Optional: Clear form after export
+    document.getElementById('itemName').value = '';
+    document.getElementById('itemCodename').value = '';
+    document.getElementById('itemDesc').value = '';
+    uploadedImage = null;
+    ctx.fillStyle = '#000'; 
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    document.getElementById('imageUpload').value = '';
+  });
+</script>
+</body>
+</html>
