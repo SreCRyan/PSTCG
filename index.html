@@ -41,7 +41,14 @@
   .item { width: 140px; background: linear-gradient(180deg, #e8f4f8 0%, #b2dfdb 100%); border: 1px solid #80cbc4; border-radius: 8px; padding: 6px; color: #004d40; font-size: 11px; }
   .item-img { width: 100%; aspect-ratio: 1; background: rgba(255,255,255,0.5); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #00695c; font-size: 36px; overflow: hidden; margin-bottom: 5px; border: 1px solid #b2dfdb; }
   .item-img img { width: 100%; height: 100%; object-fit: cover; }
+  .item-name { font-weight: 700; text-align: center; font-size: 12px; margin-bottom: 4px; }
+  .item-desc { font-size: 9px; text-align: center; color: #00695c; }
+  .item-effect { background: #00897b; color: #fff; text-align: center; padding: 3px; border-radius: 4px; font-size: 10px; font-weight: bold; margin-top: 5px; }
   .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 25px 16px; padding: 20px 0; justify-items: center; }
+  .pack-card { animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  @keyframes pop { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+  #packReveal { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 20px; min-height: 200px; }
+  .battle-slot { width: 140px; height: 200px; border: 2px dashed rgba(0, 217, 255, 0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: rgba(0, 217, 255, 0.5); font-size: 12px; text-align: center; padding: 10px; background: rgba(0,0,0,0.2); }
   .flash-msg { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: linear-gradient(180deg, #2ecc71, #27ae60); color: #fff; padding: 12px 24px; border-radius: 6px; font-weight: bold; font-size: 14px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; border: 1px solid #1e8449; }
   .flash-msg.show { opacity: 1; }
   .hidden { display: none !important; }
@@ -137,12 +144,12 @@
       <div style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:10px; text-align:center;">
         <canvas id="drawCanvas" width="180" height="180" style="background:#000; border-radius:4px; cursor:crosshair; border:1px solid #00d9ff;"></canvas>
         <div style="display:flex; gap:6px; justify-content:center; margin-top:10px; flex-wrap:wrap;">
-          <div class="color-swatch active" data-color="#00ff88" style="background:#00ff88; width:26px; height:26px; border-radius:50%; border:2px solid #fff;"></div>
-          <div class="color-swatch" data-color="#ff3355" style="background:#ff3355; width:26px; height:26px; border-radius:50%;"></div>
-          <div class="color-swatch" data-color="#00d9ff" style="background:#00d9ff; width:26px; height:26px; border-radius:50%;"></div>
-          <div class="color-swatch" data-color="#ffcc00" style="background:#ffcc00; width:26px; height:26px; border-radius:50%;"></div>
-          <div class="color-swatch" data-color="#ffffff" style="background:#ffffff; width:26px; height:26px; border-radius:50%;"></div>
-          <div class="color-swatch" data-color="#000000" style="background:#000000; width:26px; height:26px; border-radius:50%; border:2px solid #555;"></div>
+          <div class="color-swatch active" data-color="#00ff88" style="background:#00ff88; width:26px; height:26px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></div>
+          <div class="color-swatch" data-color="#ff3355" style="background:#ff3355; width:26px; height:26px; border-radius:50%; cursor:pointer;"></div>
+          <div class="color-swatch" data-color="#00d9ff" style="background:#00d9ff; width:26px; height:26px; border-radius:50%; cursor:pointer;"></div>
+          <div class="color-swatch" data-color="#ffcc00" style="background:#ffcc00; width:26px; height:26px; border-radius:50%; cursor:pointer;"></div>
+          <div class="color-swatch" data-color="#ffffff" style="background:#ffffff; width:26px; height:26px; border-radius:50%; cursor:pointer;"></div>
+          <div class="color-swatch" data-color="#000000" style="background:#000000; width:26px; height:26px; border-radius:50%; border:2px solid #555; cursor:pointer;"></div>
         </div>
         <div style="display:flex; gap:6px; justify-content:center; margin-top:10px;">
           <button class="secondary" id="clearCanvasBtn" style="font-size:11px; padding:4px 10px;">CLEAR</button>
@@ -175,6 +182,7 @@
     </div>
     <div>
       <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:#00d9ff; text-transform:uppercase; margin-bottom:5px;">Item Name</label><input type="text" id="itemName" placeholder="Health Potion" maxlength="20" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:4px;"></div>
+      <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:#00d9ff; text-transform:uppercase; margin-bottom:5px;">Codename (No spaces)</label><input type="text" id="itemCodename" placeholder="health_potion" maxlength="30" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:4px;"></div>
       <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:#00d9ff; text-transform:uppercase; margin-bottom:5px;">Description</label><input type="text" id="itemDesc" placeholder="Heals your active card" maxlength="50" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:4px;"></div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
         <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:#00d9ff; text-transform:uppercase; margin-bottom:5px;">Effect Type</label><select id="itemType" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:4px;"><option value="heal">Heal</option><option value="damage">Damage</option><option value="buff">Buff (Attack +10)</option></select></div>
@@ -189,11 +197,11 @@
   <h2>Data & Files</h2>
   <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:16px; margin-bottom:16px;">
     <h3 style="color:#00d9ff; margin-top:0;">LOAD CARDS FROM GITHUB (list.json)</h3>
-    <p style="font-size:12px; color:#a9cce3;">If you host this on GitHub, put a list.json file in your cards folder.</p>
+    <p style="font-size:12px; color:#a9cce3;">Put a list.json file in your card folder listing every .crd and .itm file.</p>
     <button id="loadGithubBtn" class="success" style="width:100%; margin-bottom:8px;">FETCH CARDS FROM SERVER</button>
-    <div style="border:2px dashed rgba(0,217,255,0.4); padding:20px; text-align:center; border-radius:6px; margin:10px 0; color:#889; background:rgba(0,0,0,0.2);">
-      <input type="file" id="crdFileInput" multiple accept=".crd" style="display:none;">
-      <p>Drag & Drop .crd files here or browse</p>
+    <div id="crdDropZone" style="border:2px dashed rgba(0,217,255,0.4); padding:20px; text-align:center; border-radius:6px; margin:10px 0; color:#889; background:rgba(0,0,0,0.2);">
+      <input type="file" id="crdFileInput" multiple accept=".crd,.itm" style="display:none;">
+      <p>Drag & Drop .crd or .itm files here or <span style="color:#00d9ff; text-decoration:underline; cursor:pointer;" onclick="document.getElementById('crdFileInput').click()">browse</span></p>
     </div>
   </div>
   <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:16px; margin-bottom:16px;">
@@ -217,7 +225,7 @@
 
 <script>
 // ================================================================
-// FIXED: FLASH FUNCTION IS NOW HERE
+// FLASH FUNCTION - Defined FIRST so nothing breaks
 // ================================================================
 let flashTimer;
 function flash(msg) {
@@ -229,49 +237,27 @@ function flash(msg) {
 }
 
 // ================================================================
-// TRANSLATIONS DICTIONARY
+// TRANSLATIONS
 // ================================================================
 const translations = {
-  en: {
-    subtitle: "PAPERSHOP TRADING CARD GAME", usernamePlaceholder: "Enter username...",
-    tabPacks: "PACKS", tabCollection: "MY CARDS", tabBattle: "BATTLE", tabCreate: "CREATE", tabData: "DATA", tabAbout: "ABOUT",
-    openPackTitle: "Open a Pack", openPackDesc: "5 cards per pack. Win battles to earn Aura!", openPackBtn: "OPEN PACK",
-    collectionTitle: "Your Collection", uniqueCards: "Unique Cards:", totalCards: "Total:", itemsTitle: "Your Items",
-    battleTitle: "Battle", playBotTitle: "Play vs Neutral Bot", playBotDesc: "The bot doesn't try to win. It just exists.", playBotBtn: "PLAY BOT", mpTitle: "Multiplayer (P2P)", hostBtn: "HOST GAME", joinPlaceholder: "Enter Host Code (e.g., PSTCG-ABCD)", joinBtn: "JOIN GAME",
-    opponent: "OPPONENT", you: "YOU", handDesc: "YOUR HAND (Click a card to play it)", attackBtn: "ATTACK", passBtn: "PASS TURN", itemBtn: "USE ITEM", leaveBtn: "LEAVE",
-    createTitle: "Create Content (Admin Only)", tabCardCreate: "CARD", tabItemCreate: "ITEM", clearBtn: "CLEAR", eraserBtn: "ERASER", importPng: "OR IMPORT PNG:", cardNameLabel: "Card Name (1-30 chars)", codenameLabel: "Codename (No spaces)", hpLabel: "HP", damageLabel: "Damage", attackNameLabel: "Attack Name", dropRateLabel: "Drop Rate (%)", saveCardBtn: "SAVE CARD TO DB", exportCardBtn: "EXPORT AS .crd FILE", itemNameLabel: "Item Name", itemDescLabel: "Description", itemTypeLabel: "Effect Type", itemValueLabel: "Value", saveItemBtn: "SAVE ITEM",
-    dataTitle: "Data & Files", loadGithubTitle: "LOAD CARDS FROM GITHUB (list.json)", loadGithubDesc: "If you host this on GitHub, put a list.json file in your card folder.", fetchBtn: "FETCH CARDS FROM SERVER", dropZoneDesc: "Drag & Drop .crd or .itm files here or browse", saveDatTitle: "SAVE / LOAD GAME DATA (.dat)", saveDatDesc: "This file saves your card counts, items, Aura, and username.", downloadDatBtn: "DOWNLOAD SAVE FILE (.dat)", dangerTitle: "DANGER ZONE", wipeBtn: "ERASE ALL DATA",
-    aboutTitle: "About PSTCG", adminManual: "ADMIN MANUAL", playerManual: "PLAYER MANUAL",
-    adminDesc: "You are logged in as Admin. Here is how to manage the game:", playerDesc: "Welcome to PSTCG! Here is how to play:",
-    makeCards: "1. Making Cards", makeCardsDesc: "Go to the CREATE tab. You can draw an image or upload a PNG. Every card needs a Name and a Codename (no spaces, used by the save file).",
-    exportGithub: "2. Exporting to GitHub", exportGithubDesc: "When you click EXPORT AS .crd FILE, it downloads a file like kris_banana.crd. Put this in your card folder on GitHub.",
-    manifestDesc: "Then, create a file called list.json inside the card folder. It looks like this:", manifestExample: '["kris_banana.crd", "pikachu.crd"]',
-    autoLoad: "The game will auto-load these when someone opens your GitHub Pages link!",
-    saveDatAdmin: "3. The .dat Save File", saveDatAdminDesc: "When a player saves, they get a .dat file. This file only stores how many of each card they own. It does NOT store the card data itself.",
-    gettingCards: "1. Getting Cards", gettingCardsDesc: "Go to the PACKS tab and click OPEN PACK. You get 5 random cards. The border color shows how rare the card is (Gold = Legendary, Gray = Common).",
-    battling: "2. Battling", battlingDesc: "Go to the BATTLE tab. You can fight a neutral bot or play online with a friend using the P2P multiplayer! On your turn, click a card in your hand to play it, then click ATTACK to deal damage. Winning gives you 50 Aura!",
-    savingProgress: "3. Saving Your Progress", savingProgressDesc: "Go to the DATA tab and click DOWNLOAD SAVE FILE (.dat). Keep this file safe! If you clear your browser cache, you can load this file back in to get all your cards back."
-  },
-  fa: {
-    subtitle: "بازی کارتی فروشگاه کاغذی", usernamePlaceholder: "نام کاربری را وارد کنید...",
-    tabPacks: "پک‌ها", tabCollection: "کارت‌های من", tabBattle: "نبرد", tabCreate: "ساخت", tabData: "داده‌ها", tabAbout: "درباره",
-    openPackTitle: "باز کردن یک پک", openPackDesc: "هر پک ۵ کارت دارد. برای کسب آئورا بجنگید!", openPackBtn: "باز کردن پک",
-    collectionTitle: "مجموعه شما", uniqueCards: "کارت‌های منحصر به فرد:", totalCards: "مجموع:", itemsTitle: "آیتم‌های شما",
-    battleTitle: "نبرد", playBotTitle: "بازی با ربات خنثی", playBotDesc: "ربات سعی نمی‌کند ببرد. فقط وجود دارد.", playBotBtn: "بازی با ربات", mpTitle: "چند نفره (P2P)", hostBtn: "میزبانی بازی", joinPlaceholder: "کد میزبان را وارد کنید", joinBtn: "ورود به بازی",
-    opponent: "حریف", you: "شما", handDesc: "دست شما (برای بازی روی کارت کلیک کنید)", attackBtn: "حمله", passBtn: "رد کردن نوبت", itemBtn: "استفاده از آیتم", leaveBtn: "خروج",
-    createTitle: "ساخت محتوا (فقط ادمین)", tabCardCreate: "کارت", tabItemCreate: "آیتم", clearBtn: "پاک کردن", eraserBtn: "پاک‌کن", importPng: "یا وارد کردن PNG:", cardNameLabel: "نام کارت (۱-۳۰ حرف)", codenameLabel: "نام رمز (بدون فاصله)", hpLabel: "جان", damageLabel: "آسیب", attackNameLabel: "نام حمله", dropRateLabel: "نرخ افت (%)", saveCardBtn: "ذخیره کارت", exportCardBtn: "خروجی .crd", itemNameLabel: "نام آیتم", itemDescLabel: "توضیحات", itemTypeLabel: "نوع اثر", itemValueLabel: "مقدار", saveItemBtn: "ذخیره آیتم",
-    dataTitle: "داده‌ها و فایل‌ها", loadGithubTitle: "بارگذاری کارت‌ها از گیت‌هاب (list.json)", loadGithubDesc: "اگر این را روی گیت‌هاب میزبانی می‌کنید، یک فایل list.json در پوشه card قرار دهید.", fetchBtn: "دریافت کارت‌ها از سرور", dropZoneDesc: "فایل‌های .crd یا .itm را اینجا رها کنید", saveDatTitle: "ذخیره / بارگذاری داده‌های بازی (.dat)", saveDatDesc: "این فایل کارت‌ها، آیتم‌ها، آئورا و نام کاربری شما را ذخیره می‌کند.", downloadDatBtn: "دانلود فایل ذخیره", dangerTitle: "منطقه خطر", wipeBtn: "پاک کردن همه داده‌ها",
-    aboutTitle: "درباره PSTCG", adminManual: "راهنمای ادمین", playerManual: "راهنمای بازیکن",
-    adminDesc: "شما به عنوان ادمین وارد شده‌اید. نحوه مدیریت بازی:", playerDesc: "به PSTCG خوش آمدید! نحوه بازی:",
-    makeCards: "۱. ساخت کارت‌ها", makeCardsDesc: "به تب ساخت بروید. می‌توانید تصویر بکشید یا PNG آپلود کنید. هر کارت نیاز به یک نام و یک نام رمز دارد.",
-    exportGithub: "۲. خروجی به گیت‌هاب", exportGithubDesc: "وقتی روی خروجی .crd کلیک می‌کنید، فایلی مانند kris_banana.crd دانلود می‌شود. آن را در پوشه card قرار دهید.",
-    manifestDesc: "سپس فایلی به نام list.json در پوشه card بسازید:", manifestExample: '["kris_banana.crd", "pikachu.crd"]',
-    autoLoad: "بازی به طور خودکار این‌ها را بارگذاری می‌کند!",
-    saveDatAdmin: "۳. فایل ذخیره .dat", saveDatAdminDesc: "این فایل فقط تعداد هر کارت را ذخیره می‌کند. داده‌های خود کارت را ذخیره نمی‌کند.",
-    gettingCards: "۱. دریافت کارت‌ها", gettingCardsDesc: "به تب پک‌ها بروید و روی باز کردن پک کلیک کنید. ۵ کارت تصادفی می‌گیرید.",
-    battling: "۲. نبرد", battlingDesc: "به تب نبرد بروید. می‌توانید با یک ربات بجنگید یا با دوستتان بازی کنید. بردن ۵۰ آئورا می‌دهد!",
-    savingProgress: "۳. ذخیره پیشرفت", savingProgressDesc: "به تب داده‌ها بروید و فایل ذخیره را دانلود کنید."
-  }
+  en: { subtitle: "PAPERSHOP TRADING CARD GAME", playerManual: "PLAYER MANUAL", adminManual: "ADMIN MANUAL",
+    playerDesc: "Welcome to PSTCG! Here is how to play:", adminDesc: "You are logged in as Admin.",
+    gettingCards: "1. Getting Cards", gettingCardsDesc: "Open packs to get random cards.",
+    battling: "2. Battling", battlingDesc: "Fight the bot or play P2P online.",
+    savingProgress: "3. Saving", savingProgressDesc: "Download your .dat file often!",
+    makeCards: "1. Making Cards", makeCardsDesc: "Use the CREATE tab to design cards.",
+    exportGithub: "2. GitHub Hosting", exportGithubDesc: "Put .crd files in the card folder.",
+    manifestDesc: "Create list.json:", autoLoad: "Auto-loads on refresh.",
+    saveDatAdmin: "3. Save Files", saveDatAdminDesc: "Players download .dat files." },
+  fa: { subtitle: "بازی کارتی فروشگاه کاغذی", playerManual: "راهنمای بازیکن", adminManual: "راهنمای ادمین",
+    playerDesc: "به PSTCG خوش آمدید!", adminDesc: "شما ادمین هستید.",
+    gettingCards: "۱. دریافت کارت‌ها", gettingCardsDesc: "پک باز کنید.",
+    battling: "۲. نبرد", battlingDesc: "با ربات یا دوستان بجنگید.",
+    savingProgress: "۳. ذخیره", savingProgressDesc: "فایل .dat را دانلود کنید.",
+    makeCards: "۱. ساخت کارت", makeCardsDesc: "از تب ساخت استفاده کنید.",
+    exportGithub: "۲. میزبانی گیت‌هاب", exportGithubDesc: "فایل‌های .crd را در پوشه card بگذارید.",
+    manifestDesc: "فایل list.json بسازید:", autoLoad: "به‌طور خودکار بارگذاری می‌شود.",
+    saveDatAdmin: "۳. فایل‌های ذخیره", saveDatAdminDesc: "بازیکنان .dat دانلود می‌کنند." }
 };
 
 let currentLang = localStorage.getItem('pstcg_lang') || 'en';
@@ -293,8 +279,12 @@ function setLanguage(lang) {
   updateAuraUI();
 }
 
-let cards = []; let items = []; let collection = {}; let itemCollection = {}; let isAdmin = false; let username = "";
-let aura = 50; let freePackAvailable = true; let battleState = null; let peer = null; let conn = null;
+// ================================================================
+// CORE STATE
+// ================================================================
+let cards = []; let items = []; let collection = {}; let itemCollection = {};
+let isAdmin = false; let username = ""; let aura = 50; let freePackAvailable = true;
+let battleState = null; let peer = null; let conn = null;
 
 function loadData() {
   try {
@@ -322,25 +312,20 @@ function saveData() {
 function updateAuraUI() {
   document.getElementById('auraCount').textContent = aura;
   const btn = document.getElementById('openPackBtn');
-  if (freePackAvailable) {
-    btn.textContent = "OPEN FREE PACK";
-  } else {
-    btn.textContent = "OPEN PACK (50 AURA)";
-  }
+  btn.textContent = freePackAvailable ? "OPEN FREE PACK" : "OPEN PACK (50 AURA)";
 }
 
 const ADMIN_KEY = "1234567890qwertyuiopasdfghjklzxcvbnm";
 function checkAdmin() {
   const input = document.getElementById('usernameInput').value.trim();
   username = input; localStorage.setItem('pstcg_username', username);
-  if (input === ADMIN_KEY) { 
-    isAdmin = true; 
-    document.getElementById('createTabBtn').classList.remove('hidden'); 
+  if (input === ADMIN_KEY) {
+    isAdmin = true;
+    document.getElementById('createTabBtn').classList.remove('hidden');
     document.getElementById('adminAuraBtn').classList.remove('hidden');
-  }
-  else { 
-    isAdmin = false; 
-    document.getElementById('createTabBtn').classList.add('hidden'); 
+  } else {
+    isAdmin = false;
+    document.getElementById('createTabBtn').classList.add('hidden');
     document.getElementById('adminAuraBtn').classList.add('hidden');
   }
   updateAboutPage();
@@ -349,28 +334,16 @@ document.getElementById('usernameInput').addEventListener('input', checkAdmin);
 
 document.getElementById('adminAuraBtn').addEventListener('click', () => {
   if (!isAdmin) return;
-  aura += 9999;
-  saveData();
-  updateAuraUI();
-  flash("Admin Aura granted! +9999");
+  aura += 9999; saveData(); updateAuraUI(); flash("+9999 Aura granted!");
 });
 
 function updateAboutPage() {
   const content = document.getElementById('aboutContent');
+  const box = (title, body) => `<div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:16px; margin-bottom:16px; line-height:1.6;"><h3 style="margin-top:0; color:#00d9ff; font-weight:300;">${title}</h3><p>${body}</p></div>`;
   if (isAdmin) {
-    content.innerHTML = `
-      <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:16px; margin-bottom:16px; line-height:1.6;"><h3 style="margin-top:0; color:#00d9ff; font-weight:300;">${t('adminManual')}</h3><p>${t('adminDesc')}</p></div>
-      <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:16px; margin-bottom:16px; line-height:1.6;"><h3 style="margin-top:0; color:#00d9ff; font-weight:300;">${t('makeCards')}</h3><p>${t('makeCardsDesc')}</p></div>
-      <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:16px; margin-bottom:16px; line-height:1.6;"><h3 style="margin-top:0; color:#00d9ff; font-weight:300;">${t('exportGithub')}</h3><p>${t('exportGithubDesc')}</p><p>${t('manifestDesc')}</p><pre style="background:rgba(0,0,0,0.8); padding:10px; border-radius:4px; color:#2ecc71; font-size:11px; overflow-x:auto;">${t('manifestExample')}</pre><p>${t('autoLoad')}</p></div>
-      <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:16px; margin-bottom:16px; line-height:1.6;"><h3 style="margin-top:0; color:#00d9ff; font-weight:300;">${t('saveDatAdmin')}</h3><p>${t('saveDatAdminDesc')}</p></div>
-    `;
+    content.innerHTML = box(t('adminManual'), t('adminDesc')) + box(t('makeCards'), t('makeCardsDesc')) + box(t('exportGithub'), t('exportGithubDesc')) + box(t('saveDatAdmin'), t('saveDatAdminDesc'));
   } else {
-    content.innerHTML = `
-      <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:16px; margin-bottom:16px; line-height:1.6;"><h3 style="margin-top:0; color:#00d9ff; font-weight:300;">${t('playerManual')}</h3><p>${t('playerDesc')}</p></div>
-      <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:16px; margin-bottom:16px; line-height:1.6;"><h3 style="margin-top:0; color:#00d9ff; font-weight:300;">${t('gettingCards')}</h3><p>${t('gettingCardsDesc')}</p></div>
-      <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:16px; margin-bottom:16px; line-height:1.6;"><h3 style="margin-top:0; color:#00d9ff; font-weight:300;">${t('battling')}</h3><p>${t('battlingDesc')}</p></div>
-      <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:16px; margin-bottom:16px; line-height:1.6;"><h3 style="margin-top:0; color:#00d9ff; font-weight:300;">${t('savingProgress')}</h3><p>${t('savingProgressDesc')}</p></div>
-    `;
+    content.innerHTML = box(t('playerManual'), t('playerDesc')) + box(t('gettingCards'), t('gettingCardsDesc')) + box(t('battling'), t('battlingDesc')) + box(t('savingProgress'), t('savingProgressDesc'));
   }
 }
 
@@ -378,69 +351,66 @@ document.querySelectorAll('.tab').forEach(tab => {
   tab.addEventListener('click', () => {
     document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    tab.classList.add('active'); document.getElementById(tab.dataset.page).classList.add('active');
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.page).classList.add('active');
     if (tab.dataset.page === 'collection') renderCollection();
     if (tab.dataset.page === 'about') updateAboutPage();
   });
 });
 
 // ================================================================
-// LOAD CARDS AND ITEMS FROM GITHUB (BOM-PROOF)
+// BOM-PROOF JSON PARSER
 // ================================================================
 function parseSafe(text) {
-  // Strips invisible BOM character (from Windows Notepad)
-  if (text.charCodeAt(0) === 0xFEFF) {
-    text = text.slice(1);
-  }
+  if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
   return JSON.parse(text.trim());
 }
 
 async function loadRemoteData() {
   try {
-    const res = await fetch('card/list.json', { cache: "no-store" }); 
-    if (!res.ok) throw new Error("No list.json found in card folder");
-    
-    // BOM-PROOF READ FOR LIST.JSON
+    const res = await fetch('card/list.json', { cache: "no-store" });
+    if (!res.ok) throw new Error("list.json not found");
     const listText = await res.text();
     const filenames = parseSafe(listText);
-    
-    let loadedCards = 0; let loadedItems = 0;
+    let loadedCards = 0, loadedItems = 0;
     for (const file of filenames) {
       try {
         const fileRes = await fetch(`card/${file}`, { cache: "no-store" });
-        
-        // BOM-PROOF READ FOR EVERY FILE
+        if (!fileRes.ok) { console.warn("404:", file); continue; }
         const fileText = await fileRes.text();
         const data = parseSafe(fileText);
-
         if (file.endsWith('.crd') && data.codename && data.name) {
           if (!cards.find(c => c.codename === data.codename)) { cards.push(data); loadedCards++; }
         } else if (file.endsWith('.itm') && data.codename && data.name) {
           if (!items.find(i => i.codename === data.codename)) { items.push(data); loadedItems++; }
         }
-      } catch(e) { console.error("Failed to load:", file, e); }
+      } catch(e) { console.error("Failed:", file, e); }
     }
     saveData(); renderCollection();
     flash(`Loaded ${loadedCards} cards and ${loadedItems} items!`);
   } catch(e) {
-    flash("No list.json found. Using local cache.");
+    console.error(e);
+    flash("Could not load list.json. Using local cache.");
   }
 }
 document.getElementById('loadGithubBtn').addEventListener('click', loadRemoteData);
 
-function getRarityColor(dropRate) {
-  if (dropRate >= 50) return '#888'; if (dropRate >= 20) return '#22aa44';
-  if (dropRate >= 5) return '#2277ee'; if (dropRate >= 1) return '#aa22cc'; return '#ffaa00';
+// ================================================================
+// PACKS & RARITY
+// ================================================================
+function getRarityColor(r) {
+  if (r >= 50) return '#888'; if (r >= 20) return '#22aa44';
+  if (r >= 5) return '#2277ee'; if (r >= 1) return '#aa22cc'; return '#ffaa00';
 }
-function getRarityName(dropRate) {
-  if (dropRate >= 50) return 'common'; if (dropRate >= 20) return 'uncommon';
-  if (dropRate >= 5) return 'rare'; if (dropRate >= 1) return 'epic'; return 'legendary';
+function getRarityName(r) {
+  if (r >= 50) return 'common'; if (r >= 20) return 'uncommon';
+  if (r >= 5) return 'rare'; if (r >= 1) return 'epic'; return 'legendary';
 }
 function pickWeightedCard() {
   if (cards.length === 0) return null;
-  const totalWeight = cards.reduce((s, c) => s + (c.dropRate || 10), 0);
-  let roll = Math.random() * totalWeight;
-  for (const card of cards) { roll -= (card.dropRate || 10); if (roll <= 0) return card; }
+  const total = cards.reduce((s, c) => s + (c.dropRate || 10), 0);
+  let roll = Math.random() * total;
+  for (const c of cards) { roll -= (c.dropRate || 10); if (roll <= 0) return c; }
   return cards[cards.length - 1];
 }
 function pickRandomItem() {
@@ -449,14 +419,13 @@ function pickRandomItem() {
 }
 
 document.getElementById('openPackBtn').addEventListener('click', () => {
-  const PACK_COST = 50;
   if (!freePackAvailable) {
-    if (aura < PACK_COST) { alert("Not enough Aura! Win a battle to earn more!"); return; }
-    aura -= PACK_COST;
+    if (aura < 50) { alert("Not enough Aura! Win a battle to earn more."); return; }
+    aura -= 50;
   } else { freePackAvailable = false; }
   saveData(); updateAuraUI();
   const reveal = document.getElementById('packReveal'); reveal.innerHTML = '';
-  if (cards.length === 0) { alert("No cards loaded! Load some .crd files first."); return; }
+  if (cards.length === 0) { alert("No cards loaded! Add .crd files to GitHub."); return; }
   const pulled = [];
   for (let i = 0; i < 4; i++) {
     const c = pickWeightedCard();
@@ -467,29 +436,31 @@ document.getElementById('openPackBtn').addEventListener('click', () => {
   saveData();
   pulled.forEach((p, i) => {
     setTimeout(() => {
-      let el = p.type === 'card' ? makeCardElement(p.data) : makeItemElement(p.data);
+      const el = p.type === 'card' ? makeCardElement(p.data) : makeItemElement(p.data);
       el.classList.add('pack-card'); reveal.appendChild(el);
     }, i * 180);
   });
   flash("Opened a pack!");
 });
 
+// ================================================================
+// RENDERING
+// ================================================================
 function makeCardElement(card) {
   const div = document.createElement('div'); div.className = 'card';
   const rName = getRarityName(card.dropRate || 10);
   const rColor = getRarityColor(card.dropRate || 10);
   div.style.borderColor = rColor; div.style.boxShadow = `0 6px 15px ${rColor}88`;
   div.innerHTML = `
-    <div class="card-drop" style="background:${rColor}; color:${rName==='legendary'?'#000':'#fff'}">${(card.dropRate || 10).toFixed(2)}%</div>
+    <div class="card-drop" style="background:${rColor}; color:${rName==='legendary'?'#000':'#fff'}">${(card.dropRate||10).toFixed(2)}%</div>
     <div class="card-img">${card.image ? `<img src="${card.image}">` : (card.name||'?')[0].toUpperCase()}</div>
     <div class="card-name">${card.name || 'Unnamed'}</div>
     <div class="card-stats"><span class="card-hp">HP ${card.hp}</span></div>
-    <div class="card-attack"><span class="card-attack-name">${card.attack || '-'}</span><span class="card-attack-dmg">${card.damage}</span></div>
+    <div class="card-attack"><span>${card.attack || '-'}</span><span class="card-attack-dmg">${card.damage}</span></div>
   `;
   if (!card.image) div.querySelector('.card-img').style.color = rColor;
   return div;
 }
-
 function makeItemElement(item) {
   const div = document.createElement('div'); div.className = 'item';
   div.innerHTML = `
@@ -500,15 +471,14 @@ function makeItemElement(item) {
   `;
   return div;
 }
-
 function renderCollection() {
   const grid = document.getElementById('collectionGrid'); grid.innerHTML = '';
   const owned = cards.filter(c => collection[c.codename] > 0);
   document.getElementById('uniqueCount').textContent = owned.length;
-  document.getElementById('totalCount').textContent = Object.values(collection).reduce((a, b) => a + b, 0);
-  if (owned.length === 0) grid.innerHTML = `<div class="empty-msg">No cards yet. Open a pack or load .crd files!</div>`;
+  document.getElementById('totalCount').textContent = Object.values(collection).reduce((a,b)=>a+b, 0);
+  if (owned.length === 0) grid.innerHTML = '<div style="text-align:center; padding:40px; color:#556; font-style:italic;">No cards yet.</div>';
   else {
-    owned.sort((a, b) => (a.dropRate || 10) - (b.dropRate || 10));
+    owned.sort((a,b) => (a.dropRate||10) - (b.dropRate||10));
     owned.forEach(card => {
       const wrap = document.createElement('div'); wrap.style.position = 'relative';
       wrap.appendChild(makeCardElement(card));
@@ -519,7 +489,7 @@ function renderCollection() {
   }
   const iGrid = document.getElementById('itemGrid'); iGrid.innerHTML = '';
   const ownedItems = items.filter(i => itemCollection[i.id] > 0);
-  if (ownedItems.length === 0) iGrid.innerHTML = `<div class="empty-msg">No items yet.</div>`;
+  if (ownedItems.length === 0) iGrid.innerHTML = '<div style="text-align:center; padding:40px; color:#556; font-style:italic;">No items yet.</div>';
   else {
     ownedItems.forEach(item => {
       const wrap = document.createElement('div'); wrap.style.position = 'relative';
@@ -531,9 +501,10 @@ function renderCollection() {
   }
 }
 
-let creatorMode = 'card';
+// ================================================================
+// CREATOR
+// ================================================================
 function switchCreator(mode) {
-  creatorMode = mode;
   document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
   event.target.classList.add('active');
   document.getElementById('cardCreator').style.display = mode === 'card' ? 'grid' : 'none';
@@ -557,167 +528,154 @@ canvas.addEventListener('pointermove', e => {
 canvas.addEventListener('pointerup', () => drawing=false);
 canvas.addEventListener('pointerleave', () => drawing=false);
 document.querySelectorAll('.color-swatch').forEach(sw => sw.addEventListener('click', () => {
-  document.querySelectorAll('.color-swatch').forEach(s=>s.classList.remove('active')); sw.classList.add('active');
-  brushColor = sw.dataset.color; isErasing = false; document.getElementById('eraserBtn').style.background='';
+  document.querySelectorAll('.color-swatch').forEach(s => { s.style.borderColor = '#333'; s.style.transform = 'scale(1)'; });
+  sw.style.borderColor = '#fff'; sw.style.transform = 'scale(1.15)';
+  brushColor = sw.dataset.color; isErasing = false;
 }));
 document.getElementById('clearCanvasBtn').addEventListener('click', () => { ctx.fillStyle='#000'; ctx.fillRect(0,0,canvas.width,canvas.height); });
-document.getElementById('eraserBtn').addEventListener('click', () => { isErasing=!isErasing; document.getElementById('eraserBtn').style.background=isErasing?'#e94560':''; });
+document.getElementById('eraserBtn').addEventListener('click', () => { isErasing=!isErasing; });
 ctx.fillStyle='#000'; ctx.fillRect(0,0,canvas.width,canvas.height);
 
-let uploadedCardImage = null; let uploadedItemImage = null;
+let uploadedCardImage = null, uploadedItemImage = null;
 document.getElementById('cardImageUpload').addEventListener('change', e => {
-  const file = e.target.files[0]; if(!file)return;
-  const reader = new FileReader();
-  reader.onload = ev => { uploadedCardImage = ev.target.result;
-    const img = new Image(); img.onload = () => { ctx.drawImage(img, 0, 0, canvas.width, canvas.height); }; img.src = uploadedCardImage;
-  };
-  reader.readAsDataURL(file);
+  const f = e.target.files[0]; if(!f)return;
+  const r = new FileReader();
+  r.onload = ev => { uploadedCardImage = ev.target.result;
+    const img = new Image(); img.onload = () => ctx.drawImage(img, 0, 0, canvas.width, canvas.height); img.src = uploadedCardImage; };
+  r.readAsDataURL(f);
 });
 document.getElementById('itemImageUpload').addEventListener('change', e => {
-  const file = e.target.files[0]; if(!file)return;
-  const reader = new FileReader();
-  reader.onload = ev => { uploadedItemImage = ev.target.result; flash("Item image loaded!"); };
-  reader.readAsDataURL(file);
+  const f = e.target.files[0]; if(!f)return;
+  const r = new FileReader();
+  r.onload = ev => { uploadedItemImage = ev.target.result; flash("Item image loaded!"); };
+  r.readAsDataURL(f);
 });
 
 function buildCardObject() {
   const name = document.getElementById('cardName').value.trim();
   const codename = document.getElementById('cardCodename').value.trim().replace(/\s/g, '_').toLowerCase();
   if (!name) { alert("Give your card a name!"); return null; }
-  if (!codename) { alert("Give your card a codename (no spaces)!"); return null; }
-  return {
-    codename: codename, name: name,
+  if (!codename) { alert("Give your card a codename!"); return null; }
+  return { codename, name,
     hp: parseInt(document.getElementById('cardHP').value) || 10,
     attack: document.getElementById('cardAttack').value.trim() || 'Tackle',
     damage: parseInt(document.getElementById('cardDamage').value) || 5,
     dropRate: parseFloat(document.getElementById('cardDropRate').value) || 10,
-    image: uploadedCardImage || canvas.toDataURL('image/png')
-  };
+    image: uploadedCardImage || canvas.toDataURL('image/png') };
 }
-
 document.getElementById('saveCardBtn').addEventListener('click', () => {
-  if (!isAdmin) { alert("Only admin can create cards!"); return; }
+  if (!isAdmin) return;
   const card = buildCardObject(); if (!card) return;
-  if (cards.find(c => c.codename === card.codename)) { alert("Codename already exists!"); return; }
-  cards.push(card); collection[card.codename] = (collection[card.codename] || 0) + 1;
-  saveData(); flash("Card saved: " + card.name); resetCardForm();
+  if (cards.find(c => c.codename === card.codename)) { alert("Codename exists!"); return; }
+  cards.push(card); collection[card.codename] = 1;
+  saveData(); flash("Saved: " + card.name); resetCardForm();
 });
-
 document.getElementById('exportCardBtn').addEventListener('click', () => {
-  if (!isAdmin) { alert("Only admin can create cards!"); return; }
+  if (!isAdmin) return;
   const card = buildCardObject(); if (!card) return;
-  cards.push(card); collection[card.codename] = (collection[card.codename] || 0) + 1; saveData();
+  cards.push(card); collection[card.codename] = 1; saveData();
   const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(card, null, 2));
-  const dlAnchor = document.createElement('a');
-  dlAnchor.setAttribute("href", dataStr); dlAnchor.setAttribute("download", card.codename + ".crd"); dlAnchor.click();
+  const a = document.createElement('a'); a.href = dataStr; a.download = card.codename + ".crd"; a.click();
   flash("Downloaded " + card.codename + ".crd"); resetCardForm();
 });
-
 function resetCardForm() {
   document.getElementById('cardName').value = ''; document.getElementById('cardCodename').value = '';
   document.getElementById('cardAttack').value = ''; uploadedCardImage = null;
   ctx.fillStyle='#000'; ctx.fillRect(0,0,canvas.width,canvas.height);
   document.getElementById('cardImageUpload').value = '';
 }
-
 document.getElementById('saveItemBtn').addEventListener('click', () => {
-  if (!isAdmin) { alert("Only admin can create items!"); return; }
+  if (!isAdmin) return;
   const name = document.getElementById('itemName').value.trim();
-  const codename = document.getElementById('itemCodename') ? document.getElementById('itemCodename').value.trim().replace(/\s/g, '_').toLowerCase() : 'item_' + Date.now();
+  const codename = document.getElementById('itemCodename').value.trim().replace(/\s/g, '_').toLowerCase();
   if (!name) { alert("Give your item a name!"); return; }
-  const item = {
-    id: 'item_' + codename, codename: codename,
-    name: name, desc: document.getElementById('itemDesc').value.trim() || 'A mysterious item',
-    type: document.getElementById('itemType').value, value: parseInt(document.getElementById('itemValue').value) || 10,
-    image: uploadedItemImage || null
-  };
-  if (items.find(i => i.codename === item.codename)) { alert("Codename already exists!"); return; }
-  items.push(item); itemCollection[item.id] = (itemCollection[item.id] || 0) + 1;
+  if (!codename) { alert("Give your item a codename!"); return; }
+  const item = { id: 'item_' + codename, codename, name,
+    desc: document.getElementById('itemDesc').value.trim() || 'A mysterious item',
+    type: document.getElementById('itemType').value,
+    value: parseInt(document.getElementById('itemValue').value) || 10,
+    image: uploadedItemImage || null };
+  if (items.find(i => i.codename === item.codename)) { alert("Codename exists!"); return; }
+  items.push(item); itemCollection[item.id] = 1;
   saveData(); flash("Item saved: " + item.name);
-  document.getElementById('itemName').value = ''; document.getElementById('itemDesc').value = '';
-  uploadedItemImage = null; document.getElementById('itemImageUpload').value = '';
+  document.getElementById('itemName').value = ''; document.getElementById('itemCodename').value = '';
+  document.getElementById('itemDesc').value = ''; uploadedItemImage = null;
+  document.getElementById('itemImageUpload').value = '';
 });
 
-document.getElementById('crdFileInput').addEventListener('change', e => {
-  const files = e.target.files; if (files.length === 0) return;
-  let added = 0;
-  Array.from(files).forEach(file => {
-    const reader = new FileReader();
-    reader.onload = ev => {
-      try {
-        const data = JSON.parse(ev.target.result);
-        if (file.name.endsWith('.crd') && data.codename && data.name && !cards.find(c => c.codename === data.codename)) { cards.push(data); added++; }
-        else if (file.name.endsWith('.itm') && data.codename && data.name && !items.find(i => i.codename === data.codename)) { items.push(data); added++; }
-      } catch(err) {}
+// ================================================================
+// FILE IMPORTS
+// ================================================================
+function importFile(file) {
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = parseSafe(ev.target.result);
+      if (file.name.endsWith('.crd') && data.codename && data.name && !cards.find(c => c.codename === data.codename)) { cards.push(data); }
+      else if (file.name.endsWith('.itm') && data.codename && data.name && !items.find(i => i.codename === data.codename)) { items.push(data); }
       saveData(); renderCollection();
-    };
-    reader.readAsText(file);
-  });
-  flash(`Loaded ${added} files!`); e.target.value = '';
+    } catch(err) { console.error("Bad file:", file.name, err); }
+  };
+  reader.readAsText(file);
+}
+document.getElementById('crdFileInput').addEventListener('change', e => {
+  Array.from(e.target.files).forEach(importFile);
+  flash("Files loaded!"); e.target.value = '';
 });
-
 const dropZone = document.getElementById('crdDropZone');
-dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.classList.add('dragover'); });
-dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = '#00d9ff'; });
+dropZone.addEventListener('dragleave', () => dropZone.style.borderColor = 'rgba(0,217,255,0.4)');
 dropZone.addEventListener('drop', e => {
-  e.preventDefault(); dropZone.classList.remove('dragover');
-  const files = e.dataTransfer.files; let added = 0;
-  Array.from(files).forEach(file => {
-    if (file.name.endsWith('.crd') || file.name.endsWith('.itm')) {
-      const reader = new FileReader();
-      reader.onload = ev => {
-        try {
-          const data = JSON.parse(ev.target.result);
-          if (file.name.endsWith('.crd') && data.codename && data.name && !cards.find(c => c.codename === data.codename)) { cards.push(data); added++; }
-          else if (file.name.endsWith('.itm') && data.codename && data.name && !items.find(i => i.codename === data.codename)) { items.push(data); added++; }
-        } catch(err) {}
-        saveData(); renderCollection();
-      };
-      reader.readAsText(file);
-    }
-  });
-  flash(`Loaded ${added} files from dropped files!`);
+  e.preventDefault(); dropZone.style.borderColor = 'rgba(0,217,255,0.4)';
+  Array.from(e.dataTransfer.files).forEach(importFile);
+  flash("Files dropped!");
 });
 
 document.getElementById('saveDatBtn').addEventListener('click', () => {
-  const saveData = { collection: collection, itemCollection: itemCollection, username: username, aura: aura, freePackAvailable: freePackAvailable, timestamp: new Date().toISOString() };
+  const saveData = { collection, itemCollection, username, aura, freePackAvailable, timestamp: new Date().toISOString() };
   const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(saveData, null, 2));
-  const dlAnchor = document.createElement('a');
-  dlAnchor.setAttribute("href", dataStr); dlAnchor.setAttribute("download", "pstcg_save.dat"); dlAnchor.click();
-  flash("Downloaded pstcg_save.dat");
+  const a = document.createElement('a'); a.href = dataStr; a.download = "pstcg_save.dat"; a.click();
+  flash("Downloaded save file!");
 });
 document.getElementById('loadDatInput').addEventListener('change', e => {
   const file = e.target.files[0]; if (!file) return;
   const reader = new FileReader();
   reader.onload = ev => {
     try {
-      const data = JSON.parse(ev.target.result);
+      const data = parseSafe(ev.target.result);
       if (data.collection) collection = data.collection;
       if (data.itemCollection) itemCollection = data.itemCollection;
       if (data.username) { username = data.username; document.getElementById('usernameInput').value = username; checkAdmin(); }
       if (data.aura !== undefined) aura = data.aura;
       if (data.freePackAvailable !== undefined) freePackAvailable = data.freePackAvailable;
-      saveData(); renderCollection(); updateAuraUI(); flash("Save data loaded!");
+      saveData(); renderCollection(); updateAuraUI(); flash("Save loaded!");
     } catch(err) { alert("Invalid .dat file!"); }
   };
   reader.readAsText(file); e.target.value = '';
 });
 document.getElementById('wipeBtn').addEventListener('click', () => {
-  if (!confirm("Erase ALL data? This cannot be undone.")) return;
+  if (!confirm("Erase ALL data?")) return;
   localStorage.clear(); cards = []; items = []; collection = {}; itemCollection = {};
   aura = 50; freePackAvailable = true;
-  saveData(); renderCollection(); updateAuraUI(); flash("Everything erased");
+  saveData(); renderCollection(); updateAuraUI(); flash("Erased!");
 });
 
-function makeBattleCard(card) { return { id: card.id, codename: card.codename, name: card.name, hp: card.hp, maxHp: card.hp, attack: card.attack, damage: card.damage, dropRate: card.dropRate, image: card.image }; }
-function logBattle(msg) { const log = document.getElementById('battleLog'); const div = document.createElement('div'); div.textContent = '> ' + msg; log.appendChild(div); log.scrollTop = log.scrollHeight; }
+// ================================================================
+// BATTLE
+// ================================================================
+function makeBattleCard(card) { return { ...card, maxHp: card.hp }; }
+function logBattle(msg) {
+  const log = document.getElementById('battleLog');
+  const div = document.createElement('div'); div.textContent = '> ' + msg;
+  log.appendChild(div); log.scrollTop = log.scrollHeight;
+}
 function updateBattleUI() {
   if (!battleState) return;
   const ps = document.getElementById('playerSlot'), bs = document.getElementById('botSlot');
-  if (battleState.playerCard) { ps.className = 'battle-slot filled'; ps.innerHTML = ''; ps.appendChild(makeCardElement(battleState.playerCard)); }
-  else { ps.className = 'battle-slot'; ps.textContent = 'No Active Card'; }
-  if (battleState.botCard) { bs.className = 'battle-slot filled'; bs.innerHTML = ''; bs.appendChild(makeCardElement(battleState.botCard)); }
-  else { bs.className = 'battle-slot'; bs.textContent = 'No Active Card'; }
+  if (battleState.playerCard) { ps.innerHTML = ''; ps.style.borderStyle = 'solid'; ps.style.borderColor = '#00d9ff'; ps.style.padding = '0'; ps.appendChild(makeCardElement(battleState.playerCard)); }
+  else { ps.textContent = 'No Active Card'; ps.style.borderStyle = 'dashed'; ps.style.padding = '10px'; }
+  if (battleState.botCard) { bs.innerHTML = ''; bs.style.borderStyle = 'solid'; bs.style.borderColor = '#ff6b5b'; bs.style.padding = '0'; bs.appendChild(makeCardElement(battleState.botCard)); }
+  else { bs.textContent = 'No Active Card'; bs.style.borderStyle = 'dashed'; bs.style.padding = '10px'; }
   document.getElementById('playerHP').textContent = battleState.playerHP;
   document.getElementById('botHP').textContent = battleState.botHP;
   document.getElementById('playerHPBar').style.width = Math.max(0, (battleState.playerHP / 20) * 100) + '%';
@@ -727,103 +685,140 @@ function updateBattleUI() {
   else if (battleState.turn === 'player') { ind.textContent = "YOUR TURN"; ind.style.color = "#00d9ff"; }
   else { ind.textContent = "OPPONENT'S TURN..."; ind.style.color = "#e74c3c"; }
   const canAct = !battleState.over && battleState.turn === 'player';
-  document.getElementById('attackBtn').disabled = !canAct; document.getElementById('passTurnBtn').disabled = !canAct; document.getElementById('useItemBtn').disabled = !canAct;
+  document.getElementById('attackBtn').disabled = !canAct;
+  document.getElementById('passTurnBtn').disabled = !canAct;
+  document.getElementById('useItemBtn').disabled = !canAct;
   const handDiv = document.getElementById('playerHand'); handDiv.innerHTML = '';
-  if (battleState.playerHand) { battleState.playerHand.forEach((card, idx) => { const el = makeCardElement(card); el.onclick = () => { if (canAct) playCardFromHand(idx); }; handDiv.appendChild(el); }); }
+  if (battleState.playerHand) {
+    battleState.playerHand.forEach((card, idx) => {
+      const el = makeCardElement(card);
+      el.style.cursor = canAct ? 'pointer' : 'default';
+      el.style.transform = 'scale(0.8)';
+      el.onclick = () => { if (canAct) playCardFromHand(idx); };
+      handDiv.appendChild(el);
+    });
+  }
 }
-function playCardFromHand(index) {
-  const card = battleState.playerHand[index]; if (!card) return;
-  battleState.playerCard = makeBattleCard(card); battleState.playerHand.splice(index, 1);
+function playCardFromHand(i) {
+  const card = battleState.playerHand[i]; if (!card) return;
+  battleState.playerCard = makeBattleCard(card); battleState.playerHand.splice(i, 1);
   logBattle(`You played ${battleState.playerCard.name}!`); updateBattleUI();
 }
 document.getElementById('startBotBtn').addEventListener('click', () => {
-  if (cards.length === 0) { alert("Create some cards first!"); return; }
+  if (cards.length === 0) { alert("Create cards first!"); return; }
   const playerDeck = [...cards], botDeck = [...cards];
   battleState = { mode: 'bot', playerHP: 20, botHP: 20, playerCard: null, botCard: null, playerHand: [], turn: 'player', over: false, playerDeck, botDeck };
-  for(let i=0; i<3; i++) if(playerDeck.length > 0) battleState.playerHand.push(playerDeck[Math.floor(Math.random()*playerDeck.length)]);
-  battleState.playerCard = makeBattleCard(playerDeck[Math.floor(Math.random()*playerDeck.length)]);
-  battleState.botCard = makeBattleCard(botDeck[Math.floor(Math.random()*botDeck.length)]);
-  document.getElementById('battleSetup').classList.add('hidden'); document.getElementById('battleArena').classList.remove('hidden');
+  for (let i = 0; i < 3; i++) if (playerDeck.length > 0) battleState.playerHand.push(playerDeck[Math.floor(Math.random() * playerDeck.length)]);
+  battleState.playerCard = makeBattleCard(playerDeck[Math.floor(Math.random() * playerDeck.length)]);
+  battleState.botCard = makeBattleCard(botDeck[Math.floor(Math.random() * botDeck.length)]);
+  document.getElementById('battleSetup').classList.add('hidden');
+  document.getElementById('battleArena').classList.remove('hidden');
   document.getElementById('battleLog').innerHTML = '';
-  logBattle("Battle started! You have 20 HP, bot has 20 HP.");
-  logBattle(`You sent out ${battleState.playerCard.name}!`); logBattle(`Bot sent out ${battleState.botCard.name}!`);
+  logBattle("Battle started! 20 HP each.");
+  logBattle(`You sent out ${battleState.playerCard.name}!`);
+  logBattle(`Bot sent out ${battleState.botCard.name}!`);
   updateBattleUI();
 });
 document.getElementById('attackBtn').onclick = () => {
   if (!battleState || battleState.over || battleState.turn !== 'player') return;
   if (battleState.mode === 'multiplayer') {
-    const p = battleState.playerCard; conn.send({ type: 'MOVE', action: 'ATTACK', cardName: p.name, damage: p.damage });
-    logBattle(`You sent ${p.name} to attack for ${p.damage} damage!`); battleState.turn = 'bot'; updateBattleUI();
+    const p = battleState.playerCard;
+    conn.send({ type: 'MOVE', action: 'ATTACK', cardName: p.name, damage: p.damage });
+    logBattle(`You sent ${p.name} to attack for ${p.damage}!`);
+    battleState.turn = 'bot'; updateBattleUI();
   } else {
     const p = battleState.playerCard, b = battleState.botCard;
     if (p && b) {
-      b.hp -= p.damage; logBattle(`YOUR ${p.name} used ${p.attack} for ${p.damage} damage!`);
-      if (b.hp <= 0) { 
-        logBattle(`OPPONENT's ${b.name} was Knocked Out! YOU WIN! +50 AURA`); 
-        battleState.over = true; aura += 50; saveData(); updateAuraUI(); updateBattleUI(); return; 
+      b.hp -= p.damage;
+      logBattle(`YOUR ${p.name} used ${p.attack} for ${p.damage} damage!`);
+      if (b.hp <= 0) {
+        logBattle(`OPPONENT's ${b.name} was Knocked Out! YOU WIN! +50 AURA`);
+        battleState.over = true; aura += 50; saveData(); updateAuraUI(); updateBattleUI(); return;
       }
-      logBattle(`Opponent's ${b.name} has ${b.hp} HP left.`); battleState.turn = 'bot'; updateBattleUI(); setTimeout(botTurn, 1500);
+      logBattle(`Opponent's ${b.name} has ${b.hp} HP left.`);
+      battleState.turn = 'bot'; updateBattleUI(); setTimeout(botTurn, 1500);
     }
   }
 };
 document.getElementById('passTurnBtn').onclick = () => {
   if (!battleState || battleState.over || battleState.turn !== 'player') return;
-  logBattle("You passed your turn."); battleState.turn = 'bot'; updateBattleUI(); setTimeout(botTurn, 1500);
+  logBattle("You passed your turn.");
+  battleState.turn = 'bot'; updateBattleUI(); setTimeout(botTurn, 1500);
 };
 document.getElementById('useItemBtn').onclick = () => {
   if (!battleState || battleState.over || battleState.turn !== 'player') return;
-  if (items.length === 0) { logBattle("You have no items!"); return; }
+  if (items.length === 0) { logBattle("No items!"); return; }
   const item = items[Math.floor(Math.random() * items.length)];
   logBattle(`You used ${item.name}!`);
   if (item.type === 'heal') { battleState.playerHP += item.value; logBattle(`Healed ${item.value} HP!`); }
-  else if (item.type === 'damage') { battleState.botHP -= item.value; logBattle(`Dealt ${item.value} damage to opponent!`); }
-  else if (item.type === 'buff') { battleState.playerCard.damage += item.value; logBattle(`Attack increased by ${item.value}!`); }
+  else if (item.type === 'damage') { battleState.botHP -= item.value; logBattle(`Dealt ${item.value} damage!`); }
+  else if (item.type === 'buff') { battleState.playerCard.damage += item.value; logBattle(`Attack +${item.value}!`); }
   updateBattleUI();
 };
 function botTurn() {
   if (!battleState || battleState.over) return;
   const b = battleState.botCard;
-  const actions = [ () => logBattle("The bot is thinking..."), () => logBattle("The bot plays with its cards."), () => logBattle("The bot looks at you."), () => { if (b) { b.hp += 5; logBattle("The bot healed 5 HP."); } }, () => { if (b) { logBattle("The bot does a little dance."); } } ];
+  const actions = [
+    () => logBattle("The bot is thinking..."),
+    () => logBattle("The bot plays with its cards."),
+    () => logBattle("The bot looks at you."),
+    () => { if (b) { b.hp += 5; logBattle("The bot healed 5 HP."); } },
+    () => { if (b) { logBattle("The bot does a little dance."); } }
+  ];
   actions[Math.floor(Math.random() * actions.length)]();
   battleState.turn = 'player'; updateBattleUI();
 }
 
+// ================================================================
+// MULTIPLAYER
+// ================================================================
 function initPeer() {
   if (peer) return;
   peer = new Peer('PSTCG-' + Math.floor(1000 + Math.random() * 9000), { debug: 2 });
   peer.on('open', id => { document.getElementById('mpStatus').textContent = "Hosting! Code: " + id; flash("Share code: " + id); });
   peer.on('connection', connection => {
-    conn = connection; document.getElementById('mpStatus').textContent = "Player connected!"; logBattle("Opponent connected!");
+    conn = connection;
+    document.getElementById('mpStatus').textContent = "Player connected!";
+    logBattle("Opponent connected!");
     conn.on('data', data => handleNetworkData(data));
-    conn.on('close', () => { logBattle("Opponent disconnected."); battleState.over = true; updateBattleUI(); });
+    conn.on('close', () => { logBattle("Opponent disconnected."); if (battleState) battleState.over = true; updateBattleUI(); });
   });
 }
-document.getElementById('hostBtn').addEventListener('click', () => { if (cards.length === 0) { alert("Create some cards first!"); return; } initPeer(); document.getElementById('mpStatus').textContent = "Starting host..."; });
+document.getElementById('hostBtn').addEventListener('click', () => {
+  if (cards.length === 0) { alert("Create cards first!"); return; }
+  initPeer(); document.getElementById('mpStatus').textContent = "Starting host...";
+});
 document.getElementById('joinBtn').addEventListener('click', () => {
   const code = document.getElementById('joinCodeInput').value.trim();
-  if (!code) { alert("Enter a host code!"); return; }
-  if (cards.length === 0) { alert("Create some cards first!"); return; }
+  if (!code) { alert("Enter host code!"); return; }
+  if (cards.length === 0) { alert("Create cards first!"); return; }
   initPeer(); conn = peer.connect(code);
-  conn.on('open', () => { document.getElementById('mpStatus').textContent = "Connected! Waiting for host to sync..."; conn.send({ type: 'SYNC', cards: cards }); });
+  conn.on('open', () => {
+    document.getElementById('mpStatus').textContent = "Connected! Syncing...";
+    conn.send({ type: 'SYNC', cards });
+  });
   conn.on('data', data => handleNetworkData(data));
 });
 function handleNetworkData(data) {
-  if (data.type === 'SYNC') { cards = data.cards; saveData(); renderCollection(); conn.send({ type: 'SYNC_ACK', cards: cards }); startMultiplayerBattle(true); }
+  if (data.type === 'SYNC') { cards = data.cards; saveData(); renderCollection(); conn.send({ type: 'SYNC_ACK', cards }); startMultiplayerBattle(true); }
   else if (data.type === 'SYNC_ACK') { cards = data.cards; saveData(); renderCollection(); startMultiplayerBattle(false); }
   else if (data.type === 'MOVE') { applyNetworkMove(data); }
 }
 function startMultiplayerBattle(isHost) {
-  battleState = { mode: 'multiplayer', isHost: isHost, playerHP: 20, botHP: 20, playerCard: null, botCard: null, playerHand: [], turn: isHost ? 'player' : 'bot', over: false, playerDeck: [...cards], botDeck: [...cards] };
-  for(let i=0; i<3; i++) battleState.playerHand.push(cards[Math.floor(Math.random()*cards.length)]);
-  battleState.playerCard = makeBattleCard(cards[Math.floor(Math.random()*cards.length)]);
-  battleState.botCard = makeBattleCard(cards[Math.floor(Math.random()*cards.length)]);
-  document.getElementById('battleSetup').classList.add('hidden'); document.getElementById('battleArena').classList.remove('hidden');
-  document.getElementById('battleLog').innerHTML = ''; logBattle("Multiplayer battle started!"); updateBattleUI();
+  battleState = { mode: 'multiplayer', isHost, playerHP: 20, botHP: 20, playerCard: null, botCard: null, playerHand: [], turn: isHost ? 'player' : 'bot', over: false };
+  for (let i = 0; i < 3; i++) battleState.playerHand.push(cards[Math.floor(Math.random() * cards.length)]);
+  battleState.playerCard = makeBattleCard(cards[Math.floor(Math.random() * cards.length)]);
+  battleState.botCard = makeBattleCard(cards[Math.floor(Math.random() * cards.length)]);
+  document.getElementById('battleSetup').classList.add('hidden');
+  document.getElementById('battleArena').classList.remove('hidden');
+  document.getElementById('battleLog').innerHTML = '';
+  logBattle("Multiplayer battle started!"); updateBattleUI();
 }
 function applyNetworkMove(data) {
   if (data.action === 'ATTACK') {
-    battleState.playerHP -= data.damage; logBattle(`Opponent's ${data.cardName} attacked for ${data.damage} damage!`);
-    if (battleState.playerHP <= 0) { logBattle("You were Knocked Out! Opponent wins!"); battleState.over = true; }
+    battleState.playerHP -= data.damage;
+    logBattle(`Opponent's ${data.cardName} attacked for ${data.damage}!`);
+    if (battleState.playerHP <= 0) { logBattle("You lost!"); battleState.over = true; }
     else { battleState.turn = 'player'; }
     updateBattleUI();
   }
@@ -831,14 +826,19 @@ function applyNetworkMove(data) {
 document.getElementById('leaveBattleBtn').addEventListener('click', () => {
   if (conn) { conn.close(); conn = null; }
   if (peer) { peer.destroy(); peer = null; }
-  battleState = null; document.getElementById('battleSetup').classList.remove('hidden');
-  document.getElementById('battleArena').classList.add('hidden'); document.getElementById('mpStatus').textContent = ""; flash("Left battle");
+  battleState = null;
+  document.getElementById('battleSetup').classList.remove('hidden');
+  document.getElementById('battleArena').classList.add('hidden');
+  document.getElementById('mpStatus').textContent = ""; flash("Left battle");
 });
 
+// ================================================================
+// BOOT
+// ================================================================
 setLanguage(currentLang);
 document.getElementById('langSelect').value = currentLang;
 loadData(); renderCollection(); checkAdmin(); loadRemoteData(); updateAuraUI();
-console.log("PSTCG loaded. Admin:", isAdmin, "Cards:", cards.length, "Items:", items.length, "Lang:", currentLang, "Aura:", aura);
+console.log("PSTCG loaded. Admin:", isAdmin, "Cards:", cards.length, "Items:", items.length, "Aura:", aura);
 </script>
 </body>
 </html>
