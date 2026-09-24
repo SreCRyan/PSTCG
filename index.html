@@ -531,7 +531,7 @@ document.querySelectorAll('.tab').forEach(tab => {
 // ================================================================
 async function loadRemoteData() {
   try {
-    const res = await fetch('cards/list.json', { cache: "no-store" }); 
+    const res = await fetch('card/list.json', { cache: "no-store" }); 
     if (!res.ok) throw new Error("No list.json found");
     const filenames = await res.json();
     let loadedCards = 0;
