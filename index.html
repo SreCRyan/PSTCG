@@ -8,13 +8,13 @@
 <style>
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: radial-gradient(circle at center, #1b4f72 0%, #0b132b 100%); color: #e0e0e0; min-height: 100vh; }
-  header { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(10px); padding: 15px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.15); display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+  header { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(10px); padding: 15px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.15); display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; }
   h1 { margin: 0; color: #fff; text-shadow: 0 0 10px rgba(0, 210, 255, 0.8); font-size: 26px; letter-spacing: 4px; font-weight: 300; }
   h1 span { color: #00d9ff; font-weight: 700; }
   .header-controls { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; align-items: center; }
   [dir="rtl"] .header-controls { right: auto; left: 15px; }
-  .aura-display { background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05)); border: 1px solid rgba(0, 217, 255, 0.5); color: #00d9ff; font-family: inherit; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 4px; box-shadow: 0 0 8px rgba(0, 217, 255, 0.3); }
-  #langSelect { background: linear-gradient(180deg, rgba(255,255,255,0.15), rgba(255,255,255,0.05)); border: 1px solid rgba(255,255,255,0.3); color: #fff; font-family: inherit; font-size: 12px; padding: 4px 8px; border-radius: 4px; cursor: pointer; outline: none; }
+  .aura-display { background: rgba(255,255,255,0.1); border: 1px solid rgba(0, 217, 255, 0.5); color: #00d9ff; font-family: inherit; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 4px; }
+  #langSelect { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; font-family: inherit; font-size: 12px; padding: 4px 8px; border-radius: 4px; cursor: pointer; outline: none; }
   #usernameInput { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; padding: 6px 12px; font-family: inherit; font-size: 12px; border-radius: 4px; text-align: center; outline: none; width: 260px; }
   .tabs { display: flex; background: rgba(0, 0, 0, 0.3); overflow-x: auto; padding: 0 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
   .tab { flex: 1; padding: 12px 6px; text-align: center; cursor: pointer; border: none; background: transparent; color: #8899aa; font-family: inherit; font-size: 13px; font-weight: 600; border-bottom: 3px solid transparent; min-width: 80px; }
@@ -196,9 +196,9 @@
 <div id="data" class="page">
   <h2>Data & Files</h2>
   <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:16px; margin-bottom:16px;">
-    <h3 style="color:#00d9ff; margin-top:0;">LOAD CARDS FROM GITHUB (list.json)</h3>
-    <p style="font-size:12px; color:#a9cce3;">Put a list.json file in your card folder listing every .crd and .itm file.</p>
-    <button id="loadGithubBtn" class="success" style="width:100%; margin-bottom:8px;">FETCH CARDS FROM SERVER</button>
+    <h3 style="color:#00d9ff; margin-top:0;">LOAD CARDS FROM GITHUB (auto)</h3>
+    <p style="font-size:12px; color:#a9cce3;">Cards auto-load on page open. Click to reload manually.</p>
+    <button id="loadGithubBtn" class="success" style="width:100%; margin-bottom:8px;">RELOAD CARDS FROM SERVER</button>
     <div id="crdDropZone" style="border:2px dashed rgba(0,217,255,0.4); padding:20px; text-align:center; border-radius:6px; margin:10px 0; color:#889; background:rgba(0,0,0,0.2);">
       <input type="file" id="crdFileInput" multiple accept=".crd,.itm" style="display:none;">
       <p>Drag & Drop .crd or .itm files here or <span style="color:#00d9ff; text-decoration:underline; cursor:pointer;" onclick="document.getElementById('crdFileInput').click()">browse</span></p>
@@ -225,7 +225,7 @@
 
 <script>
 // ================================================================
-// FLASH FUNCTION - Defined FIRST so nothing breaks
+// FLASH FUNCTION
 // ================================================================
 let flashTimer;
 function flash(msg) {
@@ -241,7 +241,7 @@ function flash(msg) {
 // ================================================================
 const translations = {
   en: { subtitle: "PAPERSHOP TRADING CARD GAME", playerManual: "PLAYER MANUAL", adminManual: "ADMIN MANUAL",
-    playerDesc: "Welcome to PSTCG! Here is how to play:", adminDesc: "You are logged in as Admin.",
+    playerDesc: "Welcome to PSTCG! Cards auto-load on open.", adminDesc: "You are logged in as Admin.",
     gettingCards: "1. Getting Cards", gettingCardsDesc: "Open packs to get random cards.",
     battling: "2. Battling", battlingDesc: "Fight the bot or play P2P online.",
     savingProgress: "3. Saving", savingProgressDesc: "Download your .dat file often!",
@@ -306,13 +306,13 @@ function saveData() {
     localStorage.setItem('pstcg_itemCollection', JSON.stringify(itemCollection));
     localStorage.setItem('pstcg_aura', aura.toString());
     localStorage.setItem('pstcg_freePack', freePackAvailable.toString());
-  } catch(e) { alert("Storage full!"); }
+  } catch(e) { console.error("Storage full"); }
 }
 
 function updateAuraUI() {
   document.getElementById('auraCount').textContent = aura;
   const btn = document.getElementById('openPackBtn');
-  btn.textContent = freePackAvailable ? "OPEN FREE PACK" : "OPEN PACK (50 AURA)";
+  if (btn) btn.textContent = freePackAvailable ? "OPEN FREE PACK" : "OPEN PACK (50 AURA)";
 }
 
 const ADMIN_KEY = "1234567890qwertyuiopasdfghjklzxcvbnm";
@@ -367,6 +367,7 @@ function parseSafe(text) {
 }
 
 async function loadRemoteData() {
+  flash("Loading cards from server...");
   try {
     const res = await fetch('card/list.json', { cache: "no-store" });
     if (!res.ok) throw new Error("list.json not found");
@@ -622,14 +623,18 @@ document.getElementById('crdFileInput').addEventListener('change', e => {
   Array.from(e.target.files).forEach(importFile);
   flash("Files loaded!"); e.target.value = '';
 });
+
+// CRASH-PROOF dropzone
 const dropZone = document.getElementById('crdDropZone');
-dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = '#00d9ff'; });
-dropZone.addEventListener('dragleave', () => dropZone.style.borderColor = 'rgba(0,217,255,0.4)');
-dropZone.addEventListener('drop', e => {
-  e.preventDefault(); dropZone.style.borderColor = 'rgba(0,217,255,0.4)';
-  Array.from(e.dataTransfer.files).forEach(importFile);
-  flash("Files dropped!");
-});
+if (dropZone) {
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = '#00d9ff'; });
+  dropZone.addEventListener('dragleave', () => dropZone.style.borderColor = 'rgba(0,217,255,0.4)');
+  dropZone.addEventListener('drop', e => {
+    e.preventDefault(); dropZone.style.borderColor = 'rgba(0,217,255,0.4)';
+    Array.from(e.dataTransfer.files).forEach(importFile);
+    flash("Files dropped!");
+  });
+}
 
 document.getElementById('saveDatBtn').addEventListener('click', () => {
   const saveData = { collection, itemCollection, username, aura, freePackAvailable, timestamp: new Date().toISOString() };
@@ -833,11 +838,18 @@ document.getElementById('leaveBattleBtn').addEventListener('click', () => {
 });
 
 // ================================================================
-// BOOT
+// BOOT — auto-loads everything on page open
 // ================================================================
 setLanguage(currentLang);
 document.getElementById('langSelect').value = currentLang;
-loadData(); renderCollection(); checkAdmin(); loadRemoteData(); updateAuraUI();
+loadData();
+renderCollection();
+checkAdmin();
+updateAuraUI();
+
+// AUTO-LOAD CARDS FROM GITHUB (no user action needed)
+loadRemoteData();
+
 console.log("PSTCG loaded. Admin:", isAdmin, "Cards:", cards.length, "Items:", items.length, "Aura:", aura);
 </script>
 </body>
