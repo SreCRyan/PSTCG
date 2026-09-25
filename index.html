@@ -68,40 +68,51 @@
   .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(138px, 1fr)); gap: 18px 14px; padding: 12px 0; justify-items: center; }
   .glass-panel { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; padding: 14px; backdrop-filter: blur(10px); }
 
-  /* BATTLE — mid-size UI, still fits */
   #battle.active { display: flex; flex-direction: column; height: calc(100vh - 104px); overflow: hidden; padding: 8px 18px; }
   #battleSetup { overflow-y: auto; flex: 1; }
-  #battleArena { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 6px; }
+  #battleArena { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 8px; }
   #battleArena.hidden { display: none !important; }
   #battleSetup.hidden { display: none !important; }
 
-  .battle-header { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; letter-spacing: 1px; margin-bottom: 3px; }
-  .battle-slot { width: 92px; height: 126px; border: 2px dashed rgba(0,217,255,0.3); border-radius: 9px; display: flex; align-items: center; justify-content: center; color: rgba(0,217,255,0.5); font-size: 10px; text-align: center; padding: 5px; background: rgba(0,0,0,0.2); position: relative; transition: all 0.3s; flex-shrink: 0; }
-  .battle-slot .card { width: 92px !important; padding: 4px; font-size: 9px; border-radius: 7px; }
-  .battle-slot .card .card-img { font-size: 22px; margin-bottom: 2px; border-radius: 4px; }
-  .battle-slot .card .card-name { font-size: 9px; margin-bottom: 2px; }
-  .battle-slot .card .card-stats { font-size: 8px; padding: 2px 4px; margin-bottom: 2px; border-radius: 4px; }
-  .battle-slot .card .card-attack { font-size: 8px; padding: 2px 4px; border-radius: 4px; }
-  .battle-slot .card .card-drop { font-size: 7px; padding: 1px 4px; top: -4px; right: -4px; }
-  .battle-slot.attacking-player { animation: playerLunge 0.6s ease; z-index: 10; }
-  @keyframes playerLunge { 0% { transform: translateY(0); } 40% { transform: translateY(-40px) scale(1.15); } 60% { transform: translateY(-40px) scale(1.15); } 100% { transform: translateY(0); } }
-  .battle-slot.attacking-bot { animation: botLunge 0.6s ease; z-index: 10; }
-  @keyframes botLunge { 0% { transform: translateY(0); } 40% { transform: translateY(40px) scale(1.15); } 60% { transform: translateY(40px) scale(1.15); } 100% { transform: translateY(0); } }
-  .battle-slot.hit-player { animation: playerHit 0.4s ease; }
-  @keyframes playerHit { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-11px); filter: brightness(2.5); } 40% { transform: translateX(11px); filter: brightness(2.5); } 60% { transform: translateX(-6px); } 80% { transform: translateX(6px); } }
-  .battle-slot.hit-bot { animation: botHit 0.4s ease; }
-  @keyframes botHit { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(11px); filter: brightness(2.5); } 40% { transform: translateX(-11px); filter: brightness(2.5); } 60% { transform: translateX(6px); } 80% { transform: translateX(-6px); } }
+  .fighter-block { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .fighter-row { display: flex; align-items: center; gap: 20px; justify-content: center; width: 100%; }
 
-  .hp-bar-wrap { position: relative; width: 100%; height: 18px; background: rgba(0,0,0,0.7); border-radius: 9px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 2px 6px rgba(0,0,0,0.8); }
-  .hp-bar-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #2ecc71, #27ae60); transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s; box-shadow: 0 0 10px rgba(46,204,113,0.5); }
+  .battle-slot {
+    width: 150px; height: 205px;
+    border: 2px dashed rgba(0,217,255,0.3);
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(0,217,255,0.5); font-size: 12px; text-align: center;
+    padding: 6px; background: rgba(0,0,0,0.2);
+    position: relative; transition: all 0.3s;
+    flex-shrink: 0;
+  }
+  .battle-slot .card { width: 100% !important; padding: 6px; font-size: 10px; }
+  .battle-slot .card .card-img { font-size: 34px; margin-bottom: 4px; }
+  .battle-slot .card .card-name { font-size: 11px; margin-bottom: 3px; }
+  .battle-slot .card .card-stats { font-size: 9px; padding: 3px 5px; margin-bottom: 3px; }
+  .battle-slot .card .card-attack { font-size: 9px; padding: 3px 5px; }
+  .battle-slot .card .card-drop { font-size: 8px; padding: 2px 6px; }
+
+  .battle-slot.attacking-player { animation: playerLunge 0.6s ease; z-index: 10; }
+  @keyframes playerLunge { 0% { transform: translateY(0); } 40% { transform: translateY(-50px) scale(1.15); } 60% { transform: translateY(-50px) scale(1.15); } 100% { transform: translateY(0); } }
+  .battle-slot.attacking-bot { animation: botLunge 0.6s ease; z-index: 10; }
+  @keyframes botLunge { 0% { transform: translateY(0); } 40% { transform: translateY(50px) scale(1.15); } 60% { transform: translateY(50px) scale(1.15); } 100% { transform: translateY(0); } }
+  .battle-slot.hit-player { animation: playerHit 0.4s ease; }
+  @keyframes playerHit { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-12px); filter: brightness(2.5); } 40% { transform: translateX(12px); filter: brightness(2.5); } 60% { transform: translateX(-6px); } 80% { transform: translateX(6px); } }
+  .battle-slot.hit-bot { animation: botHit 0.4s ease; }
+  @keyframes botHit { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(12px); filter: brightness(2.5); } 40% { transform: translateX(-12px); filter: brightness(2.5); } 60% { transform: translateX(6px); } 80% { transform: translateX(-6px); } }
+
+  .hp-bar-wrap { position: relative; width: 300px; max-width: 90%; height: 22px; background: rgba(0,0,0,0.7); border-radius: 11px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 2px 6px rgba(0,0,0,0.8); }
+  .hp-bar-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #2ecc71, #27ae60); transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s; box-shadow: 0 0 12px rgba(46,204,113,0.6); }
   .hp-bar-fill.warn { background: linear-gradient(90deg, #f39c12, #e67e22); }
   .hp-bar-fill.danger { background: linear-gradient(90deg, #e74c3c, #c0392b); animation: hpDanger 0.3s infinite; }
   @keyframes hpDanger { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.8); } }
-  .hp-bar-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; z-index: 2; }
+  .hp-bar-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; z-index: 2; letter-spacing: 1px; }
 
-  .dmg-number { position: fixed; font-size: 28px; font-weight: 900; color: #ff4444; text-shadow: 0 0 12px #ff0000, 3px 3px 5px #000; pointer-events: none; z-index: 100; animation: dmgFloat 1.2s ease forwards; }
-  @keyframes dmgFloat { 0% { transform: translate(-50%, 0) scale(0.5); opacity: 0; } 20% { transform: translate(-50%, -25px) scale(1.5); opacity: 1; } 100% { transform: translate(-50%, -90px) scale(1); opacity: 0; } }
-  .attack-particle { position: fixed; font-size: 34px; pointer-events: none; z-index: 90; filter: drop-shadow(0 0 12px currentColor); }
+  .dmg-number { position: fixed; font-size: 32px; font-weight: 900; color: #ff4444; text-shadow: 0 0 14px #ff0000, 3px 3px 5px #000; pointer-events: none; z-index: 100; animation: dmgFloat 1.3s ease forwards; }
+  @keyframes dmgFloat { 0% { transform: translate(-50%, 0) scale(0.5); opacity: 0; } 20% { transform: translate(-50%, -35px) scale(1.6); opacity: 1; } 100% { transform: translate(-50%, -110px) scale(1); opacity: 0; } }
+  .attack-particle { position: fixed; font-size: 60px; pointer-events: none; z-index: 90; filter: drop-shadow(0 0 15px currentColor); }
   .screen-shake { animation: screenShake 0.4s; }
   @keyframes screenShake { 0%, 100% { transform: translate(0, 0); } 10% { transform: translate(-8px, 4px); } 20% { transform: translate(8px, -4px); } 30% { transform: translate(-5px, -4px); } 40% { transform: translate(5px, 4px); } 50% { transform: translate(-4px, 2px); } 60% { transform: translate(4px, -2px); } 70% { transform: translate(-2px, 0); } 80% { transform: translate(2px, 0); } }
 
@@ -117,16 +128,17 @@
   .diff-btn[data-diff="knight"] { color: #a855f7; border-color: #a855f7; font-family: 'Courier New', monospace; font-weight: 900; }
   .diff-btn[data-diff="knight"]:hover, .diff-btn[data-diff="knight"].selected { background: #a855f7; color: #fff; box-shadow: 0 0 25px #a855f7, 0 0 50px #7c3aed; }
 
-  .battle-log-compact { background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: 6px; padding: 4px 8px; font-size: 10px; height: 42px; overflow-y: auto; color: #a9cce3; font-family: 'Consolas', monospace; flex-shrink: 0; }
-  .hand-cards { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; padding: 2px 0; min-height: 100px; max-height: 105px; overflow: hidden; flex-shrink: 0; }
-  .hand-cards .card { width: 88px; padding: 4px; font-size: 9px; }
-  .hand-cards .card .card-img { font-size: 20px; margin-bottom: 2px; }
-  .hand-cards .card .card-name { font-size: 9px; margin-bottom: 2px; }
-  .hand-cards .card .card-stats { font-size: 8px; padding: 2px 3px; margin-bottom: 2px; }
-  .hand-cards .card .card-attack { font-size: 8px; padding: 2px 4px; }
-  .hand-cards .card .card-drop { font-size: 7px; padding: 1px 4px; }
-  .action-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; padding: 6px 0; flex-shrink: 0; }
-  .action-row button { padding: 10px 20px; font-size: 12px; }
+  .battle-log-compact { background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: 8px; padding: 6px 10px; font-size: 11px; height: 60px; overflow-y: auto; color: #a9cce3; font-family: 'Consolas', monospace; flex-shrink: 0; }
+  .hand-cards { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; padding: 4px 0; min-height: 155px; flex-shrink: 0; }
+  .hand-cards .card { width: 110px; padding: 5px; font-size: 10px; }
+  .hand-cards .card .card-img { font-size: 26px; margin-bottom: 3px; }
+  .hand-cards .card .card-name { font-size: 10px; margin-bottom: 3px; }
+  .hand-cards .card .card-stats { font-size: 9px; padding: 2px 4px; margin-bottom: 3px; }
+  .hand-cards .card .card-attack { font-size: 9px; padding: 3px 5px; }
+  .hand-cards .card .card-drop { font-size: 8px; padding: 2px 5px; }
+
+  .action-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; padding: 8px 0; flex-shrink: 0; }
+  .action-row button { padding: 12px 26px; font-size: 14px; letter-spacing: 2px; }
 
   .result-overlay { position: fixed; inset: 0; z-index: 1500; display: flex; align-items: center; justify-content: center; pointer-events: none; }
   .result-overlay.active { pointer-events: auto; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px); }
@@ -219,7 +231,7 @@
   <div id="battleSetup">
     <div class="glass-panel" style="margin-top:10px;">
       <h3 style="color:var(--accent); margin-top:0; font-weight:300; letter-spacing:2px; font-size:15px;">CHOOSE YOUR OPPONENT</h3>
-      <p style="font-size:12px; color:var(--text-dim); margin-bottom:12px;">Name yourself <b style="color:#a855f7;">"kris"</b> for the Knight. Name yourself <b style="color:#a855f7;">"rouring"</b> for a gift.</p>
+      <p style="font-size:12px; color:var(--text-dim); margin-bottom:12px;">Higher difficulty = tougher bot HP. Name yourself <b style="color:#a855f7;">"kris"</b> for the Knight. Name yourself <b style="color:#a855f7;">"rouring"</b> for a gift.</p>
       <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-bottom:12px;">
         <button class="diff-btn selected" data-diff="easy">EASY +25</button>
         <button class="diff-btn" data-diff="normal">NORMAL +50</button>
@@ -239,39 +251,30 @@
   </div>
 
   <div id="battleArena" class="hidden">
-    <div style="text-align:center; font-size:13px; font-weight:bold; color:var(--gold); letter-spacing:2px;" id="turnIndicator">WAITING...</div>
+    <div style="text-align:center; font-size:14px; font-weight:bold; color:var(--gold); letter-spacing:3px;" id="turnIndicator">WAITING...</div>
 
-    <div id="battleField" class="glass-panel" style="flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; padding:10px; overflow:hidden;">
-      <div>
-        <div class="battle-header">
-          <span style="color:#ff6b5b;" id="opponentLabel">OPPONENT</span>
-          <span style="color:var(--text-dim);" id="botHPText">-- / -- HP</span>
-        </div>
-        <div style="display:flex; gap:10px; align-items:center;">
+    <div id="battleField" class="glass-panel" style="flex:1; min-height:0; display:flex; flex-direction:column; gap:8px; padding:14px; overflow:hidden; justify-content:space-between;">
+
+      <div class="fighter-block">
+        <div style="color:#ff6b5b; font-weight:bold; font-size:14px; letter-spacing:2px;" id="opponentLabel">OPPONENT</div>
+        <div class="fighter-row">
           <div class="battle-slot" id="botSlot">No Active Card</div>
-          <div style="flex:1; min-width:0;">
-            <div class="hp-bar-wrap"><div class="hp-bar-fill" id="botHPBar"></div><div class="hp-bar-text" id="botHPBarText">-- / --</div></div>
-          </div>
         </div>
+        <div class="hp-bar-wrap"><div class="hp-bar-fill" id="botHPBar"></div><div class="hp-bar-text" id="botHPText">-- / -- HP</div></div>
       </div>
 
       <div id="battleLog" class="battle-log-compact"></div>
 
-      <div>
-        <div style="display:flex; gap:10px; align-items:center;">
+      <div class="fighter-block">
+        <div class="fighter-row">
           <div class="battle-slot" id="playerSlot">No Active Card</div>
-          <div style="flex:1; min-width:0;">
-            <div class="hp-bar-wrap"><div class="hp-bar-fill" id="playerHPBar"></div><div class="hp-bar-text" id="playerHPBarText">-- / --</div></div>
-          </div>
         </div>
-        <div class="battle-header" style="margin-top:3px; margin-bottom:0;">
-          <span style="color:var(--accent);">YOU</span>
-          <span style="color:var(--text-dim);" id="playerHPText">-- / -- HP</span>
-        </div>
+        <div class="hp-bar-wrap"><div class="hp-bar-fill" id="playerHPBar"></div><div class="hp-bar-text" id="playerHPText">-- / -- HP</div></div>
+        <div style="color:var(--accent); font-weight:bold; font-size:14px; letter-spacing:2px;">YOU</div>
       </div>
     </div>
 
-    <div style="text-align:center; margin-top:6px; color:var(--text-dim); font-size:10px; letter-spacing:2px;">YOUR HAND</div>
+    <div style="text-align:center; margin-top:6px; color:var(--text-dim); font-size:11px; letter-spacing:2px;">YOUR HAND</div>
     <div class="hand-cards" id="playerHand"></div>
 
     <div class="action-row">
@@ -329,7 +332,7 @@
     <div>
       <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Item Name</label><input type="text" id="itemName" placeholder="Temmie Flakes" maxlength="20" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"></div>
       <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Codename</label><input type="text" id="itemCodename" placeholder="temflk" maxlength="30" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"></div>
-      <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Description</label><input type="text" id="itemDesc" placeholder="Heals 2 HP" maxlength="50" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"></div>
+      <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Description</label><input type="text" id="itemDesc" placeholder="hOI" maxlength="50" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"></div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
         <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Effect</label><select id="itemType" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"><option value="heal">Heal</option><option value="damage">Damage</option><option value="buff">Buff</option></select></div>
         <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Value</label><input type="number" id="itemValue" value="2" min="1" max="999" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"></div>
@@ -416,12 +419,13 @@ document.getElementById('sfxBtn').addEventListener('click', () => { const en = !
 function unlockOnFirstInteraction() { const handler = () => { Sound.unlock(); if (musicEnabled && !musicStarted) { initMusic(); playTrack(); } document.removeEventListener('click', handler); document.removeEventListener('keydown', handler); document.removeEventListener('touchstart', handler); }; document.addEventListener('click', handler); document.addEventListener('keydown', handler); document.addEventListener('touchstart', handler); }
 document.addEventListener('click', e => { if (e.target.tagName === 'BUTTON') Sound.click(); }, true);
 
+// === FIXED DIFFICULTIES: no hardcoded HP, uses multiplier instead ===
 const DIFFICULTIES = {
-  easy:   { name: 'EASY', hp: 15, attackChance: 0.15, dmg: 3, aura: 25, color: '#27ae60' },
-  normal: { name: 'NORMAL', hp: 25, attackChance: 0.45, dmg: 5, aura: 50, color: '#3498db' },
-  hard:   { name: 'HARD', hp: 40, attackChance: 0.75, dmg: 8, aura: 100, color: '#e67e22' },
-  insane: { name: 'INSANE', hp: 60, attackChance: 0.95, dmg: 12, aura: 250, color: '#c0392b' },
-  knight: { name: 'THE ROARING KNIGHT', hp: 120, attackChance: 1.0, dmg: 18, attacksPerTurn: 2, aura: 1000, color: '#a855f7' }
+  easy:   { name: 'EASY', attackChance: 0.15, dmg: 3, aura: 25, hpMultiplier: 0.5, color: '#27ae60' },
+  normal: { name: 'NORMAL', attackChance: 0.45, dmg: 5, aura: 50, hpMultiplier: 1.0, color: '#3498db' },
+  hard:   { name: 'HARD', attackChance: 0.75, dmg: 8, aura: 100, hpMultiplier: 1.75, color: '#e67e22' },
+  insane: { name: 'INSANE', attackChance: 0.95, dmg: 12, aura: 250, hpMultiplier: 3.0, color: '#c0392b' },
+  knight: { name: 'THE ROARING KNIGHT', attackChance: 1.0, dmg: 18, attacksPerTurn: 2, aura: 1000, hpMultiplier: 5.0, color: '#a855f7' }
 };
 
 let flashTimer;
@@ -683,24 +687,22 @@ function updateHpBar(id, current, max) {
   const clamped = Math.max(0, Math.min(safeMax, Number(current) || 0));
   const pct = (clamped / safeMax) * 100;
   const bar = document.getElementById(id + 'Bar');
-  const barText = document.getElementById(id + 'BarText');
-  const hpText = document.getElementById(id + 'Text');
+  const text = document.getElementById(id + 'Text');
   if (bar) { bar.style.width = pct + '%'; bar.classList.remove('warn', 'danger'); if (pct <= 25) bar.classList.add('danger'); else if (pct <= 50) bar.classList.add('warn'); }
-  if (barText) barText.textContent = clamped + ' / ' + safeMax;
-  if (hpText) hpText.textContent = clamped + ' / ' + safeMax + ' HP';
+  if (text) text.textContent = clamped + ' / ' + safeMax + ' HP';
 }
 
 function updateBattleUI() {
   if (!battleState) return;
   const ps = document.getElementById('playerSlot'), bs = document.getElementById('botSlot');
   if (battleState.playerCard) {
-    ps.innerHTML = ''; ps.style.borderStyle = 'solid'; ps.style.borderColor = 'var(--accent)'; ps.style.padding = '0';
+    ps.innerHTML = ''; ps.style.borderStyle = 'solid'; ps.style.borderColor = 'var(--accent)'; ps.style.padding = '6px';
     ps.appendChild(makeCardElement(battleState.playerCard, battleState.playerCard.hp));
-  } else { ps.textContent = 'No Active Card'; ps.style.borderStyle = 'dashed'; ps.style.padding = '6px'; }
+  } else { ps.textContent = 'No Active Card'; ps.style.borderStyle = 'dashed'; ps.style.padding = '10px'; }
   if (battleState.botCard) {
-    bs.innerHTML = ''; bs.style.borderStyle = 'solid'; bs.style.borderColor = '#ff6b5b'; bs.style.padding = '0';
+    bs.innerHTML = ''; bs.style.borderStyle = 'solid'; bs.style.borderColor = '#ff6b5b'; bs.style.padding = '6px';
     bs.appendChild(makeCardElement(battleState.botCard, battleState.botCard.hp));
-  } else { bs.textContent = 'No Active Card'; bs.style.borderStyle = 'dashed'; bs.style.padding = '6px'; }
+  } else { bs.textContent = 'No Active Card'; bs.style.borderStyle = 'dashed'; bs.style.padding = '10px'; }
 
   if (battleState.playerCard) updateHpBar('playerHP', battleState.playerCard.hp, battleState.playerCard.maxHp);
   if (battleState.botCard) updateHpBar('botHP', battleState.botCard.hp, battleState.botCard.maxHp);
@@ -737,7 +739,7 @@ function doAttackAnimation(attackerSlotId, defenderSlotId, particleEmoji, onImpa
     const particle = document.createElement('div'); particle.className = 'attack-particle'; particle.textContent = particleEmoji;
     particle.style.left = (aRect.left + aRect.width / 2) + 'px'; particle.style.top = (aRect.top + aRect.height / 2) + 'px';
     particle.style.transform = 'translate(-50%, -50%)'; document.body.appendChild(particle);
-    requestAnimationFrame(() => { particle.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'; particle.style.left = (dRect.left + dRect.width / 2) + 'px'; particle.style.top = (dRect.top + dRect.height / 2) + 'px'; particle.style.fontSize = '70px'; });
+    requestAnimationFrame(() => { particle.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'; particle.style.left = (dRect.left + dRect.width / 2) + 'px'; particle.style.top = (dRect.top + dRect.height / 2) + 'px'; particle.style.fontSize = '90px'; });
     setTimeout(() => {
       particle.remove(); defender.classList.add('hit-' + defenderSide); document.body.classList.add('screen-shake'); Sound.hit();
       setTimeout(() => { document.body.classList.remove('screen-shake'); defender.classList.remove('hit-' + defenderSide); }, 400);
@@ -761,11 +763,14 @@ document.getElementById('startBotBtn').addEventListener('click', () => {
   const playerDeck = [...cards], botDeck = [...cards];
   battleState = { mode: 'bot', difficulty: selectedDifficulty, difficultyName: diff.name, playerCard: null, botCard: null, playerHand: [], turn: 'player', over: false, playerDeck, botDeck };
 
+  // Set up player's hand + active card
   for (let i = 0; i < 3; i++) if (playerDeck.length > 0) battleState.playerHand.push(playerDeck[Math.floor(Math.random() * playerDeck.length)]);
   battleState.playerCard = makeBattleCard(playerDeck[Math.floor(Math.random() * playerDeck.length)]);
 
+  // === THE FIX: bot HP scales from YOUR card's HP ===
   const botBase = botDeck[Math.floor(Math.random() * botDeck.length)];
-  battleState.botCard = { ...botBase, hp: diff.hp, maxHp: diff.hp };
+  const botHp = Math.max(20, Math.floor(battleState.playerCard.hp * diff.hpMultiplier));
+  battleState.botCard = { ...botBase, hp: botHp, maxHp: botHp };
 
   document.getElementById('opponentLabel').textContent = diff.name;
   document.getElementById('opponentLabel').style.color = diff.color;
@@ -773,6 +778,8 @@ document.getElementById('startBotBtn').addEventListener('click', () => {
   document.getElementById('battleArena').classList.remove('hidden');
   document.getElementById('battleLog').innerHTML = '';
   logBattle(`Battle vs ${diff.name}!`);
+  logBattle(`Your ${battleState.playerCard.name}: ${battleState.playerCard.hp} HP`);
+  logBattle(`Bot's ${battleState.botCard.name}: ${botHp} HP`);
   logBattle(`Reward: +${diff.aura} Aura`);
   if (selectedDifficulty === 'knight') { logBattle("THE ROARING KNIGHT emerges..."); Sound.knightWarn(); }
   updateBattleUI();
