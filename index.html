@@ -13,97 +13,99 @@
     --text: #e8eaf6; --text-dim: #8892b0;
   }
   html, body { margin: 0; padding: 0; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg-1); background-image: radial-gradient(circle at 20% 20%, rgba(124,58,237,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(0,217,255,0.12) 0%, transparent 50%), radial-gradient(circle at 50% 50%, var(--bg-2) 0%, var(--bg-1) 100%); color: var(--text); height: 100vh; overflow: hidden; }
-  header { background: rgba(10,14,39,0.7); backdrop-filter: blur(20px); padding: 4px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--glass-border); z-index: 100; box-shadow: 0 4px 24px rgba(0,0,0,0.4); height: 40px; }
-  .logo-wrap { display: flex; align-items: center; gap: 8px; }
-  .logo-mark { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; box-shadow: 0 0 12px rgba(0,217,255,0.5); }
-  .logo-text h1 { margin: 0; font-size: 12px; letter-spacing: 2px; font-weight: 300; color: #fff; text-shadow: 0 0 10px rgba(0,217,255,0.6); }
+  header { background: rgba(10,14,39,0.7); backdrop-filter: blur(20px); padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--glass-border); z-index: 100; box-shadow: 0 4px 24px rgba(0,0,0,0.4); height: 58px; }
+  .logo-wrap { display: flex; align-items: center; gap: 12px; }
+  .logo-mark { width: 38px; height: 38px; border-radius: 10px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 17px; color: #fff; box-shadow: 0 0 18px rgba(0,217,255,0.5); }
+  .logo-text h1 { margin: 0; font-size: 17px; letter-spacing: 3px; font-weight: 300; color: #fff; text-shadow: 0 0 12px rgba(0,217,255,0.6); }
   .logo-text h1 span { color: var(--accent); font-weight: 700; }
-  .header-right { display: flex; align-items: center; gap: 5px; }
-  .pill { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; padding: 3px 9px; font-size: 9px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
+  .logo-text p { margin: 1px 0 0; font-size: 9px; color: var(--text-dim); letter-spacing: 3px; }
+  .header-right { display: flex; align-items: center; gap: 8px; }
+  .pill { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 18px; padding: 5px 13px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; }
   .pill.aura { color: var(--accent); border-color: rgba(0,217,255,0.4); }
   .pill.aura.pulse { animation: auraPulse 0.8s ease; }
-  @keyframes auraPulse { 0% { transform: scale(1); } 40% { transform: scale(1.3); box-shadow: 0 0 30px rgba(0,217,255,0.9); } 100% { transform: scale(1); } }
-  .icon-btn { width: 24px; height: 24px; border-radius: 50%; background: var(--glass); border: 1px solid var(--glass-border); color: #fff; cursor: pointer; font-size: 10px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  @keyframes auraPulse { 0% { transform: scale(1); } 40% { transform: scale(1.25); box-shadow: 0 0 30px rgba(0,217,255,0.9); } 100% { transform: scale(1); } }
+  .icon-btn { width: 32px; height: 32px; border-radius: 50%; background: var(--glass); border: 1px solid var(--glass-border); color: #fff; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
   .icon-btn:hover { background: rgba(0,217,255,0.15); border-color: var(--accent); }
   .icon-btn.muted { opacity: 0.4; }
-  #langSelect, #usernameInput { background: var(--glass); border: 1px solid var(--glass-border); color: #fff; padding: 3px 8px; border-radius: 12px; font-family: inherit; font-size: 9px; outline: none; }
-  #usernameInput { width: 120px; text-align: center; }
-  .tabs { display: flex; gap: 3px; padding: 4px 14px; overflow-x: auto; max-width: 1200px; margin: 0 auto; height: 32px; align-items: center; }
-  .tab { padding: 4px 11px; cursor: pointer; background: var(--glass); border: 1px solid var(--glass-border); color: var(--text-dim); font-family: inherit; font-size: 9px; font-weight: 600; border-radius: 12px; letter-spacing: 1px; transition: all 0.25s; white-space: nowrap; }
+  #langSelect, #usernameInput { background: var(--glass); border: 1px solid var(--glass-border); color: #fff; padding: 5px 11px; border-radius: 16px; font-family: inherit; font-size: 12px; outline: none; }
+  #usernameInput { width: 160px; text-align: center; }
+  #usernameInput:focus, #langSelect:focus { border-color: var(--accent); }
+  .tabs { display: flex; gap: 5px; padding: 8px 20px; overflow-x: auto; max-width: 1200px; margin: 0 auto; height: 46px; align-items: center; }
+  .tab { padding: 8px 18px; cursor: pointer; background: var(--glass); border: 1px solid var(--glass-border); color: var(--text-dim); font-family: inherit; font-size: 12px; font-weight: 600; border-radius: 18px; letter-spacing: 1px; transition: all 0.25s; white-space: nowrap; }
   .tab:hover { color: #fff; }
   .tab.active { color: #fff; background: linear-gradient(135deg, rgba(0,217,255,0.25), rgba(124,58,237,0.25)); border-color: var(--accent); }
-  .page { display: none; padding: 10px 14px; max-width: 1200px; margin: 0 auto; }
+  .page { display: none; padding: 14px 18px; max-width: 1200px; margin: 0 auto; }
   .page.active { display: block; }
-  h2 { color: #fff; font-weight: 300; font-size: 15px; letter-spacing: 2px; margin-bottom: 10px; border-bottom: 1px solid var(--glass-border); padding-bottom: 5px; }
-  button { font-family: inherit; cursor: pointer; background: linear-gradient(135deg, #4facfe 0%, #00d9ff 100%); color: #fff; border: none; padding: 7px 13px; font-weight: 700; font-size: 10px; border-radius: 8px; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 3px 10px rgba(79,172,254,0.4); }
-  button:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(79,172,254,0.6); }
+  h2 { color: #fff; font-weight: 300; font-size: 20px; letter-spacing: 2px; margin-bottom: 14px; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; }
+  button { font-family: inherit; cursor: pointer; background: linear-gradient(135deg, #4facfe 0%, #00d9ff 100%); color: #fff; border: none; padding: 10px 18px; font-weight: 700; font-size: 12px; border-radius: 10px; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 4px 12px rgba(79,172,254,0.4); }
+  button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,172,254,0.6); }
   button:active { transform: scale(0.96); }
   button:disabled { background: #2a2f4a; color: #555c7a; cursor: not-allowed; box-shadow: none; transform: none; }
   button.secondary { background: linear-gradient(135deg, #6c7a89, #455a64); }
   button.danger { background: linear-gradient(135deg, #e74c3c, #c0392b); }
   button.success { background: linear-gradient(135deg, #2ecc71, #27ae60); }
   .admin-btn { background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #000; }
-  .card { width: 118px; background: linear-gradient(180deg, #ffffff 0%, #d4e4f7 100%); border: 1px solid #a0c0e0; border-radius: 9px; padding: 5px; color: #222; font-size: 9px; position: relative; transition: transform 0.3s; overflow: hidden; }
+  .card { width: 138px; background: linear-gradient(180deg, #ffffff 0%, #d4e4f7 100%); border: 1px solid #a0c0e0; border-radius: 10px; padding: 6px; color: #222; font-size: 10px; position: relative; transition: transform 0.3s; overflow: hidden; }
   .card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 10px 25px rgba(0,217,255,0.4); }
-  .card-img { width: 100%; aspect-ratio: 1; background: linear-gradient(135deg, #dfe9f3, #ffffff); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #555; font-size: 28px; font-weight: bold; overflow: hidden; margin-bottom: 3px; border: 1px solid #b0c4de; }
+  .card-img { width: 100%; aspect-ratio: 1; background: linear-gradient(135deg, #dfe9f3, #ffffff); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #555; font-size: 34px; font-weight: bold; overflow: hidden; margin-bottom: 4px; border: 1px solid #b0c4de; }
   .card-img img { width: 100%; height: 100%; object-fit: cover; }
-  .card-name { font-weight: 800; text-align: center; font-size: 9px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #1a2a3a; }
-  .card-stats { display: flex; justify-content: space-between; font-size: 8px; font-weight: bold; background: rgba(0,0,0,0.08); padding: 2px 4px; border-radius: 4px; margin-bottom: 2px; }
+  .card-name { font-weight: 800; text-align: center; font-size: 11px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #1a2a3a; }
+  .card-stats { display: flex; justify-content: space-between; font-size: 9px; font-weight: bold; background: rgba(0,0,0,0.08); padding: 3px 5px; border-radius: 5px; margin-bottom: 3px; }
   .card-hp { color: #c0392b; }
-  .card-attack { background: linear-gradient(135deg, #34495e, #2c3e50); color: #fff; padding: 2px 4px; border-radius: 4px; font-size: 8px; display: flex; justify-content: space-between; gap: 3px; }
+  .card-attack { background: linear-gradient(135deg, #34495e, #2c3e50); color: #fff; padding: 3px 5px; border-radius: 5px; font-size: 9px; display: flex; justify-content: space-between; gap: 4px; }
   .card-attack-dmg { color: var(--gold); font-weight: bold; }
-  .card-drop { position: absolute; top: -4px; right: -4px; background: #2c3e50; color: #fff; font-size: 7px; padding: 1px 5px; border-radius: 8px; font-weight: bold; }
-  .card.r-uncommon { border-color: #22aa44; box-shadow: 0 0 6px rgba(34,170,68,0.5); }
-  .card.r-rare { border-color: #2277ee; box-shadow: 0 0 10px rgba(34,119,238,0.6); }
-  .card.r-epic { border-color: #aa22cc; box-shadow: 0 0 12px rgba(170,34,204,0.7); }
-  .card.r-legendary { border-color: #ffaa00; box-shadow: 0 0 15px rgba(255,170,0,0.9); }
-  .item { width: 118px; background: linear-gradient(180deg, #e8f4f8 0%, #b2dfdb 100%); border: 1px solid #80cbc4; border-radius: 9px; padding: 5px; color: #004d40; font-size: 9px; }
-  .item-img { width: 100%; aspect-ratio: 1; background: rgba(255,255,255,0.5); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #00695c; font-size: 28px; overflow: hidden; margin-bottom: 3px; border: 1px solid #b2dfdb; }
+  .card-drop { position: absolute; top: -5px; right: -5px; background: #2c3e50; color: #fff; font-size: 8px; padding: 2px 6px; border-radius: 10px; font-weight: bold; }
+  .card.r-uncommon { border-color: #22aa44; box-shadow: 0 0 8px rgba(34,170,68,0.5); }
+  .card.r-rare { border-color: #2277ee; box-shadow: 0 0 12px rgba(34,119,238,0.6); }
+  .card.r-epic { border-color: #aa22cc; box-shadow: 0 0 15px rgba(170,34,204,0.7); }
+  .card.r-legendary { border-color: #ffaa00; box-shadow: 0 0 18px rgba(255,170,0,0.9); }
+  .item { width: 138px; background: linear-gradient(180deg, #e8f4f8 0%, #b2dfdb 100%); border: 1px solid #80cbc4; border-radius: 10px; padding: 6px; color: #004d40; font-size: 10px; }
+  .item-img { width: 100%; aspect-ratio: 1; background: rgba(255,255,255,0.5); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #00695c; font-size: 34px; overflow: hidden; margin-bottom: 4px; border: 1px solid #b2dfdb; }
   .item-img img { width: 100%; height: 100%; object-fit: cover; }
-  .item-name { font-weight: 800; text-align: center; font-size: 9px; margin-bottom: 2px; }
-  .item-desc { font-size: 7px; text-align: center; color: #00695c; }
-  .item-effect { background: #00897b; color: #fff; text-align: center; padding: 2px; border-radius: 4px; font-size: 8px; font-weight: bold; margin-top: 3px; }
-  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 15px 12px; padding: 10px 0; justify-items: center; }
-  .glass-panel { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 12px; padding: 10px; backdrop-filter: blur(10px); }
+  .item-name { font-weight: 800; text-align: center; font-size: 11px; margin-bottom: 3px; }
+  .item-desc { font-size: 9px; text-align: center; color: #00695c; }
+  .item-effect { background: #00897b; color: #fff; text-align: center; padding: 3px; border-radius: 5px; font-size: 9px; font-weight: bold; margin-top: 4px; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(138px, 1fr)); gap: 18px 14px; padding: 12px 0; justify-items: center; }
+  .glass-panel { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; padding: 14px; backdrop-filter: blur(10px); }
 
-  /* BATTLE FITS SCREEN */
-  #battle.active { display: flex; flex-direction: column; height: calc(100vh - 74px); overflow: hidden; padding: 6px 14px; }
+  /* BATTLE — mid-size UI, still fits */
+  #battle.active { display: flex; flex-direction: column; height: calc(100vh - 104px); overflow: hidden; padding: 8px 18px; }
   #battleSetup { overflow-y: auto; flex: 1; }
-  #battleArena { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 4px; }
+  #battleArena { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 6px; }
   #battleArena.hidden { display: none !important; }
   #battleSetup.hidden { display: none !important; }
 
-  .battle-header { display: flex; justify-content: space-between; align-items: center; font-size: 9px; font-weight: bold; letter-spacing: 1px; margin-bottom: 2px; }
-  .battle-slot { width: 68px; height: 94px; border: 2px dashed rgba(0,217,255,0.3); border-radius: 7px; display: flex; align-items: center; justify-content: center; color: rgba(0,217,255,0.5); font-size: 8px; text-align: center; padding: 3px; background: rgba(0,0,0,0.2); position: relative; transition: all 0.3s; flex-shrink: 0; }
-  .battle-slot .card { width: 68px !important; padding: 2px; font-size: 7px; border-radius: 5px; }
-  .battle-slot .card .card-img { font-size: 16px; margin-bottom: 1px; border-radius: 3px; }
-  .battle-slot .card .card-name { font-size: 7px; margin-bottom: 1px; }
-  .battle-slot .card .card-stats { font-size: 6px; padding: 1px 2px; margin-bottom: 1px; border-radius: 3px; }
-  .battle-slot .card .card-attack { font-size: 6px; padding: 1px 3px; border-radius: 3px; }
-  .battle-slot .card .card-drop { font-size: 6px; padding: 1px 3px; top: -4px; right: -4px; }
+  .battle-header { display: flex; justify-content: space-between; align-items: center; font-size: 11px; font-weight: bold; letter-spacing: 1px; margin-bottom: 3px; }
+  .battle-slot { width: 92px; height: 126px; border: 2px dashed rgba(0,217,255,0.3); border-radius: 9px; display: flex; align-items: center; justify-content: center; color: rgba(0,217,255,0.5); font-size: 10px; text-align: center; padding: 5px; background: rgba(0,0,0,0.2); position: relative; transition: all 0.3s; flex-shrink: 0; }
+  .battle-slot .card { width: 92px !important; padding: 4px; font-size: 9px; border-radius: 7px; }
+  .battle-slot .card .card-img { font-size: 22px; margin-bottom: 2px; border-radius: 4px; }
+  .battle-slot .card .card-name { font-size: 9px; margin-bottom: 2px; }
+  .battle-slot .card .card-stats { font-size: 8px; padding: 2px 4px; margin-bottom: 2px; border-radius: 4px; }
+  .battle-slot .card .card-attack { font-size: 8px; padding: 2px 4px; border-radius: 4px; }
+  .battle-slot .card .card-drop { font-size: 7px; padding: 1px 4px; top: -4px; right: -4px; }
   .battle-slot.attacking-player { animation: playerLunge 0.6s ease; z-index: 10; }
-  @keyframes playerLunge { 0% { transform: translateY(0); } 40% { transform: translateY(-30px) scale(1.15); } 60% { transform: translateY(-30px) scale(1.15); } 100% { transform: translateY(0); } }
+  @keyframes playerLunge { 0% { transform: translateY(0); } 40% { transform: translateY(-40px) scale(1.15); } 60% { transform: translateY(-40px) scale(1.15); } 100% { transform: translateY(0); } }
   .battle-slot.attacking-bot { animation: botLunge 0.6s ease; z-index: 10; }
-  @keyframes botLunge { 0% { transform: translateY(0); } 40% { transform: translateY(30px) scale(1.15); } 60% { transform: translateY(30px) scale(1.15); } 100% { transform: translateY(0); } }
+  @keyframes botLunge { 0% { transform: translateY(0); } 40% { transform: translateY(40px) scale(1.15); } 60% { transform: translateY(40px) scale(1.15); } 100% { transform: translateY(0); } }
   .battle-slot.hit-player { animation: playerHit 0.4s ease; }
-  @keyframes playerHit { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-10px); filter: brightness(2.5); } 40% { transform: translateX(10px); filter: brightness(2.5); } 60% { transform: translateX(-5px); } 80% { transform: translateX(5px); } }
+  @keyframes playerHit { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-11px); filter: brightness(2.5); } 40% { transform: translateX(11px); filter: brightness(2.5); } 60% { transform: translateX(-6px); } 80% { transform: translateX(6px); } }
   .battle-slot.hit-bot { animation: botHit 0.4s ease; }
-  @keyframes botHit { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(10px); filter: brightness(2.5); } 40% { transform: translateX(-10px); filter: brightness(2.5); } 60% { transform: translateX(5px); } 80% { transform: translateX(-5px); } }
+  @keyframes botHit { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(11px); filter: brightness(2.5); } 40% { transform: translateX(-11px); filter: brightness(2.5); } 60% { transform: translateX(6px); } 80% { transform: translateX(-6px); } }
 
-  .hp-bar-wrap { position: relative; width: 100%; height: 14px; background: rgba(0,0,0,0.7); border-radius: 7px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 2px 6px rgba(0,0,0,0.8); }
+  .hp-bar-wrap { position: relative; width: 100%; height: 18px; background: rgba(0,0,0,0.7); border-radius: 9px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 2px 6px rgba(0,0,0,0.8); }
   .hp-bar-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #2ecc71, #27ae60); transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s; box-shadow: 0 0 10px rgba(46,204,113,0.5); }
   .hp-bar-fill.warn { background: linear-gradient(90deg, #f39c12, #e67e22); }
   .hp-bar-fill.danger { background: linear-gradient(90deg, #e74c3c, #c0392b); animation: hpDanger 0.3s infinite; }
   @keyframes hpDanger { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.8); } }
-  .hp-bar-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; z-index: 2; }
+  .hp-bar-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; z-index: 2; }
 
-  .dmg-number { position: fixed; font-size: 22px; font-weight: 900; color: #ff4444; text-shadow: 0 0 12px #ff0000, 3px 3px 5px #000; pointer-events: none; z-index: 100; animation: dmgFloat 1.2s ease forwards; }
-  @keyframes dmgFloat { 0% { transform: translate(-50%, 0) scale(0.5); opacity: 0; } 20% { transform: translate(-50%, -25px) scale(1.5); opacity: 1; } 100% { transform: translate(-50%, -80px) scale(1); opacity: 0; } }
-  .attack-particle { position: fixed; font-size: 28px; pointer-events: none; z-index: 90; filter: drop-shadow(0 0 12px currentColor); }
+  .dmg-number { position: fixed; font-size: 28px; font-weight: 900; color: #ff4444; text-shadow: 0 0 12px #ff0000, 3px 3px 5px #000; pointer-events: none; z-index: 100; animation: dmgFloat 1.2s ease forwards; }
+  @keyframes dmgFloat { 0% { transform: translate(-50%, 0) scale(0.5); opacity: 0; } 20% { transform: translate(-50%, -25px) scale(1.5); opacity: 1; } 100% { transform: translate(-50%, -90px) scale(1); opacity: 0; } }
+  .attack-particle { position: fixed; font-size: 34px; pointer-events: none; z-index: 90; filter: drop-shadow(0 0 12px currentColor); }
   .screen-shake { animation: screenShake 0.4s; }
   @keyframes screenShake { 0%, 100% { transform: translate(0, 0); } 10% { transform: translate(-8px, 4px); } 20% { transform: translate(8px, -4px); } 30% { transform: translate(-5px, -4px); } 40% { transform: translate(5px, 4px); } 50% { transform: translate(-4px, 2px); } 60% { transform: translate(4px, -2px); } 70% { transform: translate(-2px, 0); } 80% { transform: translate(2px, 0); } }
 
-  .diff-btn { padding: 7px 12px; font-size: 9px; border-radius: 8px; border: 2px solid; background: transparent; font-weight: bold; letter-spacing: 1px; transition: all 0.25s; cursor: pointer; box-shadow: none; }
+  .diff-btn { padding: 10px 16px; font-size: 11px; border-radius: 10px; border: 2px solid; background: transparent; font-weight: bold; letter-spacing: 1px; transition: all 0.25s; cursor: pointer; box-shadow: none; }
   .diff-btn[data-diff="easy"] { color: #27ae60; border-color: #27ae60; }
   .diff-btn[data-diff="easy"]:hover, .diff-btn[data-diff="easy"].selected { background: #27ae60; color: #fff; box-shadow: 0 0 20px #27ae60; }
   .diff-btn[data-diff="normal"] { color: #3498db; border-color: #3498db; }
@@ -115,60 +117,60 @@
   .diff-btn[data-diff="knight"] { color: #a855f7; border-color: #a855f7; font-family: 'Courier New', monospace; font-weight: 900; }
   .diff-btn[data-diff="knight"]:hover, .diff-btn[data-diff="knight"].selected { background: #a855f7; color: #fff; box-shadow: 0 0 25px #a855f7, 0 0 50px #7c3aed; }
 
-  .battle-log-compact { background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: 6px; padding: 3px 6px; font-size: 9px; height: 34px; overflow-y: auto; color: #a9cce3; font-family: 'Consolas', monospace; flex-shrink: 0; }
-  .hand-cards { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; padding: 1px 0; min-height: 78px; max-height: 82px; overflow: hidden; flex-shrink: 0; }
-  .hand-cards .card { width: 68px; padding: 2px; font-size: 7px; }
-  .hand-cards .card .card-img { font-size: 16px; margin-bottom: 1px; }
-  .hand-cards .card .card-name { font-size: 7px; margin-bottom: 1px; }
-  .hand-cards .card .card-stats { font-size: 6px; padding: 1px 2px; margin-bottom: 1px; }
-  .hand-cards .card .card-attack { font-size: 6px; padding: 1px 3px; }
-  .hand-cards .card .card-drop { font-size: 6px; padding: 1px 3px; }
-  .action-row { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; padding: 3px 0; flex-shrink: 0; }
-  .action-row button { padding: 7px 14px; font-size: 10px; }
+  .battle-log-compact { background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: 6px; padding: 4px 8px; font-size: 10px; height: 42px; overflow-y: auto; color: #a9cce3; font-family: 'Consolas', monospace; flex-shrink: 0; }
+  .hand-cards { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; padding: 2px 0; min-height: 100px; max-height: 105px; overflow: hidden; flex-shrink: 0; }
+  .hand-cards .card { width: 88px; padding: 4px; font-size: 9px; }
+  .hand-cards .card .card-img { font-size: 20px; margin-bottom: 2px; }
+  .hand-cards .card .card-name { font-size: 9px; margin-bottom: 2px; }
+  .hand-cards .card .card-stats { font-size: 8px; padding: 2px 3px; margin-bottom: 2px; }
+  .hand-cards .card .card-attack { font-size: 8px; padding: 2px 4px; }
+  .hand-cards .card .card-drop { font-size: 7px; padding: 1px 4px; }
+  .action-row { display: flex; gap: 8px; justify-content: center; flex-wrap: wrap; padding: 6px 0; flex-shrink: 0; }
+  .action-row button { padding: 10px 20px; font-size: 12px; }
 
   .result-overlay { position: fixed; inset: 0; z-index: 1500; display: flex; align-items: center; justify-content: center; pointer-events: none; }
   .result-overlay.active { pointer-events: auto; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px); }
-  .result-text { font-size: 70px; font-weight: 900; letter-spacing: 5px; text-align: center; animation: resultPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .result-text { font-size: 80px; font-weight: 900; letter-spacing: 6px; text-align: center; animation: resultPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
   .result-text.win { color: var(--gold); text-shadow: 0 0 20px #ffaa00, 0 0 40px #ffaa00, 5px 5px 0 #000; }
-  .result-text.win.epic-win { font-size: 100px; color: #fff; text-shadow: 0 0 30px #fff, 0 0 60px #ffaa00, 0 0 100px #ff6600, 6px 6px 0 #000; }
+  .result-text.win.epic-win { font-size: 110px; color: #fff; text-shadow: 0 0 30px #fff, 0 0 60px #ffaa00, 0 0 100px #ff6600, 6px 6px 0 #000; }
   .result-text.lose { color: #b066d9; text-shadow: 0 0 20px #7c3aed, 0 0 40px #7c3aed, 5px 5px 0 #000; }
   @keyframes resultPop { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 60% { transform: scale(1.2) rotate(5deg); opacity: 1; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
   .particle { position: fixed; pointer-events: none; z-index: 1400; }
-  .particle.gold { width: 8px; height: 8px; border-radius: 50%; background: radial-gradient(circle, #fff, #ffdd44); box-shadow: 0 0 12px #ffaa00; }
-  .particle.purple { width: 10px; height: 10px; border-radius: 50%; background: radial-gradient(circle, #e9d5ff, #7c3aed); box-shadow: 0 0 12px #7c3aed; }
-  .particle.rainbow { width: 12px; height: 12px; border-radius: 50%; background: radial-gradient(circle, #fff, #ff00ff); box-shadow: 0 0 15px #ff00ff, 0 0 25px #00ffff; }
-  .aura-flyer { position: fixed; z-index: 1600; font-size: 26px; font-weight: 900; color: var(--accent); text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent), 3px 3px 0 #000; pointer-events: none; }
-  .toast { position: fixed; top: 55px; right: 16px; z-index: 1800; background: linear-gradient(135deg, rgba(0,217,255,0.2), rgba(124,58,237,0.2)); border: 1px solid var(--accent); border-radius: 10px; padding: 10px 16px; backdrop-filter: blur(20px); box-shadow: 0 8px 30px rgba(0,217,255,0.4); animation: toastSlide 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; color: #fff; max-width: 280px; }
+  .particle.gold { width: 9px; height: 9px; border-radius: 50%; background: radial-gradient(circle, #fff, #ffdd44); box-shadow: 0 0 14px #ffaa00; }
+  .particle.purple { width: 11px; height: 11px; border-radius: 50%; background: radial-gradient(circle, #e9d5ff, #7c3aed); box-shadow: 0 0 14px #7c3aed; }
+  .particle.rainbow { width: 13px; height: 13px; border-radius: 50%; background: radial-gradient(circle, #fff, #ff00ff); box-shadow: 0 0 18px #ff00ff, 0 0 28px #00ffff; }
+  .aura-flyer { position: fixed; z-index: 1600; font-size: 32px; font-weight: 900; color: var(--accent); text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent), 3px 3px 0 #000; pointer-events: none; }
+  .toast { position: fixed; top: 76px; right: 20px; z-index: 1800; background: linear-gradient(135deg, rgba(0,217,255,0.2), rgba(124,58,237,0.2)); border: 1px solid var(--accent); border-radius: 12px; padding: 12px 18px; backdrop-filter: blur(20px); box-shadow: 0 8px 30px rgba(0,217,255,0.4); animation: toastSlide 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; align-items: center; gap: 10px; font-size: 13px; font-weight: 600; color: #fff; max-width: 320px; }
   .toast.removing { animation: toastOut 0.3s ease forwards; }
   @keyframes toastSlide { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
   @keyframes toastOut { to { transform: translateX(400px); opacity: 0; } }
-  .toast-icon { font-size: 18px; }
+  .toast-icon { font-size: 22px; }
   #packOverlay { position: fixed; inset: 0; z-index: 1000; background: radial-gradient(circle, #1b4f72 0%, #000 100%); display: flex; align-items: center; justify-content: center; overflow: hidden; }
   #packOverlay.hidden { display: none !important; }
   .pack-stage { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
-  .sealed-pack { width: 220px; height: 350px; position: relative; filter: drop-shadow(0 25px 60px rgba(0,217,255,0.5)); }
+  .sealed-pack { width: 240px; height: 380px; position: relative; filter: drop-shadow(0 25px 60px rgba(0,217,255,0.5)); }
   .pack-half { position: absolute; left: 0; right: 0; height: 50%; border: 2px solid var(--accent); overflow: hidden; }
-  .pack-top { top: 0; border-radius: 14px 14px 0 0; border-bottom: none; background: linear-gradient(180deg, #4facfe 0%, #00d9ff 50%, #005c97 100%); display: flex; align-items: center; justify-content: center; transition: transform 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.9s ease; transform-origin: bottom center; }
+  .pack-top { top: 0; border-radius: 16px 16px 0 0; border-bottom: none; background: linear-gradient(180deg, #4facfe 0%, #00d9ff 50%, #005c97 100%); display: flex; align-items: center; justify-content: center; transition: transform 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.9s ease; transform-origin: bottom center; }
   .pack-top.torn { transform: translate(-40px, -120%) rotate(-25deg); opacity: 0; }
-  .pack-logo { font-size: 30px; font-weight: 900; color: #fff; letter-spacing: 6px; text-shadow: 0 0 20px var(--accent), 3px 3px 0 #000; }
-  .pack-bottom { bottom: 0; border-radius: 0 0 14px 14px; border-top: none; background: linear-gradient(180deg, #0f3460 0%, #1a4a7a 50%, #0a0a1a 100%); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 18px; }
-  .pack-tag { color: var(--accent); font-size: 10px; font-weight: bold; letter-spacing: 3px; }
+  .pack-logo { font-size: 32px; font-weight: 900; color: #fff; letter-spacing: 6px; text-shadow: 0 0 20px var(--accent), 3px 3px 0 #000; }
+  .pack-bottom { bottom: 0; border-radius: 0 0 16px 16px; border-top: none; background: linear-gradient(180deg, #0f3460 0%, #1a4a7a 50%, #0a0a1a 100%); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 20px; }
+  .pack-tag { color: var(--accent); font-size: 11px; font-weight: bold; letter-spacing: 3px; }
   .swipe-line { position: absolute; top: 50%; left: -20px; right: -20px; height: 10px; background: rgba(0,0,0,0.7); border-radius: 5px; transform: translateY(-50%); cursor: grab; overflow: hidden; border: 1px solid var(--accent); box-shadow: 0 0 20px rgba(0,217,255,0.6); z-index: 10; touch-action: none; }
   .swipe-progress { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), #fff, var(--accent)); box-shadow: 0 0 20px var(--accent); transition: width 0.05s linear; }
-  .swipe-hint { position: absolute; top: -32px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 11px; font-weight: bold; letter-spacing: 3px; animation: hintBlink 1s infinite alternate; white-space: nowrap; }
+  .swipe-hint { position: absolute; top: -34px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 12px; font-weight: bold; letter-spacing: 3px; animation: hintBlink 1s infinite alternate; white-space: nowrap; }
   @keyframes hintBlink { from { opacity: 0.4; } to { opacity: 1; } }
   .reveal-area { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
   .reveal-area.active { pointer-events: auto; cursor: pointer; }
-  .reveal-counter { color: var(--accent); font-size: 13px; font-weight: bold; letter-spacing: 4px; margin-bottom: 20px; text-shadow: 0 0 15px var(--accent); }
+  .reveal-counter { color: var(--accent); font-size: 14px; font-weight: bold; letter-spacing: 4px; margin-bottom: 22px; text-shadow: 0 0 15px var(--accent); }
   .revealed-card { position: relative; animation: cardPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); transform-origin: center; }
   @keyframes cardPop { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 60% { transform: scale(1.15) rotate(10deg); opacity: 1; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
-  .tap-hint { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 12px; letter-spacing: 4px; animation: hintBlink 0.8s infinite alternate; text-shadow: 0 0 12px var(--accent); }
-  .sparkle { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 12px #fff, 0 0 22px var(--accent); pointer-events: none; animation: sparkleFloat 2s infinite; }
+  .tap-hint { position: absolute; bottom: 55px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 13px; letter-spacing: 4px; animation: hintBlink 0.8s infinite alternate; text-shadow: 0 0 12px var(--accent); }
+  .sparkle { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: #fff; box-shadow: 0 0 12px #fff, 0 0 22px var(--accent); pointer-events: none; animation: sparkleFloat 2s infinite; }
   @keyframes sparkleFloat { 0% { transform: translateY(0) scale(0); opacity: 0; } 20% { transform: translateY(-30px) scale(1.3); opacity: 1; } 100% { transform: translateY(-130px) scale(0); opacity: 0; } }
   .screen-flash { position: fixed; inset: 0; background: #fff; z-index: 2000; pointer-events: none; opacity: 0; }
   .screen-flash.flash { animation: screenFlash 0.4s ease; }
   @keyframes screenFlash { 0% { opacity: 0.9; } 100% { opacity: 0; } }
-  .flash-msg { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #2ecc71, #27ae60); color: #fff; padding: 10px 20px; border-radius: 10px; font-weight: 700; font-size: 11px; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 999; box-shadow: 0 8px 30px rgba(46,204,113,0.5); }
+  .flash-msg { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #2ecc71, #27ae60); color: #fff; padding: 11px 22px; border-radius: 11px; font-weight: 700; font-size: 12px; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 999; box-shadow: 0 8px 30px rgba(46,204,113,0.5); }
   .flash-msg.show { opacity: 1; transform: translateX(-50%) translateY(-8px); }
   .hidden { display: none !important; }
 </style>
@@ -178,7 +180,7 @@
 <header>
   <div class="logo-wrap">
     <div class="logo-mark">P</div>
-    <div class="logo-text"><h1>P<span>STCG</span></h1></div>
+    <div class="logo-text"><h1>P<span>STCG</span></h1><p>PAPERSHOP TCG</p></div>
   </div>
   <div class="header-right">
     <div class="pill aura" id="auraDisplay">AURA: <span id="auraCount">50</span></div>
@@ -200,53 +202,52 @@
 
 <div id="play" class="page active">
   <h2>Open a Pack</h2>
-  <p style="font-size:11px; color:var(--text-dim); margin-bottom:12px;">5 cards per pack. Win battles to earn Aura!</p>
-  <button id="openPackBtn" style="font-size:14px; padding:14px 30px;">OPEN PACK</button>
-  <button id="adminAuraBtn" class="admin-btn hidden" style="font-size:11px; padding:9px 18px; margin-top: 8px; display: block;">ADMIN: ADD 9999 AURA</button>
+  <p style="font-size:13px; color:var(--text-dim); margin-bottom:16px;">5 cards per pack. Win battles to earn Aura!</p>
+  <button id="openPackBtn" style="font-size:15px; padding:16px 34px;">OPEN PACK</button>
+  <button id="adminAuraBtn" class="admin-btn hidden" style="font-size:12px; padding:10px 20px; margin-top: 10px; display: block;">ADMIN: ADD 9999 AURA</button>
 </div>
 
 <div id="collection" class="page">
   <h2>Your Collection</h2>
-  <p style="font-size:11px; color:var(--text-dim);">Unique Cards: <b id="uniqueCount" style="color:var(--accent);">0</b> · Total: <b id="totalCount" style="color:var(--accent);">0</b></p>
+  <p style="font-size:12px; color:var(--text-dim);">Unique Cards: <b id="uniqueCount" style="color:var(--accent);">0</b> · Total: <b id="totalCount" style="color:var(--accent);">0</b></p>
   <div id="collectionGrid" class="card-grid"></div>
-  <h2 style="margin-top:20px;">Your Items</h2>
+  <h2 style="margin-top:26px;">Your Items</h2>
   <div id="itemGrid" class="card-grid"></div>
 </div>
 
 <div id="battle" class="page">
   <div id="battleSetup">
-    <div class="glass-panel" style="margin-top:8px;">
-      <h3 style="color:var(--accent); margin-top:0; font-weight:300; letter-spacing:2px; font-size:13px;">CHOOSE YOUR OPPONENT</h3>
-      <p style="font-size:10px; color:var(--text-dim); margin-bottom:10px;">Name yourself <b style="color:#a855f7;">"kris"</b> for the Knight. Name yourself <b style="color:#a855f7;">"rouring"</b> for a gift.</p>
-      <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-bottom:10px;">
+    <div class="glass-panel" style="margin-top:10px;">
+      <h3 style="color:var(--accent); margin-top:0; font-weight:300; letter-spacing:2px; font-size:15px;">CHOOSE YOUR OPPONENT</h3>
+      <p style="font-size:12px; color:var(--text-dim); margin-bottom:12px;">Name yourself <b style="color:#a855f7;">"kris"</b> for the Knight. Name yourself <b style="color:#a855f7;">"rouring"</b> for a gift.</p>
+      <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-bottom:12px;">
         <button class="diff-btn selected" data-diff="easy">EASY +25</button>
         <button class="diff-btn" data-diff="normal">NORMAL +50</button>
         <button class="diff-btn" data-diff="hard">HARD +100</button>
         <button class="diff-btn" data-diff="insane">INSANE +250</button>
         <button class="diff-btn hidden" id="knightBtn" data-diff="knight">ROARING KNIGHT +1000</button>
       </div>
-      <button id="startBotBtn" class="success" style="width:100%; padding:10px; font-size:11px;">BEGIN BATTLE</button>
+      <button id="startBotBtn" class="success" style="width:100%; padding:12px; font-size:13px;">BEGIN BATTLE</button>
     </div>
-    <div class="glass-panel" style="margin-top:10px; text-align:center;">
-      <h3 style="color:var(--accent); margin-top:0; font-weight:300; letter-spacing:2px; font-size:13px;">MULTIPLAYER (P2P)</h3>
-      <button id="hostBtn" class="secondary" style="width:100%; padding:7px; margin-bottom:5px;">HOST GAME</button>
-      <input type="text" id="joinCodeInput" placeholder="Enter Host Code" style="width:100%; padding:7px; margin-bottom:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; text-align:center; border-radius:8px; font-family:inherit; font-size:11px;">
-      <button id="joinBtn" class="secondary" style="width:100%; padding:7px;">JOIN GAME</button>
+    <div class="glass-panel" style="margin-top:12px; text-align:center;">
+      <h3 style="color:var(--accent); margin-top:0; font-weight:300; letter-spacing:2px; font-size:15px;">MULTIPLAYER (P2P)</h3>
+      <button id="hostBtn" class="secondary" style="width:100%; padding:10px; margin-bottom:7px;">HOST GAME</button>
+      <input type="text" id="joinCodeInput" placeholder="Enter Host Code" style="width:100%; padding:9px; margin-bottom:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; text-align:center; border-radius:9px; font-family:inherit; font-size:12px;">
+      <button id="joinBtn" class="secondary" style="width:100%; padding:10px;">JOIN GAME</button>
     </div>
-    <div id="mpStatus" style="text-align:center; margin-top:8px; font-weight:bold; color:var(--gold); font-size:11px;"></div>
+    <div id="mpStatus" style="text-align:center; margin-top:10px; font-weight:bold; color:var(--gold); font-size:12px;"></div>
   </div>
 
   <div id="battleArena" class="hidden">
-    <div style="text-align:center; font-size:11px; font-weight:bold; color:var(--gold); letter-spacing:2px;" id="turnIndicator">WAITING...</div>
+    <div style="text-align:center; font-size:13px; font-weight:bold; color:var(--gold); letter-spacing:2px;" id="turnIndicator">WAITING...</div>
 
-    <div id="battleField" class="glass-panel" style="flex:1; min-height:0; display:flex; flex-direction:column; gap:4px; padding:8px; overflow:hidden;">
-      <!-- OPPONENT -->
+    <div id="battleField" class="glass-panel" style="flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; padding:10px; overflow:hidden;">
       <div>
         <div class="battle-header">
           <span style="color:#ff6b5b;" id="opponentLabel">OPPONENT</span>
           <span style="color:var(--text-dim);" id="botHPText">-- / -- HP</span>
         </div>
-        <div style="display:flex; gap:8px; align-items:center;">
+        <div style="display:flex; gap:10px; align-items:center;">
           <div class="battle-slot" id="botSlot">No Active Card</div>
           <div style="flex:1; min-width:0;">
             <div class="hp-bar-wrap"><div class="hp-bar-fill" id="botHPBar"></div><div class="hp-bar-text" id="botHPBarText">-- / --</div></div>
@@ -256,22 +257,21 @@
 
       <div id="battleLog" class="battle-log-compact"></div>
 
-      <!-- PLAYER -->
       <div>
-        <div style="display:flex; gap:8px; align-items:center;">
+        <div style="display:flex; gap:10px; align-items:center;">
           <div class="battle-slot" id="playerSlot">No Active Card</div>
           <div style="flex:1; min-width:0;">
             <div class="hp-bar-wrap"><div class="hp-bar-fill" id="playerHPBar"></div><div class="hp-bar-text" id="playerHPBarText">-- / --</div></div>
           </div>
         </div>
-        <div class="battle-header" style="margin-top:2px; margin-bottom:0;">
+        <div class="battle-header" style="margin-top:3px; margin-bottom:0;">
           <span style="color:var(--accent);">YOU</span>
           <span style="color:var(--text-dim);" id="playerHPText">-- / -- HP</span>
         </div>
       </div>
     </div>
 
-    <div style="text-align:center; margin-top:4px; color:var(--text-dim); font-size:9px; letter-spacing:2px;">YOUR HAND</div>
+    <div style="text-align:center; margin-top:6px; color:var(--text-dim); font-size:10px; letter-spacing:2px;">YOUR HAND</div>
     <div class="hand-cards" id="playerHand"></div>
 
     <div class="action-row">
@@ -285,77 +285,77 @@
 
 <div id="create" class="page">
   <h2>Create Content (Admin Only)</h2>
-  <div style="display:flex; gap:12px; margin-bottom:12px;">
+  <div style="display:flex; gap:14px; margin-bottom:14px;">
     <button class="tab-btn active" onclick="switchCreator('card')" style="flex:1;">CARD</button>
     <button class="tab-btn" onclick="switchCreator('item')" style="flex:1;">ITEM</button>
   </div>
-  <div id="cardCreator" style="display:grid; grid-template-columns:200px 1fr; gap:16px; align-items:start;">
+  <div id="cardCreator" style="display:grid; grid-template-columns:220px 1fr; gap:20px; align-items:start;">
     <div class="glass-panel" style="text-align:center;">
-      <canvas id="drawCanvas" width="180" height="180" style="background:#000; border-radius:6px; cursor:crosshair; border:1px solid var(--accent); max-width:100%;"></canvas>
-      <div style="display:flex; gap:5px; justify-content:center; margin-top:8px; flex-wrap:wrap;">
-        <div class="color-swatch active" data-color="#00ff88" style="background:#00ff88; width:22px; height:22px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></div>
-        <div class="color-swatch" data-color="#ff3355" style="background:#ff3355; width:22px; height:22px; border-radius:50%; cursor:pointer;"></div>
-        <div class="color-swatch" data-color="#00d9ff" style="background:#00d9ff; width:22px; height:22px; border-radius:50%; cursor:pointer;"></div>
-        <div class="color-swatch" data-color="#ffcc00" style="background:#ffcc00; width:22px; height:22px; border-radius:50%; cursor:pointer;"></div>
-        <div class="color-swatch" data-color="#ffffff" style="background:#ffffff; width:22px; height:22px; border-radius:50%; cursor:pointer;"></div>
-        <div class="color-swatch" data-color="#000000" style="background:#000000; width:22px; height:22px; border-radius:50%; border:2px solid #555; cursor:pointer;"></div>
+      <canvas id="drawCanvas" width="180" height="180" style="background:#000; border-radius:8px; cursor:crosshair; border:1px solid var(--accent); max-width:100%;"></canvas>
+      <div style="display:flex; gap:6px; justify-content:center; margin-top:10px; flex-wrap:wrap;">
+        <div class="color-swatch active" data-color="#00ff88" style="background:#00ff88; width:26px; height:26px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></div>
+        <div class="color-swatch" data-color="#ff3355" style="background:#ff3355; width:26px; height:26px; border-radius:50%; cursor:pointer;"></div>
+        <div class="color-swatch" data-color="#00d9ff" style="background:#00d9ff; width:26px; height:26px; border-radius:50%; cursor:pointer;"></div>
+        <div class="color-swatch" data-color="#ffcc00" style="background:#ffcc00; width:26px; height:26px; border-radius:50%; cursor:pointer;"></div>
+        <div class="color-swatch" data-color="#ffffff" style="background:#ffffff; width:26px; height:26px; border-radius:50%; cursor:pointer;"></div>
+        <div class="color-swatch" data-color="#000000" style="background:#000000; width:26px; height:26px; border-radius:50%; border:2px solid #555; cursor:pointer;"></div>
       </div>
-      <div style="display:flex; gap:5px; justify-content:center; margin-top:8px;">
-        <button class="secondary" id="clearCanvasBtn" style="font-size:9px; padding:4px 9px;">CLEAR</button>
-        <button class="secondary" id="eraserBtn" style="font-size:9px; padding:4px 9px;">ERASER</button>
+      <div style="display:flex; gap:6px; justify-content:center; margin-top:10px;">
+        <button class="secondary" id="clearCanvasBtn" style="font-size:10px; padding:5px 10px;">CLEAR</button>
+        <button class="secondary" id="eraserBtn" style="font-size:10px; padding:5px 10px;">ERASER</button>
       </div>
-      <div style="margin-top:8px; font-size:9px; color:var(--text-dim);">OR PNG:</div>
-      <input type="file" id="cardImageUpload" accept="image/png, image/jpeg" style="font-size:9px; color:#fff; margin-top:3px; width:100%;">
+      <div style="margin-top:10px; font-size:10px; color:var(--text-dim);">OR IMPORT PNG:</div>
+      <input type="file" id="cardImageUpload" accept="image/png, image/jpeg" style="font-size:10px; color:#fff; margin-top:4px; width:100%;">
     </div>
     <div>
-      <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Name</label><input type="text" id="cardName" placeholder="Kris Get The Banana" maxlength="30" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
-      <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Codename</label><input type="text" id="cardCodename" placeholder="kris_banana" maxlength="30" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-        <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">HP</label><input type="number" id="cardHP" value="60" min="1" max="999" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
-        <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Damage</label><input type="number" id="cardDamage" value="20" min="0" max="999" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
+      <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Card Name</label><input type="text" id="cardName" placeholder="Kris Get The Banana" maxlength="30" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"></div>
+      <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Codename</label><input type="text" id="cardCodename" placeholder="kris_banana" maxlength="30" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"></div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">HP</label><input type="number" id="cardHP" value="60" min="1" max="999" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"></div>
+        <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Damage</label><input type="number" id="cardDamage" value="20" min="0" max="999" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"></div>
       </div>
-      <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Attack</label><input type="text" id="cardAttack" placeholder="Potassium" maxlength="20" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
-      <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Drop Rate (%)</label><input type="number" id="cardDropRate" value="10" min="0.01" max="100" step="0.01" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
-      <button id="saveCardBtn" class="success" style="width:100%; padding:9px; margin-bottom:5px;">SAVE CARD</button>
-      <button id="exportCardBtn" class="secondary" style="width:100%; padding:9px;">EXPORT .crd</button>
+      <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Attack Name</label><input type="text" id="cardAttack" placeholder="Potassium" maxlength="20" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"></div>
+      <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Drop Rate (%)</label><input type="number" id="cardDropRate" value="10" min="0.01" max="100" step="0.01" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"></div>
+      <button id="saveCardBtn" class="success" style="width:100%; padding:11px; margin-bottom:6px;">SAVE CARD</button>
+      <button id="exportCardBtn" class="secondary" style="width:100%; padding:11px;">EXPORT .crd FILE</button>
     </div>
   </div>
-  <div id="itemCreator" style="display:none; grid-template-columns:200px 1fr; gap:16px; align-items:start;">
+  <div id="itemCreator" style="display:none; grid-template-columns:220px 1fr; gap:20px; align-items:start;">
     <div class="glass-panel" style="text-align:center;">
-      <div style="font-size:36px; padding:50px 0;">ITEM</div>
-      <div style="margin-top:10px; font-size:9px; color:var(--text-dim);">OR PNG:</div>
-      <input type="file" id="itemImageUpload" accept="image/png, image/jpeg" style="font-size:9px; color:#fff; margin-top:3px; width:100%;">
+      <div style="font-size:40px; padding:60px 0;">ITEM</div>
+      <div style="margin-top:10px; font-size:10px; color:var(--text-dim);">OR IMPORT PNG:</div>
+      <input type="file" id="itemImageUpload" accept="image/png, image/jpeg" style="font-size:10px; color:#fff; margin-top:4px; width:100%;">
     </div>
     <div>
-      <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Item Name</label><input type="text" id="itemName" placeholder="Health Potion" maxlength="20" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
-      <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Codename</label><input type="text" id="itemCodename" placeholder="health_potion" maxlength="30" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
-      <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Description</label><input type="text" id="itemDesc" placeholder="Heals" maxlength="50" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
-        <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Effect</label><select id="itemType" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"><option value="heal">Heal</option><option value="damage">Damage</option><option value="buff">Buff</option></select></div>
-        <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Value</label><input type="number" id="itemValue" value="20" min="1" max="999" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
+      <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Item Name</label><input type="text" id="itemName" placeholder="Temmie Flakes" maxlength="20" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"></div>
+      <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Codename</label><input type="text" id="itemCodename" placeholder="temflk" maxlength="30" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"></div>
+      <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Description</label><input type="text" id="itemDesc" placeholder="Heals 2 HP" maxlength="50" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"></div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
+        <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Effect</label><select id="itemType" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"><option value="heal">Heal</option><option value="damage">Damage</option><option value="buff">Buff</option></select></div>
+        <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Value</label><input type="number" id="itemValue" value="2" min="1" max="999" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit; font-size:12px;"></div>
       </div>
-      <button id="saveItemBtn" class="success" style="width:100%; padding:9px;">SAVE ITEM</button>
+      <button id="saveItemBtn" class="success" style="width:100%; padding:11px;">SAVE ITEM</button>
     </div>
   </div>
 </div>
 
 <div id="data" class="page">
   <h2>Data & Files</h2>
-  <div class="glass-panel" style="margin-bottom:10px;">
-    <h3 style="color:var(--accent); margin-top:0; font-weight:300; font-size:13px;">LOAD FROM GITHUB</h3>
-    <button id="loadGithubBtn" class="success" style="width:100%; margin-bottom:5px;">RELOAD FROM SERVER</button>
-    <div id="crdDropZone" style="border:2px dashed rgba(0,217,255,0.4); padding:14px; text-align:center; border-radius:10px; margin:6px 0; color:var(--text-dim); background:rgba(0,0,0,0.2); font-size:11px;">
+  <div class="glass-panel" style="margin-bottom:12px;">
+    <h3 style="color:var(--accent); margin-top:0; font-weight:300; font-size:15px;">LOAD FROM GITHUB</h3>
+    <button id="loadGithubBtn" class="success" style="width:100%; margin-bottom:6px;">RELOAD FROM SERVER</button>
+    <div id="crdDropZone" style="border:2px dashed rgba(0,217,255,0.4); padding:16px; text-align:center; border-radius:10px; margin:8px 0; color:var(--text-dim); background:rgba(0,0,0,0.2); font-size:12px;">
       <input type="file" id="crdFileInput" multiple accept=".crd,.itm" style="display:none;">
       <p>Drop files or <span style="color:var(--accent); text-decoration:underline; cursor:pointer;" onclick="document.getElementById('crdFileInput').click()">browse</span></p>
     </div>
   </div>
-  <div class="glass-panel" style="margin-bottom:10px;">
-    <h3 style="color:var(--accent); margin-top:0; font-weight:300; font-size:13px;">SAVE / LOAD (.dat)</h3>
-    <button id="saveDatBtn" class="success" style="width:100%; margin-bottom:5px;">DOWNLOAD SAVE</button>
-    <input type="file" id="loadDatInput" accept=".dat" style="color:#fff; width:100%; font-size:11px;">
+  <div class="glass-panel" style="margin-bottom:12px;">
+    <h3 style="color:var(--accent); margin-top:0; font-weight:300; font-size:15px;">SAVE / LOAD (.dat)</h3>
+    <button id="saveDatBtn" class="success" style="width:100%; margin-bottom:6px;">DOWNLOAD SAVE FILE</button>
+    <input type="file" id="loadDatInput" accept=".dat" style="color:#fff; width:100%; font-size:12px;">
   </div>
   <div class="glass-panel" style="border-color:rgba(231,76,60,0.4);">
-    <h3 style="color:#e74c3c; margin-top:0; font-weight:300; font-size:13px;">DANGER ZONE</h3>
+    <h3 style="color:#e74c3c; margin-top:0; font-weight:300; font-size:15px;">DANGER ZONE</h3>
     <button class="danger" id="wipeBtn" style="width:100%;">ERASE ALL DATA</button>
   </div>
 </div>
@@ -483,7 +483,7 @@ document.getElementById('adminAuraBtn').addEventListener('click', () => { if (!i
 document.querySelectorAll('.diff-btn').forEach(btn => { btn.addEventListener('click', () => { document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedDifficulty = btn.dataset.diff; }); });
 function updateAboutPage() {
   const content = document.getElementById('aboutContent');
-  const box = (title, body) => `<div class="glass-panel" style="margin-bottom:10px; line-height:1.5; font-size:12px;"><h3 style="margin-top:0; color:var(--accent); font-weight:300; font-size:14px;">${title}</h3><p>${body}</p></div>`;
+  const box = (title, body) => `<div class="glass-panel" style="margin-bottom:12px; line-height:1.6; font-size:13px;"><h3 style="margin-top:0; color:var(--accent); font-weight:300; font-size:15px;">${title}</h3><p>${body}</p></div>`;
   if (isAdmin) content.innerHTML = box(t('adminManual'), t('adminDesc')) + box(t('makeCards'), t('makeCardsDesc')) + box(t('exportGithub'), t('exportGithubDesc')) + box(t('saveDatAdmin'), t('saveDatAdminDesc'));
   else content.innerHTML = box(t('playerManual'), t('playerDesc')) + box(t('gettingCards'), t('gettingCardsDesc')) + box(t('battling'), t('battlingDesc')) + box(t('savingProgress'), t('savingProgressDesc'));
 }
@@ -518,7 +518,6 @@ function getRarityColor(r) { if (r >= 50) return '#888'; if (r >= 20) return '#2
 function pickWeightedCard() { if (cards.length === 0) return null; const total = cards.reduce((s, c) => s + (c.dropRate || 10), 0); let roll = Math.random() * total; for (const c of cards) { roll -= (c.dropRate || 10); if (roll <= 0) return c; } return cards[cards.length - 1]; }
 function pickRandomItem() { if (items.length === 0) return null; return items[Math.floor(Math.random() * items.length)]; }
 
-// IMPORTANT: Now accepts optional overrideHp so battle cards show LIVE hp
 function makeCardElement(card, overrideHp) {
   const div = document.createElement('div');
   const r = card.dropRate || 10;
@@ -552,7 +551,7 @@ function renderCollection() {
       const wrap = document.createElement('div'); wrap.style.position = 'relative';
       wrap.appendChild(makeCardElement(card));
       const badge = document.createElement('div'); badge.textContent = 'x' + collection[card.codename];
-      badge.style.cssText = 'position:absolute; bottom:-6px; left:50%; transform:translateX(-50%); background:#0a0e27; color:var(--accent); font-size:9px; font-weight:bold; padding:2px 9px; border-radius:10px; border:1px solid var(--accent);';
+      badge.style.cssText = 'position:absolute; bottom:-7px; left:50%; transform:translateX(-50%); background:#0a0e27; color:var(--accent); font-size:10px; font-weight:bold; padding:2px 10px; border-radius:11px; border:1px solid var(--accent);';
       wrap.appendChild(badge); grid.appendChild(wrap);
     });
   }
@@ -564,7 +563,7 @@ function renderCollection() {
       const wrap = document.createElement('div'); wrap.style.position = 'relative';
       wrap.appendChild(makeItemElement(item));
       const badge = document.createElement('div'); badge.textContent = 'x' + itemCollection[item.id];
-      badge.style.cssText = 'position:absolute; bottom:-6px; left:50%; transform:translateX(-50%); background:#0a0e27; color:#2ecc71; font-size:9px; font-weight:bold; padding:2px 9px; border-radius:10px; border:1px solid #2ecc71;';
+      badge.style.cssText = 'position:absolute; bottom:-7px; left:50%; transform:translateX(-50%); background:#0a0e27; color:#2ecc71; font-size:10px; font-weight:bold; padding:2px 10px; border-radius:11px; border:1px solid #2ecc71;';
       wrap.appendChild(badge); iGrid.appendChild(wrap);
     });
   }
@@ -679,7 +678,6 @@ document.getElementById('wipeBtn').addEventListener('click', () => { if (!confir
 function makeBattleCard(card) { return { ...card, maxHp: card.hp }; }
 function logBattle(msg) { const log = document.getElementById('battleLog'); const div = document.createElement('div'); div.textContent = '> ' + msg; log.appendChild(div); log.scrollTop = log.scrollHeight; }
 
-// HP bar (uses CARD's hp, not separate pool)
 function updateHpBar(id, current, max) {
   const safeMax = Math.max(1, Number(max) || 1);
   const clamped = Math.max(0, Math.min(safeMax, Number(current) || 0));
@@ -695,7 +693,6 @@ function updateHpBar(id, current, max) {
 function updateBattleUI() {
   if (!battleState) return;
   const ps = document.getElementById('playerSlot'), bs = document.getElementById('botSlot');
-  // KEY FIX: pass the card's LIVE hp to makeCardElement
   if (battleState.playerCard) {
     ps.innerHTML = ''; ps.style.borderStyle = 'solid'; ps.style.borderColor = 'var(--accent)'; ps.style.padding = '0';
     ps.appendChild(makeCardElement(battleState.playerCard, battleState.playerCard.hp));
@@ -705,7 +702,6 @@ function updateBattleUI() {
     bs.appendChild(makeCardElement(battleState.botCard, battleState.botCard.hp));
   } else { bs.textContent = 'No Active Card'; bs.style.borderStyle = 'dashed'; bs.style.padding = '6px'; }
 
-  // HP bars use the CARD's hp
   if (battleState.playerCard) updateHpBar('playerHP', battleState.playerCard.hp, battleState.playerCard.maxHp);
   if (battleState.botCard) updateHpBar('botHP', battleState.botCard.hp, battleState.botCard.maxHp);
 
@@ -741,7 +737,7 @@ function doAttackAnimation(attackerSlotId, defenderSlotId, particleEmoji, onImpa
     const particle = document.createElement('div'); particle.className = 'attack-particle'; particle.textContent = particleEmoji;
     particle.style.left = (aRect.left + aRect.width / 2) + 'px'; particle.style.top = (aRect.top + aRect.height / 2) + 'px';
     particle.style.transform = 'translate(-50%, -50%)'; document.body.appendChild(particle);
-    requestAnimationFrame(() => { particle.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'; particle.style.left = (dRect.left + dRect.width / 2) + 'px'; particle.style.top = (dRect.top + dRect.height / 2) + 'px'; particle.style.fontSize = '60px'; });
+    requestAnimationFrame(() => { particle.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'; particle.style.left = (dRect.left + dRect.width / 2) + 'px'; particle.style.top = (dRect.top + dRect.height / 2) + 'px'; particle.style.fontSize = '70px'; });
     setTimeout(() => {
       particle.remove(); defender.classList.add('hit-' + defenderSide); document.body.classList.add('screen-shake'); Sound.hit();
       setTimeout(() => { document.body.classList.remove('screen-shake'); defender.classList.remove('hit-' + defenderSide); }, 400);
@@ -768,7 +764,6 @@ document.getElementById('startBotBtn').addEventListener('click', () => {
   for (let i = 0; i < 3; i++) if (playerDeck.length > 0) battleState.playerHand.push(playerDeck[Math.floor(Math.random() * playerDeck.length)]);
   battleState.playerCard = makeBattleCard(playerDeck[Math.floor(Math.random() * playerDeck.length)]);
 
-  // Bot gets its HP = difficulty HP (both hp AND maxHp)
   const botBase = botDeck[Math.floor(Math.random() * botDeck.length)];
   battleState.botCard = { ...botBase, hp: diff.hp, maxHp: diff.hp };
 
