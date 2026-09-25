@@ -7,66 +7,376 @@
 <script src="https://unpkg.com/peerjs@1.5.2/dist/peerjs.min.js"></script>
 <style>
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-  body { margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: radial-gradient(circle at center, #1b4f72 0%, #0b132b 100%); color: #e0e0e0; min-height: 100vh; }
-  header { background: rgba(0, 0, 0, 0.4); backdrop-filter: blur(10px); padding: 15px; text-align: center; border-bottom: 1px solid rgba(255, 255, 255, 0.15); display: flex; flex-direction: column; align-items: center; gap: 8px; position: relative; }
-  h1 { margin: 0; color: #fff; text-shadow: 0 0 10px rgba(0, 210, 255, 0.8); font-size: 26px; letter-spacing: 4px; font-weight: 300; }
-  h1 span { color: #00d9ff; font-weight: 700; }
-  .header-controls { position: absolute; top: 15px; right: 15px; display: flex; gap: 10px; align-items: center; }
-  [dir="rtl"] .header-controls { right: auto; left: 15px; }
-  .aura-display { background: rgba(255,255,255,0.1); border: 1px solid rgba(0, 217, 255, 0.5); color: #00d9ff; font-family: inherit; font-size: 12px; font-weight: bold; padding: 4px 10px; border-radius: 4px; }
-  #langSelect { background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.3); color: #fff; font-family: inherit; font-size: 12px; padding: 4px 8px; border-radius: 4px; cursor: pointer; outline: none; }
-  #usernameInput { background: rgba(0, 0, 0, 0.3); border: 1px solid rgba(255, 255, 255, 0.2); color: #fff; padding: 6px 12px; font-family: inherit; font-size: 12px; border-radius: 4px; text-align: center; outline: none; width: 260px; }
-  .tabs { display: flex; background: rgba(0, 0, 0, 0.3); overflow-x: auto; padding: 0 10px; border-bottom: 1px solid rgba(255,255,255,0.1); }
-  .tab { flex: 1; padding: 12px 6px; text-align: center; cursor: pointer; border: none; background: transparent; color: #8899aa; font-family: inherit; font-size: 13px; font-weight: 600; border-bottom: 3px solid transparent; min-width: 80px; }
-  .tab.active { color: #fff; border-bottom-color: #00d9ff; background: rgba(255, 255, 255, 0.05); }
-  .page { display: none; padding: 20px; max-width: 1100px; margin: 0 auto; }
+  :root {
+    --bg-1: #0a0e27;
+    --bg-2: #1a1f4a;
+    --accent: #00d9ff;
+    --accent-2: #7c3aed;
+    --gold: #ffdd44;
+    --glass: rgba(255,255,255,0.06);
+    --glass-border: rgba(255,255,255,0.12);
+    --text: #e8eaf6;
+    --text-dim: #8892b0;
+  }
+  html, body {
+    margin: 0; padding: 0;
+    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
+    background: var(--bg-1);
+    background-image:
+      radial-gradient(circle at 20% 20%, rgba(124,58,237,0.15) 0%, transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(0,217,255,0.12) 0%, transparent 50%),
+      radial-gradient(circle at 50% 50%, var(--bg-2) 0%, var(--bg-1) 100%);
+    color: var(--text);
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  /* ============ MODERN HEADER ============ */
+  header {
+    background: rgba(10,14,39,0.7);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    padding: 18px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid var(--glass-border);
+    position: sticky; top: 0; z-index: 100;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  }
+  .logo-wrap { display: flex; align-items: center; gap: 14px; }
+  .logo-mark {
+    width: 44px; height: 44px; border-radius: 12px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: flex; align-items: center; justify-content: center;
+    font-weight: 900; font-size: 20px; color: #fff;
+    box-shadow: 0 0 20px rgba(0,217,255,0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+    animation: logoFloat 3s ease-in-out infinite;
+  }
+  @keyframes logoFloat { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-3px) rotate(2deg); } }
+  .logo-text h1 {
+    margin: 0; font-size: 20px; letter-spacing: 3px; font-weight: 300;
+    color: #fff; text-shadow: 0 0 12px rgba(0,217,255,0.6);
+  }
+  .logo-text h1 span { color: var(--accent); font-weight: 700; }
+  .logo-text p { margin: 2px 0 0; font-size: 9px; color: var(--text-dim); letter-spacing: 3px; }
+
+  .header-right { display: flex; align-items: center; gap: 12px; }
+
+  .pill {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 6px 14px;
+    font-size: 12px; font-weight: 600;
+    display: flex; align-items: center; gap: 6px;
+    transition: all 0.3s;
+  }
+  .pill.aura {
+    color: var(--accent);
+    border-color: rgba(0,217,255,0.4);
+    box-shadow: 0 0 12px rgba(0,217,255,0.2);
+  }
+  .pill.aura.pulse { animation: auraPulse 0.8s ease; }
+  @keyframes auraPulse {
+    0% { transform: scale(1); box-shadow: 0 0 12px rgba(0,217,255,0.2); }
+    40% { transform: scale(1.25); box-shadow: 0 0 30px rgba(0,217,255,0.9), 0 0 60px rgba(0,217,255,0.5); }
+    100% { transform: scale(1); box-shadow: 0 0 12px rgba(0,217,255,0.2); }
+  }
+  .icon-btn {
+    width: 34px; height: 34px; border-radius: 50%;
+    background: var(--glass); border: 1px solid var(--glass-border);
+    color: #fff; cursor: pointer; font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.2s;
+  }
+  .icon-btn:hover { background: rgba(0,217,255,0.15); border-color: var(--accent); transform: scale(1.1); }
+
+  #langSelect, #usernameInput {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    color: #fff; padding: 6px 12px; border-radius: 20px;
+    font-family: inherit; font-size: 12px; outline: none;
+    transition: all 0.2s;
+  }
+  #usernameInput { width: 200px; text-align: center; }
+  #usernameInput:focus, #langSelect:focus { border-color: var(--accent); box-shadow: 0 0 12px rgba(0,217,255,0.3); }
+
+  /* ============ MODERN TABS ============ */
+  .tabs {
+    display: flex; gap: 6px;
+    padding: 16px 24px;
+    background: transparent;
+    overflow-x: auto;
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+  .tab {
+    padding: 10px 20px; cursor: pointer;
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    color: var(--text-dim);
+    font-family: inherit; font-size: 12px; font-weight: 600;
+    border-radius: 20px;
+    letter-spacing: 1px;
+    transition: all 0.25s;
+    white-space: nowrap;
+  }
+  .tab:hover { color: #fff; transform: translateY(-2px); }
+  .tab.active {
+    color: #fff;
+    background: linear-gradient(135deg, rgba(0,217,255,0.25), rgba(124,58,237,0.25));
+    border-color: var(--accent);
+    box-shadow: 0 4px 20px rgba(0,217,255,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
+  }
+
+  .page { display: none; padding: 24px; max-width: 1200px; margin: 0 auto; animation: fadeUp 0.3s ease; }
   .page.active { display: block; }
-  h2 { color: #00d9ff; border-bottom: 1px solid rgba(0, 217, 255, 0.3); padding-bottom: 8px; font-weight: 300; }
-  button { font-family: inherit; cursor: pointer; background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%); color: #fff; border: 1px solid #005c97; padding: 8px 16px; font-weight: 600; font-size: 13px; border-radius: 4px; }
-  button:hover { background: linear-gradient(180deg, #6dbbff 0%, #2af4ff 100%); }
-  button:disabled { background: #444; color: #888; cursor: not-allowed; border-color: #222; }
-  button.secondary { background: linear-gradient(180deg, #6c7a89 0%, #455a64 100%); border-color: #263238; }
-  button.danger { background: linear-gradient(180deg, #e74c3c 0%, #c0392b 100%); border-color: #7b241c; }
-  button.success { background: linear-gradient(180deg, #2ecc71 0%, #27ae60 100%); border-color: #1e8449; }
-  .admin-btn { background: linear-gradient(180deg, #f1c40f 0%, #d4ac0d 100%); border-color: #9a7d0a; color: #000; font-weight: 800; }
-  .card { width: 140px; background: linear-gradient(180deg, #ffffff 0%, #d4e4f7 100%); border: 1px solid #a0c0e0; border-radius: 8px; padding: 6px; color: #222; font-size: 11px; position: relative; }
-  .card-img { width: 100%; aspect-ratio: 1; background: linear-gradient(135deg, #dfe9f3, #ffffff); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #555; font-size: 36px; font-weight: bold; overflow: hidden; margin-bottom: 5px; border: 1px solid #b0c4de; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  h2 { color: #fff; font-weight: 300; font-size: 24px; letter-spacing: 2px; margin-bottom: 20px; border-bottom: 1px solid var(--glass-border); padding-bottom: 12px; }
+
+  /* ============ MODERN BUTTONS ============ */
+  button {
+    font-family: inherit; cursor: pointer;
+    background: linear-gradient(135deg, #4facfe 0%, #00d9ff 100%);
+    color: #fff; border: none; padding: 12px 22px;
+    font-weight: 700; font-size: 13px;
+    border-radius: 12px;
+    letter-spacing: 1px;
+    transition: all 0.2s;
+    box-shadow: 0 4px 12px rgba(79,172,254,0.4), inset 0 1px 0 rgba(255,255,255,0.4);
+    position: relative; overflow: hidden;
+  }
+  button::after {
+    content: ''; position: absolute; inset: 0;
+    background: radial-gradient(circle at var(--rx, 50%) var(--ry, 50%), rgba(255,255,255,0.6), transparent 50%);
+    opacity: 0; transition: opacity 0.4s;
+    pointer-events: none;
+  }
+  button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,172,254,0.6), inset 0 1px 0 rgba(255,255,255,0.5); }
+  button:hover::after { opacity: 0.3; }
+  button:active { transform: scale(0.96); }
+  button:disabled { background: #2a2f4a; color: #555c7a; cursor: not-allowed; box-shadow: none; transform: none; }
+  button.secondary { background: linear-gradient(135deg, #6c7a89, #455a64); box-shadow: 0 4px 12px rgba(108,122,137,0.3); }
+  button.danger { background: linear-gradient(135deg, #e74c3c, #c0392b); box-shadow: 0 4px 12px rgba(231,76,60,0.4); }
+  button.success { background: linear-gradient(135deg, #2ecc71, #27ae60); box-shadow: 0 4px 12px rgba(46,204,113,0.4); }
+  .admin-btn { background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #000; box-shadow: 0 4px 12px rgba(241,196,15,0.5); }
+
+  /* ============ MODERN CARDS ============ */
+  .card {
+    width: 150px;
+    background: linear-gradient(180deg, #ffffff 0%, #d4e4f7 100%);
+    border: 1px solid #a0c0e0;
+    border-radius: 12px;
+    padding: 8px;
+    color: #222; font-size: 11px;
+    position: relative;
+    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
+    overflow: hidden;
+  }
+  .card::before {
+    content: ''; position: absolute; top: 0; left: -100%;
+    width: 100%; height: 100%;
+    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.7) 50%, transparent 70%);
+    transition: left 0.6s;
+    pointer-events: none;
+  }
+  .card:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 15px 35px rgba(0,217,255,0.5); }
+  .card:hover::before { left: 100%; }
+  .card-img {
+    width: 100%; aspect-ratio: 1;
+    background: linear-gradient(135deg, #dfe9f3, #ffffff);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    color: #555; font-size: 40px; font-weight: bold;
+    overflow: hidden; margin-bottom: 6px;
+    border: 1px solid #b0c4de;
+  }
   .card-img img { width: 100%; height: 100%; object-fit: cover; }
-  .card-name { font-weight: 700; text-align: center; font-size: 12px; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #1a2a3a; }
-  .card-stats { display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; background: rgba(0,0,0,0.08); padding: 3px 5px; border-radius: 4px; margin-bottom: 4px; }
+  .card-name { font-weight: 800; text-align: center; font-size: 12px; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #1a2a3a; }
+  .card-stats { display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; background: rgba(0,0,0,0.08); padding: 4px 6px; border-radius: 6px; margin-bottom: 5px; }
   .card-hp { color: #c0392b; }
-  .card-attack { background: linear-gradient(180deg, #34495e, #2c3e50); color: #fff; padding: 4px 6px; border-radius: 4px; font-size: 10px; display: flex; justify-content: space-between; gap: 4px; }
-  .card-attack-dmg { color: #f1c40f; font-weight: bold; }
-  .card-drop { position: absolute; top: -8px; right: -8px; background: #2c3e50; color: #fff; font-size: 9px; padding: 2px 7px; border-radius: 10px; font-weight: bold; letter-spacing: 1px; }
-  .item { width: 140px; background: linear-gradient(180deg, #e8f4f8 0%, #b2dfdb 100%); border: 1px solid #80cbc4; border-radius: 8px; padding: 6px; color: #004d40; font-size: 11px; }
-  .item-img { width: 100%; aspect-ratio: 1; background: rgba(255,255,255,0.5); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #00695c; font-size: 36px; overflow: hidden; margin-bottom: 5px; border: 1px solid #b2dfdb; }
+  .card-attack { background: linear-gradient(135deg, #34495e, #2c3e50); color: #fff; padding: 5px 7px; border-radius: 6px; font-size: 10px; display: flex; justify-content: space-between; gap: 4px; }
+  .card-attack-dmg { color: var(--gold); font-weight: bold; }
+  .card-drop { position: absolute; top: -6px; right: -6px; background: #2c3e50; color: #fff; font-size: 9px; padding: 3px 8px; border-radius: 12px; font-weight: bold; letter-spacing: 1px; z-index: 2; box-shadow: 0 3px 8px rgba(0,0,0,0.4); }
+
+  /* Rarity shine */
+  .card.r-common { border-color: #888; }
+  .card.r-uncommon { border-color: #22aa44; box-shadow: 0 0 10px rgba(34,170,68,0.5); }
+  .card.r-rare { border-color: #2277ee; animation: rareShimmer 2.5s infinite; }
+  @keyframes rareShimmer { 0%, 100% { box-shadow: 0 0 15px rgba(34,119,238,0.6); } 50% { box-shadow: 0 0 30px rgba(79,170,255,1); } }
+  .card.r-epic { border-color: #aa22cc; animation: epicPulse 1.8s infinite; }
+  @keyframes epicPulse { 0%, 100% { box-shadow: 0 0 20px rgba(170,34,204,0.7); } 50% { box-shadow: 0 0 40px rgba(204,68,238,1); } }
+  .card.r-legendary { border-color: #ffaa00; animation: legendaryHue 3s infinite linear, legendaryWobble 2s infinite ease-in-out; }
+  @keyframes legendaryHue { 0% { box-shadow: 0 0 25px rgba(255,170,0,1); filter: hue-rotate(0deg); } 50% { box-shadow: 0 0 45px rgba(255,102,0,1); filter: hue-rotate(180deg); } 100% { box-shadow: 0 0 25px rgba(255,170,0,1); filter: hue-rotate(360deg); } }
+  @keyframes legendaryWobble { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-1.5deg); } 75% { transform: rotate(1.5deg); } }
+
+  .item { width: 150px; background: linear-gradient(180deg, #e8f4f8 0%, #b2dfdb 100%); border: 1px solid #80cbc4; border-radius: 12px; padding: 8px; color: #004d40; font-size: 11px; transition: transform 0.3s; }
+  .item:hover { transform: translateY(-6px) scale(1.03); }
+  .item-img { width: 100%; aspect-ratio: 1; background: rgba(255,255,255,0.5); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #00695c; font-size: 40px; overflow: hidden; margin-bottom: 6px; border: 1px solid #b2dfdb; }
   .item-img img { width: 100%; height: 100%; object-fit: cover; }
-  .item-name { font-weight: 700; text-align: center; font-size: 12px; margin-bottom: 4px; }
+  .item-name { font-weight: 800; text-align: center; font-size: 12px; margin-bottom: 4px; }
   .item-desc { font-size: 9px; text-align: center; color: #00695c; }
-  .item-effect { background: #00897b; color: #fff; text-align: center; padding: 3px; border-radius: 4px; font-size: 10px; font-weight: bold; margin-top: 5px; }
-  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 25px 16px; padding: 20px 0; justify-items: center; }
-  .pack-card { animation: pop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  @keyframes pop { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
-  #packReveal { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; margin-top: 20px; min-height: 200px; }
-  .battle-slot { width: 140px; height: 200px; border: 2px dashed rgba(0, 217, 255, 0.3); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: rgba(0, 217, 255, 0.5); font-size: 12px; text-align: center; padding: 10px; background: rgba(0,0,0,0.2); }
-  .flash-msg { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: linear-gradient(180deg, #2ecc71, #27ae60); color: #fff; padding: 12px 24px; border-radius: 6px; font-weight: bold; font-size: 14px; opacity: 0; transition: opacity 0.3s; pointer-events: none; z-index: 999; border: 1px solid #1e8449; }
-  .flash-msg.show { opacity: 1; }
+  .item-effect { background: #00897b; color: #fff; text-align: center; padding: 4px; border-radius: 6px; font-size: 10px; font-weight: bold; margin-top: 5px; }
+
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 24px 18px; padding: 20px 0; justify-items: center; }
+
+  /* ============ GLASS PANELS ============ */
+  .glass-panel {
+    background: var(--glass);
+    border: 1px solid var(--glass-border);
+    border-radius: 16px;
+    padding: 20px;
+    backdrop-filter: blur(10px);
+    transition: all 0.2s;
+  }
+  .glass-panel:hover { border-color: rgba(0,217,255,0.3); }
+
+  /* ============ BATTLE ============ */
+  .battle-slot {
+    width: 150px; height: 210px;
+    border: 2px dashed rgba(0,217,255,0.3);
+    border-radius: 14px;
+    display: flex; align-items: center; justify-content: center;
+    color: rgba(0,217,255,0.5); font-size: 12px; text-align: center;
+    padding: 10px; background: rgba(0,0,0,0.2);
+    position: relative; transition: all 0.3s;
+  }
+  .battle-slot.attacking-player { animation: playerLunge 0.6s ease; z-index: 10; }
+  @keyframes playerLunge { 0% { transform: translateY(0) scale(1); } 40% { transform: translateY(-70px) scale(1.2); } 60% { transform: translateY(-70px) scale(1.2); } 100% { transform: translateY(0) scale(1); } }
+  .battle-slot.attacking-bot { animation: botLunge 0.6s ease; z-index: 10; }
+  @keyframes botLunge { 0% { transform: translateY(0) scale(1); } 40% { transform: translateY(70px) scale(1.2); } 60% { transform: translateY(70px) scale(1.2); } 100% { transform: translateY(0) scale(1); } }
+  .battle-slot.hit-player { animation: playerHit 0.4s ease; }
+  @keyframes playerHit { 0%, 100% { transform: translateX(0); filter: brightness(1); } 20% { transform: translateX(-14px); filter: brightness(2.5); } 40% { transform: translateX(14px); filter: brightness(2.5); } 60% { transform: translateX(-8px); filter: brightness(1.8); } 80% { transform: translateX(8px); filter: brightness(1.8); } }
+  .battle-slot.hit-bot { animation: botHit 0.4s ease; }
+  @keyframes botHit { 0%, 100% { transform: translateX(0); filter: brightness(1); } 20% { transform: translateX(14px); filter: brightness(2.5); } 40% { transform: translateX(-14px); filter: brightness(2.5); } 60% { transform: translateX(8px); filter: brightness(1.8); } 80% { transform: translateX(-8px); filter: brightness(1.8); } }
+
+  .hp-bar-wrap {
+    position: relative; width: 100%; height: 20px;
+    background: rgba(0,0,0,0.6); border-radius: 10px;
+    overflow: hidden; margin-top: 8px;
+    border: 1px solid rgba(255,255,255,0.15);
+    box-shadow: inset 0 2px 6px rgba(0,0,0,0.7);
+  }
+  .hp-bar-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #2ecc71, #27ae60); transition: width 0.6s ease, background 0.3s; position: relative; box-shadow: 0 0 12px rgba(46,204,113,0.5); }
+  .hp-bar-fill.warn { background: linear-gradient(90deg, #f39c12, #e67e22); box-shadow: 0 0 12px rgba(243,156,18,0.6); }
+  .hp-bar-fill.danger { background: linear-gradient(90deg, #e74c3c, #c0392b); animation: hpDanger 0.3s infinite; }
+  @keyframes hpDanger { 0%, 100% { filter: brightness(1); box-shadow: 0 0 12px rgba(231,76,60,0.7); } 50% { filter: brightness(1.8); box-shadow: 0 0 25px rgba(231,76,60,1); } }
+  .hp-bar-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; z-index: 2; letter-spacing: 1px; }
+
+  .dmg-number { position: fixed; font-size: 34px; font-weight: 900; color: #ff4444; text-shadow: 0 0 12px #ff0000, 3px 3px 5px #000; pointer-events: none; z-index: 100; animation: dmgFloat 1.3s ease forwards; }
+  @keyframes dmgFloat { 0% { transform: translate(-50%, 0) scale(0.5); opacity: 0; } 20% { transform: translate(-50%, -30px) scale(1.6); opacity: 1; } 100% { transform: translate(-50%, -120px) scale(1); opacity: 0; } }
+  .attack-particle { position: fixed; font-size: 40px; pointer-events: none; z-index: 90; filter: drop-shadow(0 0 15px currentColor); }
+
+  .screen-shake { animation: screenShake 0.4s; }
+  @keyframes screenShake { 0%, 100% { transform: translate(0, 0); } 10% { transform: translate(-10px, 5px); } 20% { transform: translate(10px, -5px); } 30% { transform: translate(-7px, -5px); } 40% { transform: translate(7px, 5px); } 50% { transform: translate(-5px, 3px); } 60% { transform: translate(5px, -3px); } 70% { transform: translate(-3px, 0); } 80% { transform: translate(3px, 0); } }
+
+  /* Difficulty buttons */
+  .diff-btn { padding: 12px 18px; font-size: 12px; border-radius: 12px; border: 2px solid; background: transparent; font-weight: bold; letter-spacing: 1px; transition: all 0.25s; cursor: pointer; box-shadow: none; }
+  .diff-btn::after { display: none; }
+  .diff-btn[data-diff="easy"] { color: #27ae60; border-color: #27ae60; }
+  .diff-btn[data-diff="easy"]:hover, .diff-btn[data-diff="easy"].selected { background: #27ae60; color: #fff; box-shadow: 0 0 25px #27ae60; transform: translateY(-2px); }
+  .diff-btn[data-diff="normal"] { color: #3498db; border-color: #3498db; }
+  .diff-btn[data-diff="normal"]:hover, .diff-btn[data-diff="normal"].selected { background: #3498db; color: #fff; box-shadow: 0 0 25px #3498db; transform: translateY(-2px); }
+  .diff-btn[data-diff="hard"] { color: #e67e22; border-color: #e67e22; }
+  .diff-btn[data-diff="hard"]:hover, .diff-btn[data-diff="hard"].selected { background: #e67e22; color: #fff; box-shadow: 0 0 25px #e67e22; transform: translateY(-2px); }
+  .diff-btn[data-diff="insane"] { color: #c0392b; border-color: #c0392b; }
+  .diff-btn[data-diff="insane"]:hover, .diff-btn[data-diff="insane"].selected { background: #c0392b; color: #fff; box-shadow: 0 0 25px #c0392b; transform: translateY(-2px); }
+  .diff-btn[data-diff="knight"] { color: #a855f7; border-color: #a855f7; font-family: 'Courier New', monospace; font-weight: 900; }
+  .diff-btn[data-diff="knight"]:hover, .diff-btn[data-diff="knight"].selected { background: #a855f7; color: #fff; box-shadow: 0 0 30px #a855f7, 0 0 60px #7c3aed; animation: knightPulse 1.5s infinite alternate; transform: translateY(-2px); }
+  @keyframes knightPulse { from { box-shadow: 0 0 25px #a855f7; } to { box-shadow: 0 0 50px #a855f7, 0 0 80px #7c3aed; } }
+
+  /* ============ OVERLAYS ============ */
+  .result-overlay { position: fixed; inset: 0; z-index: 1500; display: flex; align-items: center; justify-content: center; pointer-events: none; }
+  .result-overlay.active { pointer-events: auto; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px); }
+  .result-text { font-size: 100px; font-weight: 900; letter-spacing: 8px; text-align: center; animation: resultPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .result-text.win { color: var(--gold); text-shadow: 0 0 20px #ffaa00, 0 0 40px #ffaa00, 0 0 80px #ffaa00, 5px 5px 0 #000; }
+  .result-text.win.epic-win { font-size: 130px; color: #fff; text-shadow: 0 0 30px #fff, 0 0 60px #ffaa00, 0 0 100px #ff6600, 0 0 140px #ff0000, 6px 6px 0 #000; animation: resultPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), epicWinPulse 0.6s infinite alternate; }
+  @keyframes epicWinPulse { from { transform: scale(1) rotate(-1deg); } to { transform: scale(1.06) rotate(1deg); } }
+  .result-text.lose { color: #b066d9; text-shadow: 0 0 20px #7c3aed, 0 0 40px #7c3aed, 5px 5px 0 #000; }
+  @keyframes resultPop { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 60% { transform: scale(1.2) rotate(5deg); opacity: 1; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+
+  .particle { position: fixed; pointer-events: none; z-index: 1400; }
+  .particle.gold { width: 9px; height: 9px; border-radius: 50%; background: radial-gradient(circle, #fff, #ffdd44); box-shadow: 0 0 14px #ffaa00; }
+  .particle.purple { width: 11px; height: 11px; border-radius: 50%; background: radial-gradient(circle, #e9d5ff, #7c3aed); box-shadow: 0 0 14px #7c3aed; }
+  .particle.rainbow { width: 13px; height: 13px; border-radius: 50%; background: radial-gradient(circle, #fff, #ff00ff); box-shadow: 0 0 18px #ff00ff, 0 0 28px #00ffff; animation: rainbowSpin 1s linear infinite; }
+  @keyframes rainbowSpin { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
+
+  .aura-flyer { position: fixed; z-index: 1600; font-size: 36px; font-weight: 900; color: var(--accent); text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent), 3px 3px 0 #000; pointer-events: none; }
+
+  /* ============ ACHIEVEMENT TOAST ============ */
+  .toast {
+    position: fixed; top: 80px; right: 24px; z-index: 1800;
+    background: linear-gradient(135deg, rgba(0,217,255,0.2), rgba(124,58,237,0.2));
+    border: 1px solid var(--accent);
+    border-radius: 12px;
+    padding: 14px 20px;
+    backdrop-filter: blur(20px);
+    box-shadow: 0 8px 30px rgba(0,217,255,0.4);
+    animation: toastSlide 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13px; font-weight: 600; color: #fff;
+    max-width: 320px;
+  }
+  .toast.removing { animation: toastOut 0.3s ease forwards; }
+  @keyframes toastSlide { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
+  @keyframes toastOut { to { transform: translateX(400px); opacity: 0; } }
+  .toast-icon { font-size: 24px; }
+
+  /* ============ PACK OPENING ============ */
+  #packOverlay { position: fixed; inset: 0; z-index: 1000; background: radial-gradient(circle, #1b4f72 0%, #000 100%); display: flex; align-items: center; justify-content: center; overflow: hidden; }
+  #packOverlay.hidden { display: none !important; }
+  .pack-stage { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+  .sealed-pack { width: 240px; height: 380px; position: relative; filter: drop-shadow(0 25px 60px rgba(0,217,255,0.5)); }
+  .pack-half { position: absolute; left: 0; right: 0; height: 50%; border: 2px solid var(--accent); overflow: hidden; }
+  .pack-top { top: 0; border-radius: 16px 16px 0 0; border-bottom: none; background: linear-gradient(180deg, #4facfe 0%, #00d9ff 50%, #005c97 100%); display: flex; align-items: center; justify-content: center; transition: transform 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.9s ease; transform-origin: bottom center; }
+  .pack-top.torn { transform: translate(-40px, -120%) rotate(-25deg); opacity: 0; }
+  .pack-top::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.7) 50%, transparent 70%); animation: shine 3s infinite; pointer-events: none; }
+  @keyframes shine { 0% { transform: translateX(-100%) rotate(0); } 100% { transform: translateX(100%) rotate(0); } }
+  .pack-logo { font-size: 34px; font-weight: 900; color: #fff; letter-spacing: 7px; text-shadow: 0 0 20px var(--accent), 3px 3px 0 #000; z-index: 1; animation: logoPulse 1.5s infinite alternate; }
+  @keyframes logoPulse { from { text-shadow: 0 0 20px var(--accent), 3px 3px 0 #000; } to { text-shadow: 0 0 35px #fff, 0 0 60px var(--accent), 3px 3px 0 #000; } }
+  .pack-bottom { bottom: 0; border-radius: 0 0 16px 16px; border-top: none; background: linear-gradient(180deg, #0f3460 0%, #1a4a7a 50%, #0a0a1a 100%); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 20px; }
+  .pack-tag { color: var(--accent); font-size: 11px; font-weight: bold; letter-spacing: 3px; text-shadow: 0 0 10px var(--accent); }
+  .swipe-line { position: absolute; top: 50%; left: -20px; right: -20px; height: 10px; background: rgba(0,0,0,0.7); border-radius: 5px; transform: translateY(-50%); cursor: grab; overflow: hidden; border: 1px solid var(--accent); box-shadow: 0 0 20px rgba(0,217,255,0.6); z-index: 10; touch-action: none; }
+  .swipe-progress { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), #fff, var(--accent)); box-shadow: 0 0 20px var(--accent); transition: width 0.05s linear; }
+  .swipe-hint { position: absolute; top: -34px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 12px; font-weight: bold; letter-spacing: 3px; animation: hintBlink 1s infinite alternate; white-space: nowrap; }
+  @keyframes hintBlink { from { opacity: 0.4; } to { opacity: 1; } }
+  .reveal-area { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
+  .reveal-area.active { pointer-events: auto; cursor: pointer; }
+  .reveal-counter { color: var(--accent); font-size: 15px; font-weight: bold; letter-spacing: 4px; margin-bottom: 24px; text-shadow: 0 0 15px var(--accent); }
+  .revealed-card { position: relative; animation: cardPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); transform-origin: center; }
+  @keyframes cardPop { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 60% { transform: scale(1.15) rotate(10deg); opacity: 1; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
+  .tap-hint { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 13px; letter-spacing: 4px; animation: hintBlink 0.8s infinite alternate; text-shadow: 0 0 12px var(--accent); }
+  .sparkle { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: #fff; box-shadow: 0 0 12px #fff, 0 0 22px var(--accent); pointer-events: none; animation: sparkleFloat 2s infinite; }
+  @keyframes sparkleFloat { 0% { transform: translateY(0) scale(0); opacity: 0; } 20% { transform: translateY(-30px) scale(1.3); opacity: 1; } 100% { transform: translateY(-130px) scale(0); opacity: 0; } }
+  .screen-flash { position: fixed; inset: 0; background: #fff; z-index: 2000; pointer-events: none; opacity: 0; }
+  .screen-flash.flash { animation: screenFlash 0.4s ease; }
+  @keyframes screenFlash { 0% { opacity: 0.9; } 100% { opacity: 0; } }
+
+  .flash-msg { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #2ecc71, #27ae60); color: #fff; padding: 14px 26px; border-radius: 12px; font-weight: 700; font-size: 14px; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 999; box-shadow: 0 8px 30px rgba(46,204,113,0.5); letter-spacing: 1px; }
+  .flash-msg.show { opacity: 1; transform: translateX(-50%) translateY(-8px); }
   .hidden { display: none !important; }
 </style>
 </head>
 <body>
 
 <header>
-  <div class="header-controls">
-    <div class="aura-display">AURA: <span id="auraCount">50</span></div>
-    <select id="langSelect" onchange="setLanguage(this.value)">
-      <option value="en">English</option>
-      <option value="fa">فارسی</option>
-    </select>
+  <div class="logo-wrap">
+    <div class="logo-mark">P</div>
+    <div class="logo-text">
+      <h1>P<span>STCG</span></h1>
+      <p>PAPERSHOP TCG</p>
+    </div>
   </div>
-  <h1>P<span>STCG</span></h1>
-  <div style="font-size:10px; color:#889; letter-spacing:2px; font-weight:600;">PAPERSHOP TRADING CARD GAME</div>
-  <input type="text" id="usernameInput" placeholder="Enter username..." maxlength="50">
+  <div class="header-right">
+    <div class="pill aura" id="auraDisplay">AURA: <span id="auraCount">50</span></div>
+    <button class="icon-btn" id="musicBtn" title="Toggle Music">♫</button>
+    <select id="langSelect" onchange="setLanguage(this.value)">
+      <option value="en">EN</option>
+      <option value="fa">FA</option>
+    </select>
+    <input type="text" id="usernameInput" placeholder="Username..." maxlength="50">
+  </div>
 </header>
 
 <div class="tabs">
@@ -80,51 +390,65 @@
 
 <div id="play" class="page active">
   <h2>Open a Pack</h2>
-  <p style="font-size:12px; color:#a9cce3;">5 cards per pack. Win battles to earn Aura!</p>
-  <button id="openPackBtn" style="font-size:16px; padding:14px 30px;">OPEN PACK</button>
-  <button id="adminAuraBtn" class="admin-btn hidden" style="font-size:14px; padding:10px 20px; margin-left:10px; display: block; margin-top: 10px;">ADMIN: ADD 9999 AURA</button>
-  <div id="packReveal"></div>
+  <p style="font-size:13px; color:var(--text-dim); margin-bottom:20px;">5 cards per pack. Win battles to earn Aura!</p>
+  <button id="openPackBtn" style="font-size:17px; padding:18px 40px;">OPEN PACK</button>
+  <button id="adminAuraBtn" class="admin-btn hidden" style="font-size:14px; padding:12px 24px; margin-top: 12px; display: block;">ADMIN: ADD 9999 AURA</button>
 </div>
 
 <div id="collection" class="page">
   <h2>Your Collection</h2>
-  <p style="font-size:12px; color:#a9cce3;">Unique Cards: <b id="uniqueCount">0</b> · Total: <b id="totalCount">0</b></p>
+  <p style="font-size:13px; color:var(--text-dim);">Unique Cards: <b id="uniqueCount" style="color:var(--accent);">0</b> · Total: <b id="totalCount" style="color:var(--accent);">0</b></p>
   <div id="collectionGrid" class="card-grid"></div>
-  <h2 style="margin-top:30px;">Your Items</h2>
+  <h2 style="margin-top:40px;">Your Items</h2>
   <div id="itemGrid" class="card-grid"></div>
 </div>
 
 <div id="battle" class="page">
   <h2>Battle</h2>
   <div id="battleSetup">
-    <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); padding:16px; border-radius:6px; margin-top:16px; text-align:center;">
-      <h3 style="color:#00d9ff; margin-top:0;">Play vs Neutral Bot</h3>
-      <p style="font-size:12px; color:#a9cce3;">The bot doesn't try to win. It just exists.</p>
-      <button id="startBotBtn" class="success" style="width:100%; padding:12px;">PLAY BOT</button>
+    <div class="glass-panel" style="margin-top:16px;">
+      <h3 style="color:var(--accent); margin-top:0; font-weight:300; letter-spacing:2px;">CHOOSE YOUR OPPONENT</h3>
+      <p style="font-size:12px; color:var(--text-dim); margin-bottom:16px;">Higher difficulty = more Aura. Whispers say naming yourself <b style="color:#a855f7;">"kris"</b> or <b style="color:#a855f7;">"rouring"</b> awakens something...</p>
+      <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:16px;">
+        <button class="diff-btn selected" data-diff="easy">EASY +25</button>
+        <button class="diff-btn" data-diff="normal">NORMAL +50</button>
+        <button class="diff-btn" data-diff="hard">HARD +100</button>
+        <button class="diff-btn" data-diff="insane">INSANE +250</button>
+        <button class="diff-btn hidden" id="knightBtn" data-diff="knight">THE ROARING KNIGHT +1000</button>
+      </div>
+      <button id="startBotBtn" class="success" style="width:100%; padding:16px; font-size:15px;">BEGIN BATTLE</button>
     </div>
-    <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); padding:16px; border-radius:6px; margin-top:16px; text-align:center;">
-      <h3 style="color:#00d9ff; margin-top:0;">Multiplayer (P2P)</h3>
+    <div class="glass-panel" style="margin-top:16px; text-align:center;">
+      <h3 style="color:var(--accent); margin-top:0; font-weight:300; letter-spacing:2px;">MULTIPLAYER (P2P)</h3>
       <button id="hostBtn" class="secondary" style="width:100%; padding:12px; margin-bottom:8px;">HOST GAME</button>
-      <input type="text" id="joinCodeInput" placeholder="Enter Host Code" style="width:100%; padding:8px; margin-bottom:10px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; text-align:center;">
+      <input type="text" id="joinCodeInput" placeholder="Enter Host Code" style="width:100%; padding:10px; margin-bottom:10px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; text-align:center; border-radius:10px; font-family:inherit;">
       <button id="joinBtn" class="secondary" style="width:100%; padding:12px;">JOIN GAME</button>
     </div>
-    <div id="mpStatus" style="text-align:center; margin-top:10px; font-weight:bold; color:#f1c40f;"></div>
+    <div id="mpStatus" style="text-align:center; margin-top:12px; font-weight:bold; color:var(--gold);"></div>
   </div>
 
   <div id="battleArena" class="hidden">
-    <div style="text-align:center; font-size:14px; font-weight:bold; color:#f1c40f; margin-bottom:10px;" id="turnIndicator">WAITING...</div>
-    <div style="background:radial-gradient(circle, #1b4f72 0%, #0b132b 100%); border:1px solid rgba(255,255,255,0.2); border-radius:8px; padding:20px; min-height:500px; display:flex; flex-direction:column; justify-content:space-between;">
-      <div style="text-align:center; color:#ff6b5b; font-weight:bold;">OPPONENT (HP: <span id="botHP">20</span>)</div>
-      <div style="display:flex; justify-content:center; gap:20px; align-items:center; min-height:180px;"><div class="battle-slot" id="botSlot">No Active Card</div></div>
-      <div style="width:100%; height:12px; background:rgba(0,0,0,0.5); border-radius:6px; overflow:hidden; margin-top:5px;"><div id="botHPBar" style="height:100%; background:linear-gradient(90deg, #e74c3c, #ff6b5b); width:100%;"></div></div>
-      <div id="battleLog" style="background:rgba(0,0,0,0.6); border:1px solid rgba(255,255,255,0.1); border-radius:4px; padding:10px; font-size:12px; max-height:120px; overflow-y:auto; margin:10px 0; color:#a9cce3; font-family:'Consolas', monospace;"></div>
-      <div style="display:flex; justify-content:center; gap:20px; align-items:center; min-height:180px;"><div class="battle-slot" id="playerSlot">No Active Card</div></div>
-      <div style="text-align:center; color:#00d9ff; font-weight:bold;">YOU (HP: <span id="playerHP">20</span>)</div>
-      <div style="width:100%; height:12px; background:rgba(0,0,0,0.5); border-radius:6px; overflow:hidden; margin-top:5px;"><div id="playerHPBar" style="height:100%; background:linear-gradient(90deg, #e74c3c, #ff6b5b); width:100%;"></div></div>
+    <div style="text-align:center; font-size:15px; font-weight:bold; color:var(--gold); margin-bottom:12px; letter-spacing:3px;" id="turnIndicator">WAITING...</div>
+    <div id="battleField" class="glass-panel" style="min-height:520px; display:flex; flex-direction:column; justify-content:space-between;">
+      <div>
+        <div style="text-align:center; color:#ff6b5b; font-weight:bold; font-size:14px; letter-spacing:2px;" id="opponentLabel">OPPONENT</div>
+        <div style="display:flex; justify-content:center; gap:20px; align-items:center; min-height:210px; position:relative;">
+          <div class="battle-slot" id="botSlot">No Active Card</div>
+        </div>
+        <div class="hp-bar-wrap"><div class="hp-bar-fill" id="botHPBar"></div><div class="hp-bar-text" id="botHPText">20 / 20 HP</div></div>
+      </div>
+      <div id="battleLog" style="background:rgba(0,0,0,0.5); border:1px solid var(--glass-border); border-radius:10px; padding:12px; font-size:12px; max-height:110px; overflow-y:auto; margin:12px 0; color:#a9cce3; font-family:'Consolas', monospace;"></div>
+      <div>
+        <div style="display:flex; justify-content:center; gap:20px; align-items:center; min-height:210px; position:relative;">
+          <div class="battle-slot" id="playerSlot">No Active Card</div>
+        </div>
+        <div style="text-align:center; color:var(--accent); font-weight:bold; font-size:14px; letter-spacing:2px;">YOU</div>
+        <div class="hp-bar-wrap"><div class="hp-bar-fill" id="playerHPBar"></div><div class="hp-bar-text" id="playerHPText">20 / 20 HP</div></div>
+      </div>
     </div>
-    <div style="text-align:center; margin-top:10px; color:#a9cce3; font-size:12px;">YOUR HAND (Click a card to play it)</div>
-    <div style="display:flex; gap:10px; justify-content:center; margin-top:10px; min-height:160px;" id="playerHand"></div>
-    <div style="display:flex; gap:10px; justify-content:center; flex-wrap:wrap; padding:10px;">
+    <div style="text-align:center; margin-top:12px; color:var(--text-dim); font-size:12px; letter-spacing:2px;">YOUR HAND (Click a card to play it)</div>
+    <div style="display:flex; gap:12px; justify-content:center; margin-top:12px; min-height:170px; flex-wrap:wrap;" id="playerHand"></div>
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap; padding:12px;">
       <button id="attackBtn" class="danger" disabled>ATTACK</button>
       <button id="passTurnBtn" class="secondary" disabled>PASS TURN</button>
       <button id="useItemBtn" class="secondary" disabled>USE ITEM</button>
@@ -139,54 +463,50 @@
     <button class="tab-btn active" onclick="switchCreator('card')" style="flex:1;">CARD</button>
     <button class="tab-btn" onclick="switchCreator('item')" style="flex:1;">ITEM</button>
   </div>
-  <div id="cardCreator" style="display:grid; grid-template-columns:220px 1fr; gap:24px; align-items:start;">
-    <div>
-      <div style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:10px; text-align:center;">
-        <canvas id="drawCanvas" width="180" height="180" style="background:#000; border-radius:4px; cursor:crosshair; border:1px solid #00d9ff;"></canvas>
-        <div style="display:flex; gap:6px; justify-content:center; margin-top:10px; flex-wrap:wrap;">
-          <div class="color-swatch active" data-color="#00ff88" style="background:#00ff88; width:26px; height:26px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></div>
-          <div class="color-swatch" data-color="#ff3355" style="background:#ff3355; width:26px; height:26px; border-radius:50%; cursor:pointer;"></div>
-          <div class="color-swatch" data-color="#00d9ff" style="background:#00d9ff; width:26px; height:26px; border-radius:50%; cursor:pointer;"></div>
-          <div class="color-swatch" data-color="#ffcc00" style="background:#ffcc00; width:26px; height:26px; border-radius:50%; cursor:pointer;"></div>
-          <div class="color-swatch" data-color="#ffffff" style="background:#ffffff; width:26px; height:26px; border-radius:50%; cursor:pointer;"></div>
-          <div class="color-swatch" data-color="#000000" style="background:#000000; width:26px; height:26px; border-radius:50%; border:2px solid #555; cursor:pointer;"></div>
-        </div>
-        <div style="display:flex; gap:6px; justify-content:center; margin-top:10px;">
-          <button class="secondary" id="clearCanvasBtn" style="font-size:11px; padding:4px 10px;">CLEAR</button>
-          <button class="secondary" id="eraserBtn" style="font-size:11px; padding:4px 10px;">ERASER</button>
-        </div>
-        <div style="margin-top:10px; font-size:11px; color:#a9cce3;">OR IMPORT PNG:</div>
-        <input type="file" id="cardImageUpload" accept="image/png, image/jpeg" style="font-size:11px; color:#fff; margin-top:5px; width:100%;">
+  <div id="cardCreator" style="display:grid; grid-template-columns:240px 1fr; gap:24px; align-items:start;">
+    <div class="glass-panel" style="text-align:center;">
+      <canvas id="drawCanvas" width="180" height="180" style="background:#000; border-radius:8px; cursor:crosshair; border:1px solid var(--accent); box-shadow: 0 0 15px rgba(0,217,255,0.3);"></canvas>
+      <div style="display:flex; gap:8px; justify-content:center; margin-top:12px; flex-wrap:wrap;">
+        <div class="color-swatch active" data-color="#00ff88" style="background:#00ff88; width:28px; height:28px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></div>
+        <div class="color-swatch" data-color="#ff3355" style="background:#ff3355; width:28px; height:28px; border-radius:50%; cursor:pointer;"></div>
+        <div class="color-swatch" data-color="#00d9ff" style="background:#00d9ff; width:28px; height:28px; border-radius:50%; cursor:pointer;"></div>
+        <div class="color-swatch" data-color="#ffcc00" style="background:#ffcc00; width:28px; height:28px; border-radius:50%; cursor:pointer;"></div>
+        <div class="color-swatch" data-color="#ffffff" style="background:#ffffff; width:28px; height:28px; border-radius:50%; cursor:pointer;"></div>
+        <div class="color-swatch" data-color="#000000" style="background:#000000; width:28px; height:28px; border-radius:50%; border:2px solid #555; cursor:pointer;"></div>
       </div>
+      <div style="display:flex; gap:8px; justify-content:center; margin-top:12px;">
+        <button class="secondary" id="clearCanvasBtn" style="font-size:11px; padding:6px 12px;">CLEAR</button>
+        <button class="secondary" id="eraserBtn" style="font-size:11px; padding:6px 12px;">ERASER</button>
+      </div>
+      <div style="margin-top:14px; font-size:11px; color:var(--text-dim);">OR IMPORT PNG:</div>
+      <input type="file" id="cardImageUpload" accept="image/png, image/jpeg" style="font-size:11px; color:#fff; margin-top:6px; width:100%;">
     </div>
     <div>
-      <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:#00d9ff; text-transform:uppercase; margin-bottom:5px;">Card Name (1-30 chars)</label><input type="text" id="cardName" placeholder="Kris Get The Banana" maxlength="30" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:4px;"></div>
-      <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:#00d9ff; text-transform:uppercase; margin-bottom:5px;">Codename (No spaces)</label><input type="text" id="cardCodename" placeholder="kris_banana" maxlength="30" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:4px;"></div>
+      <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; font-weight:700;">Card Name</label><input type="text" id="cardName" placeholder="Kris Get The Banana" maxlength="30" style="width:100%; padding:10px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:10px; font-family:inherit;"></div>
+      <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; font-weight:700;">Codename</label><input type="text" id="cardCodename" placeholder="kris_banana" maxlength="30" style="width:100%; padding:10px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:10px; font-family:inherit;"></div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-        <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:#00d9ff; text-transform:uppercase; margin-bottom:5px;">HP</label><input type="number" id="cardHP" value="60" min="1" max="999" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:4px;"></div>
-        <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:#00d9ff; text-transform:uppercase; margin-bottom:5px;">Damage</label><input type="number" id="cardDamage" value="20" min="0" max="999" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:4px;"></div>
+        <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; font-weight:700;">HP</label><input type="number" id="cardHP" value="60" min="1" max="999" style="width:100%; padding:10px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:10px; font-family:inherit;"></div>
+        <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; font-weight:700;">Damage</label><input type="number" id="cardDamage" value="20" min="0" max="999" style="width:100%; padding:10px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:10px; font-family:inherit;"></div>
       </div>
-      <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:#00d9ff; text-transform:uppercase; margin-bottom:5px;">Attack Name</label><input type="text" id="cardAttack" placeholder="Potassium" maxlength="20" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:4px;"></div>
-      <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:#00d9ff; text-transform:uppercase; margin-bottom:5px;">Drop Rate (%)</label><input type="number" id="cardDropRate" value="10" min="0.01" max="100" step="0.01" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:4px;"></div>
-      <button id="saveCardBtn" class="success" style="width:100%; padding:14px; margin-bottom:8px;">SAVE CARD TO DB</button>
-      <button id="exportCardBtn" class="secondary" style="width:100%; padding:14px;">EXPORT AS .crd FILE</button>
+      <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; font-weight:700;">Attack Name</label><input type="text" id="cardAttack" placeholder="Potassium" maxlength="20" style="width:100%; padding:10px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:10px; font-family:inherit;"></div>
+      <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; font-weight:700;">Drop Rate (%)</label><input type="number" id="cardDropRate" value="10" min="0.01" max="100" step="0.01" style="width:100%; padding:10px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:10px; font-family:inherit;"></div>
+      <button id="saveCardBtn" class="success" style="width:100%; padding:14px; margin-bottom:8px;">SAVE CARD</button>
+      <button id="exportCardBtn" class="secondary" style="width:100%; padding:14px;">EXPORT .crd FILE</button>
     </div>
   </div>
-  <div id="itemCreator" style="display:none; grid-template-columns:220px 1fr; gap:24px; align-items:start;">
-    <div>
-      <div style="background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); border-radius:6px; padding:10px; text-align:center;">
-        <div style="font-size:40px; padding:60px 0;">ITEM</div>
-        <div style="margin-top:10px; font-size:11px; color:#a9cce3;">OR IMPORT PNG:</div>
-        <input type="file" id="itemImageUpload" accept="image/png, image/jpeg" style="font-size:11px; color:#fff; margin-top:5px; width:100%;">
-      </div>
+  <div id="itemCreator" style="display:none; grid-template-columns:240px 1fr; gap:24px; align-items:start;">
+    <div class="glass-panel" style="text-align:center;">
+      <div style="font-size:40px; padding:60px 0;">ITEM</div>
+      <div style="margin-top:14px; font-size:11px; color:var(--text-dim);">OR IMPORT PNG:</div>
+      <input type="file" id="itemImageUpload" accept="image/png, image/jpeg" style="font-size:11px; color:#fff; margin-top:6px; width:100%;">
     </div>
     <div>
-      <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:#00d9ff; text-transform:uppercase; margin-bottom:5px;">Item Name</label><input type="text" id="itemName" placeholder="Health Potion" maxlength="20" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:4px;"></div>
-      <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:#00d9ff; text-transform:uppercase; margin-bottom:5px;">Codename (No spaces)</label><input type="text" id="itemCodename" placeholder="health_potion" maxlength="30" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:4px;"></div>
-      <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:#00d9ff; text-transform:uppercase; margin-bottom:5px;">Description</label><input type="text" id="itemDesc" placeholder="Heals your active card" maxlength="50" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:4px;"></div>
+      <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; font-weight:700;">Item Name</label><input type="text" id="itemName" placeholder="Health Potion" maxlength="20" style="width:100%; padding:10px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:10px; font-family:inherit;"></div>
+      <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; font-weight:700;">Codename</label><input type="text" id="itemCodename" placeholder="health_potion" maxlength="30" style="width:100%; padding:10px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:10px; font-family:inherit;"></div>
+      <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; font-weight:700;">Description</label><input type="text" id="itemDesc" placeholder="Heals your active card" maxlength="50" style="width:100%; padding:10px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:10px; font-family:inherit;"></div>
       <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
-        <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:#00d9ff; text-transform:uppercase; margin-bottom:5px;">Effect Type</label><select id="itemType" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:4px;"><option value="heal">Heal</option><option value="damage">Damage</option><option value="buff">Buff (Attack +10)</option></select></div>
-        <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:#00d9ff; text-transform:uppercase; margin-bottom:5px;">Value</label><input type="number" id="itemValue" value="20" min="1" max="999" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid rgba(255,255,255,0.2); color:#fff; border-radius:4px;"></div>
+        <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; font-weight:700;">Effect</label><select id="itemType" style="width:100%; padding:10px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:10px; font-family:inherit;"><option value="heal">Heal</option><option value="damage">Damage</option><option value="buff">Buff</option></select></div>
+        <div style="margin-bottom:14px;"><label style="display:block; font-size:11px; color:var(--accent); text-transform:uppercase; letter-spacing:1px; margin-bottom:6px; font-weight:700;">Value</label><input type="number" id="itemValue" value="20" min="1" max="999" style="width:100%; padding:10px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:10px; font-family:inherit;"></div>
       </div>
       <button id="saveItemBtn" class="success" style="width:100%; padding:14px;">SAVE ITEM</button>
     </div>
@@ -195,23 +515,21 @@
 
 <div id="data" class="page">
   <h2>Data & Files</h2>
-  <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:16px; margin-bottom:16px;">
-    <h3 style="color:#00d9ff; margin-top:0;">LOAD CARDS FROM GITHUB (auto)</h3>
-    <p style="font-size:12px; color:#a9cce3;">Cards auto-load on page open. Click to reload manually.</p>
-    <button id="loadGithubBtn" class="success" style="width:100%; margin-bottom:8px;">RELOAD CARDS FROM SERVER</button>
-    <div id="crdDropZone" style="border:2px dashed rgba(0,217,255,0.4); padding:20px; text-align:center; border-radius:6px; margin:10px 0; color:#889; background:rgba(0,0,0,0.2);">
+  <div class="glass-panel" style="margin-bottom:16px;">
+    <h3 style="color:var(--accent); margin-top:0; font-weight:300; letter-spacing:1px;">LOAD CARDS FROM GITHUB</h3>
+    <button id="loadGithubBtn" class="success" style="width:100%; margin-bottom:8px;">RELOAD FROM SERVER</button>
+    <div id="crdDropZone" style="border:2px dashed rgba(0,217,255,0.4); padding:24px; text-align:center; border-radius:12px; margin:10px 0; color:var(--text-dim); background:rgba(0,0,0,0.2);">
       <input type="file" id="crdFileInput" multiple accept=".crd,.itm" style="display:none;">
-      <p>Drag & Drop .crd or .itm files here or <span style="color:#00d9ff; text-decoration:underline; cursor:pointer;" onclick="document.getElementById('crdFileInput').click()">browse</span></p>
+      <p>Drag & Drop files here or <span style="color:var(--accent); text-decoration:underline; cursor:pointer;" onclick="document.getElementById('crdFileInput').click()">browse</span></p>
     </div>
   </div>
-  <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:16px; margin-bottom:16px;">
-    <h3 style="color:#00d9ff; margin-top:0;">SAVE / LOAD GAME DATA (.dat)</h3>
-    <p style="font-size:12px; color:#a9cce3;">This file saves your card counts, items, Aura, and username.</p>
-    <button id="saveDatBtn" class="success" style="width:100%; margin-bottom:8px;">DOWNLOAD SAVE FILE (.dat)</button>
+  <div class="glass-panel" style="margin-bottom:16px;">
+    <h3 style="color:var(--accent); margin-top:0; font-weight:300; letter-spacing:1px;">SAVE / LOAD (.dat)</h3>
+    <button id="saveDatBtn" class="success" style="width:100%; margin-bottom:8px;">DOWNLOAD SAVE FILE</button>
     <input type="file" id="loadDatInput" accept=".dat" style="color:#fff; width:100%;">
   </div>
-  <div style="background:rgba(0,0,0,0.3); border:1px solid rgba(231,76,60,0.4); border-radius:6px; padding:16px;">
-    <h3 style="color:#e74c3c; margin-top:0;">DANGER ZONE</h3>
+  <div class="glass-panel" style="border-color:rgba(231,76,60,0.4);">
+    <h3 style="color:#e74c3c; margin-top:0; font-weight:300; letter-spacing:1px;">DANGER ZONE</h3>
     <button class="danger" id="wipeBtn" style="width:100%;">ERASE ALL DATA</button>
   </div>
 </div>
@@ -221,11 +539,89 @@
   <div id="aboutContent"></div>
 </div>
 
+<div id="packOverlay" class="hidden">
+  <div class="pack-stage">
+    <div id="sealedPack" class="sealed-pack">
+      <div class="pack-half pack-top" id="packTop">
+        <div class="pack-logo">PSTCG</div>
+      </div>
+      <div class="swipe-line" id="swipeLine">
+        <div class="swipe-progress" id="swipeProgress"></div>
+        <div class="swipe-hint" id="swipeHint">SWIPE ACROSS</div>
+      </div>
+      <div class="pack-half pack-bottom">
+        <div class="pack-tag">5 CARDS</div>
+      </div>
+    </div>
+    <div id="revealArea" class="reveal-area hidden"></div>
+  </div>
+</div>
+
+<div class="screen-flash" id="screenFlash"></div>
 <div class="flash-msg" id="flashMsg"></div>
 
 <script>
 // ================================================================
-// FLASH FUNCTION
+// MUSIC PLAYER
+// ================================================================
+const MUSIC_TRACKS = ['1.mp3', '2.mp3', '3.mp3'];
+let currentTrackIndex = 0;
+let musicAudio = null;
+let musicEnabled = true;
+
+function initMusic() {
+  musicAudio = new Audio();
+  musicAudio.volume = 0.4;
+  musicAudio.addEventListener('ended', () => {
+    currentTrackIndex = (currentTrackIndex + 1) % MUSIC_TRACKS.length;
+    playTrack();
+  });
+  musicAudio.addEventListener('error', () => {
+    // Silently skip missing files
+    currentTrackIndex++;
+    if (currentTrackIndex < MUSIC_TRACKS.length) {
+      setTimeout(playTrack, 100);
+    } else {
+      // No tracks available, hide button
+      document.getElementById('musicBtn').style.display = 'none';
+    }
+  });
+  // Try starting first track
+  playTrack();
+}
+function playTrack() {
+  if (!musicAudio || currentTrackIndex >= MUSIC_TRACKS.length) return;
+  musicAudio.src = MUSIC_TRACKS[currentTrackIndex];
+  musicAudio.play().catch(() => {
+    // Autoplay blocked or file missing — user must click
+    document.getElementById('musicBtn').textContent = '♪';
+  });
+}
+document.getElementById('musicBtn').addEventListener('click', () => {
+  if (!musicAudio) { initMusic(); return; }
+  musicEnabled = !musicEnabled;
+  if (musicEnabled) {
+    musicAudio.play().catch(() => {});
+    document.getElementById('musicBtn').textContent = '♫';
+  } else {
+    musicAudio.pause();
+    document.getElementById('musicBtn').textContent = '♪';
+  }
+});
+
+// ================================================================
+// DIFFICULTIES
+// ================================================================
+const DIFFICULTIES = {
+  easy:    { name: 'EASY',               hp: 15,  attackChance: 0.15, dmg: 3,  aura: 25,  color: '#27ae60' },
+  normal:  { name: 'NORMAL',             hp: 25,  attackChance: 0.45, dmg: 5,  aura: 50,  color: '#3498db' },
+  hard:    { name: 'HARD',               hp: 40,  attackChance: 0.75, dmg: 8,  aura: 100, color: '#e67e22' },
+  insane:  { name: 'INSANE',             hp: 60,  attackChance: 0.95, dmg: 12, aura: 250, color: '#c0392b' },
+  knight:  { name: 'THE ROARING KNIGHT', hp: 120, attackChance: 1.0,  dmg: 18, attacksPerTurn: 2, aura: 1000, color: '#a855f7' }
+};
+
+// ================================================================
+// FLASH + TOAST
 // ================================================================
 let flashTimer;
 function flash(msg) {
@@ -233,8 +629,29 @@ function flash(msg) {
   el.textContent = msg;
   el.classList.add('show');
   clearTimeout(flashTimer);
-  flashTimer = setTimeout(() => el.classList.remove('show'), 2000);
+  flashTimer = setTimeout(() => el.classList.remove('show'), 2200);
 }
+function showToast(icon, text) {
+  const toast = document.createElement('div');
+  toast.className = 'toast';
+  toast.innerHTML = `<div class="toast-icon">${icon}</div><div>${text}</div>`;
+  document.body.appendChild(toast);
+  setTimeout(() => {
+    toast.classList.add('removing');
+    setTimeout(() => toast.remove(), 400);
+  }, 2500);
+}
+
+// ================================================================
+// BUTTON RIPPLE
+// ================================================================
+document.addEventListener('mousemove', e => {
+  if (e.target.tagName === 'BUTTON') {
+    const r = e.target.getBoundingClientRect();
+    e.target.style.setProperty('--rx', ((e.clientX - r.left) / r.width * 100) + '%');
+    e.target.style.setProperty('--ry', ((e.clientY - r.top) / r.height * 100) + '%');
+  }
+});
 
 // ================================================================
 // TRANSLATIONS
@@ -249,15 +666,15 @@ const translations = {
     exportGithub: "2. GitHub Hosting", exportGithubDesc: "Put .crd files in the card folder.",
     manifestDesc: "Create list.json:", autoLoad: "Auto-loads on refresh.",
     saveDatAdmin: "3. Save Files", saveDatAdminDesc: "Players download .dat files." },
-  fa: { subtitle: "بازی کارتی فروشگاه کاغذی", playerManual: "راهنمای بازیکن", adminManual: "راهنمای ادمین",
+  fa: { subtitle: "بازی کارتی", playerManual: "راهنمای بازیکن", adminManual: "راهنمای ادمین",
     playerDesc: "به PSTCG خوش آمدید!", adminDesc: "شما ادمین هستید.",
     gettingCards: "۱. دریافت کارت‌ها", gettingCardsDesc: "پک باز کنید.",
     battling: "۲. نبرد", battlingDesc: "با ربات یا دوستان بجنگید.",
     savingProgress: "۳. ذخیره", savingProgressDesc: "فایل .dat را دانلود کنید.",
     makeCards: "۱. ساخت کارت", makeCardsDesc: "از تب ساخت استفاده کنید.",
-    exportGithub: "۲. میزبانی گیت‌هاب", exportGithubDesc: "فایل‌های .crd را در پوشه card بگذارید.",
-    manifestDesc: "فایل list.json بسازید:", autoLoad: "به‌طور خودکار بارگذاری می‌شود.",
-    saveDatAdmin: "۳. فایل‌های ذخیره", saveDatAdminDesc: "بازیکنان .dat دانلود می‌کنند." }
+    exportGithub: "۲. گیت‌هاب", exportGithubDesc: "فایل‌های .crd را در پوشه card بگذارید.",
+    manifestDesc: "فایل list.json بسازید:", autoLoad: "خودکار بارگذاری می‌شود.",
+    saveDatAdmin: "۳. ذخیره", saveDatAdminDesc: "بازیکنان .dat دانلود می‌کنند." }
 };
 
 let currentLang = localStorage.getItem('pstcg_lang') || 'en';
@@ -275,16 +692,18 @@ function setLanguage(lang) {
     const key = el.getAttribute('data-i18n-placeholder');
     if (translations[lang][key]) el.placeholder = translations[lang][key];
   });
-  updateAboutPage();
-  updateAuraUI();
+  updateAboutPage(); updateAuraUI();
 }
 
 // ================================================================
-// CORE STATE
+// STATE
 // ================================================================
 let cards = []; let items = []; let collection = {}; let itemCollection = {};
 let isAdmin = false; let username = ""; let aura = 50; let freePackAvailable = true;
-let battleState = null; let peer = null; let conn = null;
+let battleState = null; let peer = null; let conn = null; let packState = null;
+let selectedDifficulty = 'easy';
+let unlockedRouring = false;
+let unlockedKris = false;
 
 function loadData() {
   try {
@@ -296,6 +715,8 @@ function loadData() {
     if (u) { username = u; document.getElementById('usernameInput').value = u; checkAdmin(); }
     const a = localStorage.getItem('pstcg_aura'); if (a) aura = parseInt(a);
     const f = localStorage.getItem('pstcg_freePack'); if (f) freePackAvailable = f === 'true';
+    if (localStorage.getItem('pstcg_kris')) unlockedKris = true;
+    if (localStorage.getItem('pstcg_rouring')) unlockedRouring = true;
   } catch(e) { console.error(e); }
 }
 function saveData() {
@@ -306,19 +727,28 @@ function saveData() {
     localStorage.setItem('pstcg_itemCollection', JSON.stringify(itemCollection));
     localStorage.setItem('pstcg_aura', aura.toString());
     localStorage.setItem('pstcg_freePack', freePackAvailable.toString());
+    localStorage.setItem('pstcg_kris', unlockedKris.toString());
+    localStorage.setItem('pstcg_rouring', unlockedRouring.toString());
   } catch(e) { console.error("Storage full"); }
 }
-
 function updateAuraUI() {
   document.getElementById('auraCount').textContent = aura;
   const btn = document.getElementById('openPackBtn');
   if (btn) btn.textContent = freePackAvailable ? "OPEN FREE PACK" : "OPEN PACK (50 AURA)";
 }
+function pulseAura() {
+  const el = document.getElementById('auraDisplay');
+  el.classList.add('pulse');
+  setTimeout(() => el.classList.remove('pulse'), 800);
+}
 
 const ADMIN_KEY = "1234567890qwertyuiopasdfghjklzxcvbnm";
 function checkAdmin() {
   const input = document.getElementById('usernameInput').value.trim();
-  username = input; localStorage.setItem('pstcg_username', username);
+  const lower = input.toLowerCase();
+  username = input;
+  localStorage.setItem('pstcg_username', username);
+
   if (input === ADMIN_KEY) {
     isAdmin = true;
     document.getElementById('createTabBtn').classList.remove('hidden');
@@ -328,18 +758,67 @@ function checkAdmin() {
     document.getElementById('createTabBtn').classList.add('hidden');
     document.getElementById('adminAuraBtn').classList.add('hidden');
   }
+
+  // EASTER EGG: kris → unlock Roaring Knight mode
+  if (lower === 'kris') {
+    document.getElementById('knightBtn').classList.remove('hidden');
+    if (!unlockedKris) {
+      unlockedKris = true;
+      saveData();
+      showToast('🦌', 'THE ROARING KNIGHT AWAKENS...');
+    }
+  } else {
+    document.getElementById('knightBtn').classList.add('hidden');
+    if (selectedDifficulty === 'knight') {
+      selectedDifficulty = 'easy';
+      document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
+      document.querySelector('[data-diff="easy"]').classList.add('selected');
+    }
+  }
+
+  // EASTER EGG: rouring → +12,000 aura (once)
+  if (lower === 'rouring' && !unlockedRouring) {
+    unlockedRouring = true;
+    aura += 12000;
+    saveData(); updateAuraUI(); pulseAura();
+    const flashEl = document.getElementById('screenFlash');
+    flashEl.style.background = 'linear-gradient(45deg, #a855f7, #fff, #7c3aed)';
+    flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash');
+    showToast('🦌', 'R O U R I N G  —  +12,000 AURA');
+    for (let i = 0; i < 100; i++) {
+      setTimeout(() => {
+        const p = document.createElement('div');
+        p.className = 'particle purple';
+        p.style.left = Math.random() * window.innerWidth + 'px';
+        p.style.top = '-20px';
+        p.style.animation = `goldFall ${1.5 + Math.random() * 1.5}s ease-in forwards`;
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 3000);
+      }, i * 15);
+    }
+  }
+
   updateAboutPage();
 }
 document.getElementById('usernameInput').addEventListener('input', checkAdmin);
 
 document.getElementById('adminAuraBtn').addEventListener('click', () => {
   if (!isAdmin) return;
-  aura += 9999; saveData(); updateAuraUI(); flash("+9999 Aura granted!");
+  aura += 9999; saveData(); updateAuraUI(); pulseAura();
+  showToast('⚡', '+9999 AURA GRANTED');
+});
+
+document.querySelectorAll('.diff-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected'));
+    btn.classList.add('selected');
+    selectedDifficulty = btn.dataset.diff;
+  });
 });
 
 function updateAboutPage() {
   const content = document.getElementById('aboutContent');
-  const box = (title, body) => `<div style="background:rgba(0,0,0,0.3); border:1px solid rgba(255,255,255,0.15); border-radius:6px; padding:16px; margin-bottom:16px; line-height:1.6;"><h3 style="margin-top:0; color:#00d9ff; font-weight:300;">${title}</h3><p>${body}</p></div>`;
+  const box = (title, body) => `<div class="glass-panel" style="margin-bottom:16px; line-height:1.7;"><h3 style="margin-top:0; color:var(--accent); font-weight:300; letter-spacing:1px;">${title}</h3><p>${body}</p></div>`;
   if (isAdmin) {
     content.innerHTML = box(t('adminManual'), t('adminDesc')) + box(t('makeCards'), t('makeCardsDesc')) + box(t('exportGithub'), t('exportGithubDesc')) + box(t('saveDatAdmin'), t('saveDatAdminDesc'));
   } else {
@@ -359,15 +838,14 @@ document.querySelectorAll('.tab').forEach(tab => {
 });
 
 // ================================================================
-// BOM-PROOF JSON PARSER
+// BOM-PROOF JSON
 // ================================================================
 function parseSafe(text) {
   if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1);
   return JSON.parse(text.trim());
 }
-
 async function loadRemoteData() {
-  flash("Loading cards from server...");
+  flash("Loading from server...");
   try {
     const res = await fetch('card/list.json', { cache: "no-store" });
     if (!res.ok) throw new Error("list.json not found");
@@ -389,23 +867,23 @@ async function loadRemoteData() {
     }
     saveData(); renderCollection();
     flash(`Loaded ${loadedCards} cards and ${loadedItems} items!`);
-  } catch(e) {
-    console.error(e);
-    flash("Could not load list.json. Using local cache.");
-  }
+  } catch(e) { console.error(e); flash("Using local cache."); }
 }
 document.getElementById('loadGithubBtn').addEventListener('click', loadRemoteData);
 
 // ================================================================
-// PACKS & RARITY
+// RARITY
 // ================================================================
+function rarityClass(r) {
+  if (r >= 50) return 'r-common';
+  if (r >= 20) return 'r-uncommon';
+  if (r >= 5) return 'r-rare';
+  if (r >= 1) return 'r-epic';
+  return 'r-legendary';
+}
 function getRarityColor(r) {
   if (r >= 50) return '#888'; if (r >= 20) return '#22aa44';
   if (r >= 5) return '#2277ee'; if (r >= 1) return '#aa22cc'; return '#ffaa00';
-}
-function getRarityName(r) {
-  if (r >= 50) return 'common'; if (r >= 20) return 'uncommon';
-  if (r >= 5) return 'rare'; if (r >= 1) return 'epic'; return 'legendary';
 }
 function pickWeightedCard() {
   if (cards.length === 0) return null;
@@ -419,41 +897,16 @@ function pickRandomItem() {
   return items[Math.floor(Math.random() * items.length)];
 }
 
-document.getElementById('openPackBtn').addEventListener('click', () => {
-  if (!freePackAvailable) {
-    if (aura < 50) { alert("Not enough Aura! Win a battle to earn more."); return; }
-    aura -= 50;
-  } else { freePackAvailable = false; }
-  saveData(); updateAuraUI();
-  const reveal = document.getElementById('packReveal'); reveal.innerHTML = '';
-  if (cards.length === 0) { alert("No cards loaded! Add .crd files to GitHub."); return; }
-  const pulled = [];
-  for (let i = 0; i < 4; i++) {
-    const c = pickWeightedCard();
-    if (c) { pulled.push({ type: 'card', data: c }); collection[c.codename] = (collection[c.codename] || 0) + 1; }
-  }
-  const it = pickRandomItem();
-  if (it) { pulled.push({ type: 'item', data: it }); itemCollection[it.id] = (itemCollection[it.id] || 0) + 1; }
-  saveData();
-  pulled.forEach((p, i) => {
-    setTimeout(() => {
-      const el = p.type === 'card' ? makeCardElement(p.data) : makeItemElement(p.data);
-      el.classList.add('pack-card'); reveal.appendChild(el);
-    }, i * 180);
-  });
-  flash("Opened a pack!");
-});
-
 // ================================================================
 // RENDERING
 // ================================================================
 function makeCardElement(card) {
-  const div = document.createElement('div'); div.className = 'card';
-  const rName = getRarityName(card.dropRate || 10);
-  const rColor = getRarityColor(card.dropRate || 10);
-  div.style.borderColor = rColor; div.style.boxShadow = `0 6px 15px ${rColor}88`;
+  const div = document.createElement('div');
+  const r = card.dropRate || 10;
+  div.className = 'card ' + rarityClass(r);
+  const rColor = getRarityColor(r);
   div.innerHTML = `
-    <div class="card-drop" style="background:${rColor}; color:${rName==='legendary'?'#000':'#fff'}">${(card.dropRate||10).toFixed(2)}%</div>
+    <div class="card-drop" style="background:${rColor}; color:${r>=1?'#fff':'#000'}">${r.toFixed(2)}%</div>
     <div class="card-img">${card.image ? `<img src="${card.image}">` : (card.name||'?')[0].toUpperCase()}</div>
     <div class="card-name">${card.name || 'Unnamed'}</div>
     <div class="card-stats"><span class="card-hp">HP ${card.hp}</span></div>
@@ -477,30 +930,157 @@ function renderCollection() {
   const owned = cards.filter(c => collection[c.codename] > 0);
   document.getElementById('uniqueCount').textContent = owned.length;
   document.getElementById('totalCount').textContent = Object.values(collection).reduce((a,b)=>a+b, 0);
-  if (owned.length === 0) grid.innerHTML = '<div style="text-align:center; padding:40px; color:#556; font-style:italic;">No cards yet.</div>';
+  if (owned.length === 0) grid.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-dim); font-style:italic; grid-column:1/-1;">No cards yet.</div>';
   else {
     owned.sort((a,b) => (a.dropRate||10) - (b.dropRate||10));
     owned.forEach(card => {
       const wrap = document.createElement('div'); wrap.style.position = 'relative';
       wrap.appendChild(makeCardElement(card));
       const badge = document.createElement('div'); badge.textContent = 'x' + collection[card.codename];
-      badge.style.cssText = 'position:absolute; bottom:-8px; left:50%; transform:translateX(-50%); background:#2c3e50; color:#00d9ff; font-size:11px; font-weight:bold; padding:2px 10px; border-radius:10px; border:1px solid #00d9ff;';
+      badge.style.cssText = 'position:absolute; bottom:-8px; left:50%; transform:translateX(-50%); background:#0a0e27; color:var(--accent); font-size:11px; font-weight:bold; padding:3px 12px; border-radius:12px; border:1px solid var(--accent); box-shadow:0 0 12px rgba(0,217,255,0.5);';
       wrap.appendChild(badge); grid.appendChild(wrap);
     });
   }
   const iGrid = document.getElementById('itemGrid'); iGrid.innerHTML = '';
   const ownedItems = items.filter(i => itemCollection[i.id] > 0);
-  if (ownedItems.length === 0) iGrid.innerHTML = '<div style="text-align:center; padding:40px; color:#556; font-style:italic;">No items yet.</div>';
+  if (ownedItems.length === 0) iGrid.innerHTML = '<div style="text-align:center; padding:40px; color:var(--text-dim); font-style:italic; grid-column:1/-1;">No items yet.</div>';
   else {
     ownedItems.forEach(item => {
       const wrap = document.createElement('div'); wrap.style.position = 'relative';
       wrap.appendChild(makeItemElement(item));
       const badge = document.createElement('div'); badge.textContent = 'x' + itemCollection[item.id];
-      badge.style.cssText = 'position:absolute; bottom:-8px; left:50%; transform:translateX(-50%); background:#00695c; color:#fff; font-size:11px; font-weight:bold; padding:2px 10px; border-radius:10px;';
+      badge.style.cssText = 'position:absolute; bottom:-8px; left:50%; transform:translateX(-50%); background:#0a0e27; color:#2ecc71; font-size:11px; font-weight:bold; padding:3px 12px; border-radius:12px; border:1px solid #2ecc71;';
       wrap.appendChild(badge); iGrid.appendChild(wrap);
     });
   }
 }
+
+// ================================================================
+// PACK OPENING
+// ================================================================
+function rarClass(dropRate) {
+  if (dropRate >= 50) return 'rarity-common';
+  if (dropRate >= 20) return 'rarity-uncommon';
+  if (dropRate >= 5) return 'rarity-rare';
+  if (dropRate >= 1) return 'rarity-epic';
+  return 'rarity-legendary';
+}
+function spawnSparkles(container, count) {
+  for (let i = 0; i < count; i++) {
+    setTimeout(() => {
+      const s = document.createElement('div');
+      s.className = 'sparkle';
+      s.style.left = (Math.random() * 300 - 80) + 'px';
+      s.style.top = (Math.random() * 200 - 40) + 'px';
+      s.style.animationDuration = (1 + Math.random()) + 's';
+      container.appendChild(s);
+      setTimeout(() => s.remove(), 2000);
+    }, i * 80);
+  }
+}
+document.getElementById('openPackBtn').addEventListener('click', () => {
+  if (!freePackAvailable) {
+    if (aura < 50) { showToast('💧', 'Not enough Aura!'); return; }
+    aura -= 50;
+  } else { freePackAvailable = false; }
+  saveData(); updateAuraUI();
+  if (cards.length === 0) { showToast('⚠️', 'No cards loaded!'); return; }
+  const pulled = [];
+  for (let i = 0; i < 4; i++) {
+    const c = pickWeightedCard();
+    if (c) { pulled.push(c); collection[c.codename] = (collection[c.codename] || 0) + 1; }
+  }
+  const it = pickRandomItem();
+  if (it) { pulled.push(it); itemCollection[it.id] = (itemCollection[it.id] || 0) + 1; }
+  saveData();
+  packState = { cards: pulled, currentIndex: -1 };
+  document.getElementById('packTop').classList.remove('torn');
+  document.getElementById('swipeProgress').style.width = '0%';
+  document.getElementById('swipeHint').style.display = 'block';
+  const revealArea = document.getElementById('revealArea');
+  revealArea.classList.add('hidden');
+  revealArea.classList.remove('active');
+  revealArea.innerHTML = '';
+  document.getElementById('sealedPack').style.display = 'block';
+  document.getElementById('packOverlay').classList.remove('hidden');
+});
+(function setupSwipe() {
+  const swipeLine = document.getElementById('swipeLine');
+  const swipeProgress = document.getElementById('swipeProgress');
+  let dragging = false, startX = 0;
+  function getX(e) { return e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] ? e.touches[0].clientX : 0); }
+  function start(e) { if (!packState || packState.currentIndex >= 0) return; dragging = true; startX = getX(e); swipeProgress.style.width = '0%'; }
+  function move(e) {
+    if (!dragging || !packState) return;
+    const pct = Math.min(100, (Math.abs(getX(e) - startX) / 200) * 100);
+    swipeProgress.style.width = pct + '%';
+    if (pct >= 100) { dragging = false; tearOpenPack(); }
+  }
+  function end() { dragging = false; }
+  swipeLine.addEventListener('pointerdown', start);
+  swipeLine.addEventListener('pointermove', move);
+  swipeLine.addEventListener('pointerup', end);
+  swipeLine.addEventListener('pointerleave', end);
+  swipeLine.addEventListener('touchstart', start, { passive: false });
+  swipeLine.addEventListener('touchmove', move, { passive: false });
+  swipeLine.addEventListener('touchend', end);
+})();
+function tearOpenPack() {
+  document.getElementById('swipeHint').style.display = 'none';
+  document.getElementById('packTop').classList.add('torn');
+  setTimeout(() => {
+    document.getElementById('sealedPack').style.display = 'none';
+    const revealArea = document.getElementById('revealArea');
+    revealArea.classList.remove('hidden');
+    revealArea.classList.add('active');
+    packState.currentIndex = -1;
+    revealNextCard();
+  }, 900);
+}
+function revealNextCard() {
+  if (!packState) return;
+  packState.currentIndex++;
+  const revealArea = document.getElementById('revealArea');
+  if (packState.currentIndex >= packState.cards.length) {
+    revealArea.innerHTML = '<div class="reveal-counter">ALL CARDS COLLECTED</div><div class="tap-hint">TAP TO CLOSE</div>';
+    revealArea.classList.add('active');
+    return;
+  }
+  const card = packState.cards[packState.currentIndex];
+  const isItem = card.type !== undefined && !card.hp;
+  const dropRate = isItem ? 10 : (card.dropRate || 10);
+  const rar = rarClass(dropRate);
+  revealArea.innerHTML = '';
+  const flashEl = document.getElementById('screenFlash');
+  if (rar === 'rarity-epic') { flashEl.style.background = '#fff'; flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash'); }
+  else if (rar === 'rarity-legendary') { flashEl.style.background = 'linear-gradient(45deg, #ffaa00, #fff, #ff6600)'; flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash'); }
+  const counter = document.createElement('div');
+  counter.className = 'reveal-counter';
+  counter.textContent = 'CARD ' + (packState.currentIndex + 1) + ' / ' + packState.cards.length;
+  revealArea.appendChild(counter);
+  const cardWrap = document.createElement('div');
+  cardWrap.className = 'revealed-card ' + rar;
+  const cardEl = isItem ? makeItemElement(card) : makeCardElement(card);
+  cardEl.style.transform = 'scale(1.6)';
+  cardEl.style.transformOrigin = 'center';
+  cardWrap.appendChild(cardEl);
+  revealArea.appendChild(cardWrap);
+  if (rar === 'rarity-rare') spawnSparkles(revealArea, 5);
+  else if (rar === 'rarity-epic') spawnSparkles(revealArea, 10);
+  else if (rar === 'rarity-legendary') spawnSparkles(revealArea, 25);
+  const tapHint = document.createElement('div');
+  tapHint.className = 'tap-hint';
+  tapHint.textContent = packState.currentIndex === packState.cards.length - 1 ? 'TAP TO FINISH' : 'TAP FOR NEXT';
+  revealArea.appendChild(tapHint);
+}
+document.getElementById('revealArea').addEventListener('click', () => {
+  if (!packState) return;
+  if (packState.currentIndex >= packState.cards.length) {
+    document.getElementById('packOverlay').classList.add('hidden');
+    packState = null;
+    flash("Pack opened!");
+  } else revealNextCard();
+});
 
 // ================================================================
 // CREATOR
@@ -511,15 +1091,11 @@ function switchCreator(mode) {
   document.getElementById('cardCreator').style.display = mode === 'card' ? 'grid' : 'none';
   document.getElementById('itemCreator').style.display = mode === 'item' ? 'grid' : 'none';
 }
-
 const canvas = document.getElementById('drawCanvas');
 const ctx = canvas.getContext('2d');
 let drawing = false, lastX = 0, lastY = 0, brushColor = '#00ff88', brushSize = 6, isErasing = false;
 ctx.lineCap = 'round'; ctx.lineJoin = 'round';
-function getPos(e) {
-  const r = canvas.getBoundingClientRect();
-  return { x: ((e.clientX||e.touches[0].clientX) - r.left) * (canvas.width/r.width), y: ((e.clientY||e.touches[0].clientY) - r.top) * (canvas.height/r.height) };
-}
+function getPos(e) { const r = canvas.getBoundingClientRect(); return { x: ((e.clientX||e.touches[0].clientX) - r.left) * (canvas.width/r.width), y: ((e.clientY||e.touches[0].clientY) - r.top) * (canvas.height/r.height) }; }
 canvas.addEventListener('pointerdown', e => { if(!isAdmin)return; drawing=true; const p=getPos(e); lastX=p.x; lastY=p.y; canvas.setPointerCapture(e.pointerId); });
 canvas.addEventListener('pointermove', e => {
   if(!drawing||!isAdmin)return; const p=getPos(e);
@@ -536,7 +1112,6 @@ document.querySelectorAll('.color-swatch').forEach(sw => sw.addEventListener('cl
 document.getElementById('clearCanvasBtn').addEventListener('click', () => { ctx.fillStyle='#000'; ctx.fillRect(0,0,canvas.width,canvas.height); });
 document.getElementById('eraserBtn').addEventListener('click', () => { isErasing=!isErasing; });
 ctx.fillStyle='#000'; ctx.fillRect(0,0,canvas.width,canvas.height);
-
 let uploadedCardImage = null, uploadedItemImage = null;
 document.getElementById('cardImageUpload').addEventListener('change', e => {
   const f = e.target.files[0]; if(!f)return;
@@ -551,12 +1126,11 @@ document.getElementById('itemImageUpload').addEventListener('change', e => {
   r.onload = ev => { uploadedItemImage = ev.target.result; flash("Item image loaded!"); };
   r.readAsDataURL(f);
 });
-
 function buildCardObject() {
   const name = document.getElementById('cardName').value.trim();
   const codename = document.getElementById('cardCodename').value.trim().replace(/\s/g, '_').toLowerCase();
-  if (!name) { alert("Give your card a name!"); return null; }
-  if (!codename) { alert("Give your card a codename!"); return null; }
+  if (!name) { showToast('⚠️', 'Name your card!'); return null; }
+  if (!codename) { showToast('⚠️', 'Give it a codename!'); return null; }
   return { codename, name,
     hp: parseInt(document.getElementById('cardHP').value) || 10,
     attack: document.getElementById('cardAttack').value.trim() || 'Tackle',
@@ -567,9 +1141,9 @@ function buildCardObject() {
 document.getElementById('saveCardBtn').addEventListener('click', () => {
   if (!isAdmin) return;
   const card = buildCardObject(); if (!card) return;
-  if (cards.find(c => c.codename === card.codename)) { alert("Codename exists!"); return; }
+  if (cards.find(c => c.codename === card.codename)) { showToast('⚠️', 'Codename exists!'); return; }
   cards.push(card); collection[card.codename] = 1;
-  saveData(); flash("Saved: " + card.name); resetCardForm();
+  saveData(); showToast('✨', 'Saved: ' + card.name); resetCardForm();
 });
 document.getElementById('exportCardBtn').addEventListener('click', () => {
   if (!isAdmin) return;
@@ -577,7 +1151,7 @@ document.getElementById('exportCardBtn').addEventListener('click', () => {
   cards.push(card); collection[card.codename] = 1; saveData();
   const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(card, null, 2));
   const a = document.createElement('a'); a.href = dataStr; a.download = card.codename + ".crd"; a.click();
-  flash("Downloaded " + card.codename + ".crd"); resetCardForm();
+  showToast('📁', 'Downloaded ' + card.codename + '.crd'); resetCardForm();
 });
 function resetCardForm() {
   document.getElementById('cardName').value = ''; document.getElementById('cardCodename').value = '';
@@ -589,16 +1163,16 @@ document.getElementById('saveItemBtn').addEventListener('click', () => {
   if (!isAdmin) return;
   const name = document.getElementById('itemName').value.trim();
   const codename = document.getElementById('itemCodename').value.trim().replace(/\s/g, '_').toLowerCase();
-  if (!name) { alert("Give your item a name!"); return; }
-  if (!codename) { alert("Give your item a codename!"); return; }
+  if (!name) { showToast('⚠️', 'Name your item!'); return; }
+  if (!codename) { showToast('⚠️', 'Give it a codename!'); return; }
   const item = { id: 'item_' + codename, codename, name,
     desc: document.getElementById('itemDesc').value.trim() || 'A mysterious item',
     type: document.getElementById('itemType').value,
     value: parseInt(document.getElementById('itemValue').value) || 10,
     image: uploadedItemImage || null };
-  if (items.find(i => i.codename === item.codename)) { alert("Codename exists!"); return; }
+  if (items.find(i => i.codename === item.codename)) { showToast('⚠️', 'Codename exists!'); return; }
   items.push(item); itemCollection[item.id] = 1;
-  saveData(); flash("Item saved: " + item.name);
+  saveData(); showToast('✨', 'Item saved: ' + item.name);
   document.getElementById('itemName').value = ''; document.getElementById('itemCodename').value = '';
   document.getElementById('itemDesc').value = ''; uploadedItemImage = null;
   document.getElementById('itemImageUpload').value = '';
@@ -620,27 +1194,23 @@ function importFile(file) {
   reader.readAsText(file);
 }
 document.getElementById('crdFileInput').addEventListener('change', e => {
-  Array.from(e.target.files).forEach(importFile);
-  flash("Files loaded!"); e.target.value = '';
+  Array.from(e.target.files).forEach(importFile); showToast('📁', 'Files loaded!'); e.target.value = '';
 });
-
-// CRASH-PROOF dropzone
 const dropZone = document.getElementById('crdDropZone');
 if (dropZone) {
-  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = '#00d9ff'; });
+  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = 'var(--accent)'; });
   dropZone.addEventListener('dragleave', () => dropZone.style.borderColor = 'rgba(0,217,255,0.4)');
   dropZone.addEventListener('drop', e => {
     e.preventDefault(); dropZone.style.borderColor = 'rgba(0,217,255,0.4)';
     Array.from(e.dataTransfer.files).forEach(importFile);
-    flash("Files dropped!");
+    showToast('📁', 'Files dropped!');
   });
 }
-
 document.getElementById('saveDatBtn').addEventListener('click', () => {
   const saveData = { collection, itemCollection, username, aura, freePackAvailable, timestamp: new Date().toISOString() };
   const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(saveData, null, 2));
   const a = document.createElement('a'); a.href = dataStr; a.download = "pstcg_save.dat"; a.click();
-  flash("Downloaded save file!");
+  showToast('💾', 'Save downloaded!');
 });
 document.getElementById('loadDatInput').addEventListener('change', e => {
   const file = e.target.files[0]; if (!file) return;
@@ -653,16 +1223,16 @@ document.getElementById('loadDatInput').addEventListener('change', e => {
       if (data.username) { username = data.username; document.getElementById('usernameInput').value = username; checkAdmin(); }
       if (data.aura !== undefined) aura = data.aura;
       if (data.freePackAvailable !== undefined) freePackAvailable = data.freePackAvailable;
-      saveData(); renderCollection(); updateAuraUI(); flash("Save loaded!");
-    } catch(err) { alert("Invalid .dat file!"); }
+      saveData(); renderCollection(); updateAuraUI(); showToast('💾', 'Save loaded!');
+    } catch(err) { showToast('⚠️', 'Invalid .dat file!'); }
   };
   reader.readAsText(file); e.target.value = '';
 });
 document.getElementById('wipeBtn').addEventListener('click', () => {
   if (!confirm("Erase ALL data?")) return;
   localStorage.clear(); cards = []; items = []; collection = {}; itemCollection = {};
-  aura = 50; freePackAvailable = true;
-  saveData(); renderCollection(); updateAuraUI(); flash("Erased!");
+  aura = 50; freePackAvailable = true; unlockedKris = false; unlockedRouring = false;
+  saveData(); renderCollection(); updateAuraUI(); showToast('🗑️', 'Erased!');
 });
 
 // ================================================================
@@ -674,20 +1244,33 @@ function logBattle(msg) {
   const div = document.createElement('div'); div.textContent = '> ' + msg;
   log.appendChild(div); log.scrollTop = log.scrollHeight;
 }
+function updateHpBar(id, current, max) {
+  const pct = Math.max(0, (current / max) * 100);
+  const bar = document.getElementById(id + 'Bar');
+  const text = document.getElementById(id + 'Text');
+  if (!bar) return;
+  bar.style.width = pct + '%';
+  bar.classList.remove('warn', 'danger');
+  if (pct <= 25) bar.classList.add('danger');
+  else if (pct <= 50) bar.classList.add('warn');
+  if (text) text.textContent = Math.max(0, Math.round(current)) + ' / ' + max + ' HP';
+}
 function updateBattleUI() {
   if (!battleState) return;
   const ps = document.getElementById('playerSlot'), bs = document.getElementById('botSlot');
-  if (battleState.playerCard) { ps.innerHTML = ''; ps.style.borderStyle = 'solid'; ps.style.borderColor = '#00d9ff'; ps.style.padding = '0'; ps.appendChild(makeCardElement(battleState.playerCard)); }
-  else { ps.textContent = 'No Active Card'; ps.style.borderStyle = 'dashed'; ps.style.padding = '10px'; }
-  if (battleState.botCard) { bs.innerHTML = ''; bs.style.borderStyle = 'solid'; bs.style.borderColor = '#ff6b5b'; bs.style.padding = '0'; bs.appendChild(makeCardElement(battleState.botCard)); }
-  else { bs.textContent = 'No Active Card'; bs.style.borderStyle = 'dashed'; bs.style.padding = '10px'; }
-  document.getElementById('playerHP').textContent = battleState.playerHP;
-  document.getElementById('botHP').textContent = battleState.botHP;
-  document.getElementById('playerHPBar').style.width = Math.max(0, (battleState.playerHP / 20) * 100) + '%';
-  document.getElementById('botHPBar').style.width = Math.max(0, (battleState.botHP / 20) * 100) + '%';
+  if (battleState.playerCard) {
+    ps.innerHTML = ''; ps.style.borderStyle = 'solid'; ps.style.borderColor = 'var(--accent)'; ps.style.padding = '0';
+    ps.appendChild(makeCardElement(battleState.playerCard));
+  } else { ps.textContent = 'No Active Card'; ps.style.borderStyle = 'dashed'; ps.style.padding = '10px'; }
+  if (battleState.botCard) {
+    bs.innerHTML = ''; bs.style.borderStyle = 'solid'; bs.style.borderColor = '#ff6b5b'; bs.style.padding = '0';
+    bs.appendChild(makeCardElement(battleState.botCard));
+  } else { bs.textContent = 'No Active Card'; bs.style.borderStyle = 'dashed'; bs.style.padding = '10px'; }
+  updateHpBar('playerHP', battleState.playerHP, battleState.maxPlayerHP);
+  updateHpBar('botHP', battleState.botHP, battleState.maxBotHP);
   const ind = document.getElementById('turnIndicator');
-  if (battleState.over) { ind.textContent = "GAME OVER"; ind.style.color = "#f1c40f"; }
-  else if (battleState.turn === 'player') { ind.textContent = "YOUR TURN"; ind.style.color = "#00d9ff"; }
+  if (battleState.over) { ind.textContent = "GAME OVER"; ind.style.color = "var(--gold)"; }
+  else if (battleState.turn === 'player') { ind.textContent = "YOUR TURN"; ind.style.color = "var(--accent)"; }
   else { ind.textContent = "OPPONENT'S TURN..."; ind.style.color = "#e74c3c"; }
   const canAct = !battleState.over && battleState.turn === 'player';
   document.getElementById('attackBtn').disabled = !canAct;
@@ -698,7 +1281,7 @@ function updateBattleUI() {
     battleState.playerHand.forEach((card, idx) => {
       const el = makeCardElement(card);
       el.style.cursor = canAct ? 'pointer' : 'default';
-      el.style.transform = 'scale(0.8)';
+      el.style.transform = 'scale(0.85)';
       el.onclick = () => { if (canAct) playCardFromHand(idx); };
       handDiv.appendChild(el);
     });
@@ -709,70 +1292,269 @@ function playCardFromHand(i) {
   battleState.playerCard = makeBattleCard(card); battleState.playerHand.splice(i, 1);
   logBattle(`You played ${battleState.playerCard.name}!`); updateBattleUI();
 }
+function doAttackAnimation(attackerSlotId, defenderSlotId, particleEmoji, onImpact) {
+  const attacker = document.getElementById(attackerSlotId);
+  const defender = document.getElementById(defenderSlotId);
+  const attackerSide = attackerSlotId === 'playerSlot' ? 'player' : 'bot';
+  const defenderSide = defenderSlotId === 'playerSlot' ? 'player' : 'bot';
+  attacker.classList.add('attacking-' + attackerSide);
+  setTimeout(() => {
+    const aRect = attacker.getBoundingClientRect();
+    const dRect = defender.getBoundingClientRect();
+    const particle = document.createElement('div');
+    particle.className = 'attack-particle';
+    particle.textContent = particleEmoji;
+    particle.style.left = (aRect.left + aRect.width / 2) + 'px';
+    particle.style.top = (aRect.top + aRect.height / 2) + 'px';
+    particle.style.transform = 'translate(-50%, -50%)';
+    document.body.appendChild(particle);
+    requestAnimationFrame(() => {
+      particle.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
+      particle.style.left = (dRect.left + dRect.width / 2) + 'px';
+      particle.style.top = (dRect.top + dRect.height / 2) + 'px';
+      particle.style.fontSize = '90px';
+    });
+    setTimeout(() => {
+      particle.remove();
+      defender.classList.add('hit-' + defenderSide);
+      document.body.classList.add('screen-shake');
+      setTimeout(() => {
+        document.body.classList.remove('screen-shake');
+        defender.classList.remove('hit-' + defenderSide);
+      }, 400);
+      if (onImpact) onImpact();
+    }, 420);
+  }, 300);
+  setTimeout(() => { attacker.classList.remove('attacking-' + attackerSide); }, 700);
+}
+function showDamageNumber(slotId, amount) {
+  const slot = document.getElementById(slotId);
+  const rect = slot.getBoundingClientRect();
+  const dmg = document.createElement('div');
+  dmg.className = 'dmg-number';
+  dmg.textContent = '-' + amount;
+  dmg.style.left = (rect.left + rect.width / 2) + 'px';
+  dmg.style.top = (rect.top + rect.height / 2) + 'px';
+  document.body.appendChild(dmg);
+  setTimeout(() => dmg.remove(), 1300);
+}
+
 document.getElementById('startBotBtn').addEventListener('click', () => {
-  if (cards.length === 0) { alert("Create cards first!"); return; }
+  if (cards.length === 0) { showToast('⚠️', 'Create cards first!'); return; }
+  const diff = DIFFICULTIES[selectedDifficulty];
   const playerDeck = [...cards], botDeck = [...cards];
-  battleState = { mode: 'bot', playerHP: 20, botHP: 20, playerCard: null, botCard: null, playerHand: [], turn: 'player', over: false, playerDeck, botDeck };
+  battleState = {
+    mode: 'bot', difficulty: selectedDifficulty, difficultyName: diff.name,
+    playerHP: 20, maxPlayerHP: 20, botHP: diff.hp, maxBotHP: diff.hp,
+    playerCard: null, botCard: null, playerHand: [], turn: 'player', over: false,
+    playerDeck, botDeck
+  };
   for (let i = 0; i < 3; i++) if (playerDeck.length > 0) battleState.playerHand.push(playerDeck[Math.floor(Math.random() * playerDeck.length)]);
   battleState.playerCard = makeBattleCard(playerDeck[Math.floor(Math.random() * playerDeck.length)]);
   battleState.botCard = makeBattleCard(botDeck[Math.floor(Math.random() * botDeck.length)]);
+  document.getElementById('opponentLabel').textContent = diff.name + ' (' + diff.hp + ' HP)';
+  document.getElementById('opponentLabel').style.color = diff.color;
   document.getElementById('battleSetup').classList.add('hidden');
   document.getElementById('battleArena').classList.remove('hidden');
   document.getElementById('battleLog').innerHTML = '';
-  logBattle("Battle started! 20 HP each.");
-  logBattle(`You sent out ${battleState.playerCard.name}!`);
-  logBattle(`Bot sent out ${battleState.botCard.name}!`);
+  logBattle(`Battle vs ${diff.name}!`);
+  logBattle(`Reward: +${diff.aura} Aura`);
+  if (selectedDifficulty === 'knight') logBattle("THE ROARING KNIGHT emerges...");
   updateBattleUI();
 });
 document.getElementById('attackBtn').onclick = () => {
   if (!battleState || battleState.over || battleState.turn !== 'player') return;
-  if (battleState.mode === 'multiplayer') {
-    const p = battleState.playerCard;
-    conn.send({ type: 'MOVE', action: 'ATTACK', cardName: p.name, damage: p.damage });
-    logBattle(`You sent ${p.name} to attack for ${p.damage}!`);
-    battleState.turn = 'bot'; updateBattleUI();
-  } else {
-    const p = battleState.playerCard, b = battleState.botCard;
-    if (p && b) {
-      b.hp -= p.damage;
-      logBattle(`YOUR ${p.name} used ${p.attack} for ${p.damage} damage!`);
-      if (b.hp <= 0) {
-        logBattle(`OPPONENT's ${b.name} was Knocked Out! YOU WIN! +50 AURA`);
-        battleState.over = true; aura += 50; saveData(); updateAuraUI(); updateBattleUI(); return;
-      }
-      logBattle(`Opponent's ${b.name} has ${b.hp} HP left.`);
-      battleState.turn = 'bot'; updateBattleUI(); setTimeout(botTurn, 1500);
+  const p = battleState.playerCard, b = battleState.botCard;
+  if (!p || !b) return;
+  document.getElementById('attackBtn').disabled = true;
+  document.getElementById('passTurnBtn').disabled = true;
+  document.getElementById('useItemBtn').disabled = true;
+  const particles = ['💥', '⚡', '🔥', '💫', '🌟'];
+  if (battleState.difficulty === 'knight') particles.push('🦌', '🗡️', '💜');
+  const emoji = particles[Math.floor(Math.random() * particles.length)];
+  doAttackAnimation('playerSlot', 'botSlot', emoji, () => {
+    b.hp -= p.damage;
+    showDamageNumber('botSlot', p.damage);
+    logBattle(`YOUR ${p.name} used ${p.attack} for ${p.damage} damage!`);
+    if (b.hp <= 0) {
+      logBattle(`Opponent defeated! +${DIFFICULTIES[battleState.difficulty].aura} AURA`);
+      battleState.over = true;
+      const reward = DIFFICULTIES[battleState.difficulty].aura;
+      aura += reward; saveData(); updateAuraUI();
+      showWinSequence(reward, battleState.difficulty);
+      return;
     }
-  }
+    logBattle(`Opponent has ${Math.max(0,b.hp)} HP left.`);
+    updateBattleUI();
+    setTimeout(() => { battleState.turn = 'bot'; updateBattleUI(); setTimeout(botTurn, 1200); }, 800);
+  });
 };
 document.getElementById('passTurnBtn').onclick = () => {
   if (!battleState || battleState.over || battleState.turn !== 'player') return;
-  logBattle("You passed your turn.");
-  battleState.turn = 'bot'; updateBattleUI(); setTimeout(botTurn, 1500);
+  logBattle("You passed.");
+  battleState.turn = 'bot'; updateBattleUI(); setTimeout(botTurn, 1200);
 };
 document.getElementById('useItemBtn').onclick = () => {
   if (!battleState || battleState.over || battleState.turn !== 'player') return;
   if (items.length === 0) { logBattle("No items!"); return; }
   const item = items[Math.floor(Math.random() * items.length)];
   logBattle(`You used ${item.name}!`);
-  if (item.type === 'heal') { battleState.playerHP += item.value; logBattle(`Healed ${item.value} HP!`); }
-  else if (item.type === 'damage') { battleState.botHP -= item.value; logBattle(`Dealt ${item.value} damage!`); }
-  else if (item.type === 'buff') { battleState.playerCard.damage += item.value; logBattle(`Attack +${item.value}!`); }
+  if (item.type === 'heal') {
+    battleState.playerHP += item.value;
+    logBattle(`Healed ${item.value} HP!`);
+    const slot = document.getElementById('playerSlot');
+    const rect = slot.getBoundingClientRect();
+    for (let i = 0; i < 12; i++) {
+      setTimeout(() => {
+        const p = document.createElement('div');
+        p.className = 'particle gold';
+        p.style.left = (rect.left + Math.random() * rect.width) + 'px';
+        p.style.top = (rect.top + rect.height) + 'px';
+        p.style.animation = 'sparkleFloat 1.5s ease forwards';
+        document.body.appendChild(p);
+        setTimeout(() => p.remove(), 1500);
+      }, i * 50);
+    }
+  } else if (item.type === 'damage') {
+    battleState.botHP -= item.value;
+    logBattle(`Dealt ${item.value} damage!`);
+    showDamageNumber('botSlot', item.value);
+  } else if (item.type === 'buff') {
+    battleState.playerCard.damage += item.value;
+    logBattle(`Attack +${item.value}!`);
+  }
   updateBattleUI();
 };
 function botTurn() {
   if (!battleState || battleState.over) return;
+  const diff = DIFFICULTIES[battleState.difficulty];
   const b = battleState.botCard;
-  const actions = [
-    () => logBattle("The bot is thinking..."),
-    () => logBattle("The bot plays with its cards."),
-    () => logBattle("The bot looks at you."),
-    () => { if (b) { b.hp += 5; logBattle("The bot healed 5 HP."); } },
-    () => { if (b) { logBattle("The bot does a little dance."); } }
-  ];
-  actions[Math.floor(Math.random() * actions.length)]();
-  battleState.turn = 'player'; updateBattleUI();
+  const roll = Math.random();
+  if (roll < diff.attackChance) {
+    executeBotAttack(diff.attacksPerTurn || 1, diff);
+  } else {
+    const peaceful = [
+      () => logBattle("The bot is thinking..."),
+      () => logBattle("The bot plays with its cards."),
+      () => logBattle("The bot looks at you."),
+      () => { if (b) { b.hp = Math.min(b.maxHp, b.hp + 5); logBattle("The bot healed 5 HP."); } },
+      () => { if (b) { logBattle("The bot does a little dance."); } }
+    ];
+    peaceful[Math.floor(Math.random() * peaceful.length)]();
+    battleState.turn = 'player'; updateBattleUI();
+  }
 }
+function executeBotAttack(remainingAttacks, diff) {
+  if (!battleState || battleState.over || remainingAttacks <= 0) {
+    if (battleState) { battleState.turn = 'player'; updateBattleUI(); }
+    return;
+  }
+  const attackerCard = battleState.botCard;
+  let emoji = '💢';
+  if (battleState.difficulty === 'knight') emoji = ['🦌', '🗡️', '💜', '⛧'][Math.floor(Math.random() * 4)];
+  else emoji = ['💢', '💥', '⚔️', '🔥'][Math.floor(Math.random() * 4)];
+  const dmg = diff.dmg;
+  logBattle(`${diff.name}'s ${attackerCard.name} attacks!`);
+  doAttackAnimation('botSlot', 'playerSlot', emoji, () => {
+    battleState.playerHP -= dmg;
+    showDamageNumber('playerSlot', dmg);
+    logBattle(`You took ${dmg} damage!`);
+    if (battleState.playerHP <= 0) {
+      logBattle("You were defeated...");
+      battleState.over = true;
+      showLoseSequence();
+      return;
+    }
+    updateBattleUI();
+    if (remainingAttacks > 1) setTimeout(() => executeBotAttack(remainingAttacks - 1, diff), 1000);
+    else setTimeout(() => { battleState.turn = 'player'; updateBattleUI(); }, 600);
+  });
+}
+function showWinSequence(reward, difficulty) {
+  updateBattleUI();
+  const isEpic = difficulty === 'insane' || difficulty === 'knight';
+  const flashEl = document.getElementById('screenFlash');
+  if (difficulty === 'knight') flashEl.style.background = 'linear-gradient(45deg, #a855f7, #fff, #4c1d95, #fff, #a855f7)';
+  else if (difficulty === 'insane') flashEl.style.background = 'linear-gradient(45deg, #ff0000, #fff, #ff6600)';
+  else flashEl.style.background = 'linear-gradient(45deg, #ffdd44, #fff, #ffaa00)';
+  flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash');
+  const overlay = document.createElement('div');
+  overlay.className = 'result-overlay active';
+  const textCls = isEpic ? 'result-text win epic-win' : 'result-text win';
+  const text = difficulty === 'knight' ? 'KNIGHT SLAIN!' : (isEpic ? 'CRUSHED!' : 'YOU WIN!');
+  overlay.innerHTML = `<div class="${textCls}">${text}</div>`;
+  document.body.appendChild(overlay);
+  let sparkleCount = { easy: 30, normal: 60, hard: 100, insane: 180, knight: 300 }[difficulty] || 60;
+  for (let i = 0; i < sparkleCount; i++) {
+    setTimeout(() => {
+      const p = document.createElement('div');
+      if (difficulty === 'knight') p.className = 'particle purple';
+      else if (difficulty === 'insane') p.className = 'particle rainbow';
+      else p.className = 'particle gold';
+      p.style.left = Math.random() * window.innerWidth + 'px';
+      p.style.top = '-20px';
+      p.style.animation = `goldFall ${1.5 + Math.random() * 1.5}s ease-in forwards`;
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 3500);
+    }, i * (difficulty === 'knight' ? 8 : 20));
+  }
+  setTimeout(() => {
+    const auraFly = document.createElement('div');
+    auraFly.className = 'aura-flyer';
+    auraFly.textContent = '+' + reward + ' AURA';
+    if (difficulty === 'knight') { auraFly.style.color = '#a855f7'; auraFly.style.textShadow = '0 0 20px #a855f7, 0 0 40px #7c3aed, 3px 3px 0 #000'; }
+    auraFly.style.left = '50%'; auraFly.style.top = '50%';
+    auraFly.style.transform = 'translate(-50%, -50%) scale(0)';
+    document.body.appendChild(auraFly);
+    requestAnimationFrame(() => { auraFly.style.transform = 'translate(-50%, -50%) scale(1.5)'; });
+    setTimeout(() => {
+      const auraDisp = document.getElementById('auraDisplay');
+      const rect = auraDisp.getBoundingClientRect();
+      auraFly.style.transition = 'all 1s cubic-bezier(0.6, -0.3, 0.7, 1)';
+      auraFly.style.left = (rect.left + rect.width / 2) + 'px';
+      auraFly.style.top = (rect.top + rect.height / 2) + 'px';
+      auraFly.style.transform = 'translate(-50%, -50%) scale(0.3)';
+      auraFly.style.opacity = '0';
+      setTimeout(() => { auraFly.remove(); auraDisp.classList.add('pulse'); setTimeout(() => auraDisp.classList.remove('pulse'), 800); }, 1000);
+    }, 800);
+  }, 800);
+  setTimeout(() => {
+    overlay.remove();
+    document.getElementById('battleSetup').classList.remove('hidden');
+    document.getElementById('battleArena').classList.add('hidden');
+    battleState = null;
+  }, isEpic ? 5000 : 4000);
+}
+function showLoseSequence() {
+  updateBattleUI();
+  const flashEl = document.getElementById('screenFlash');
+  flashEl.style.background = 'linear-gradient(45deg, #7c3aed, #b066d9, #4c1d95)';
+  flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash');
+  const overlay = document.createElement('div');
+  overlay.className = 'result-overlay active';
+  overlay.innerHTML = '<div class="result-text lose">YOU LOST</div>';
+  document.body.appendChild(overlay);
+  for (let i = 0; i < 80; i++) {
+    setTimeout(() => {
+      const p = document.createElement('div');
+      p.className = 'particle purple';
+      p.style.left = Math.random() * window.innerWidth + 'px';
+      p.style.top = '-20px';
+      p.style.animation = `goldFall ${2 + Math.random() * 2}s ease-in forwards`;
+      document.body.appendChild(p);
+      setTimeout(() => p.remove(), 4000);
+    }, i * 30);
+  }
+  setTimeout(() => {
+    overlay.remove();
+    document.getElementById('battleSetup').classList.remove('hidden');
+    document.getElementById('battleArena').classList.add('hidden');
+    battleState = null;
+  }, 4000);
+}
+const styleEl = document.createElement('style');
+styleEl.textContent = `@keyframes goldFall { 0% { transform: translateY(0) rotate(0); opacity: 1; } 100% { transform: translateY(${window.innerHeight + 100}px) rotate(720deg); opacity: 0.3; } }`;
+document.head.appendChild(styleEl);
 
 // ================================================================
 // MULTIPLAYER
@@ -790,18 +1572,15 @@ function initPeer() {
   });
 }
 document.getElementById('hostBtn').addEventListener('click', () => {
-  if (cards.length === 0) { alert("Create cards first!"); return; }
+  if (cards.length === 0) { showToast('⚠️', 'Create cards first!'); return; }
   initPeer(); document.getElementById('mpStatus').textContent = "Starting host...";
 });
 document.getElementById('joinBtn').addEventListener('click', () => {
   const code = document.getElementById('joinCodeInput').value.trim();
-  if (!code) { alert("Enter host code!"); return; }
-  if (cards.length === 0) { alert("Create cards first!"); return; }
+  if (!code) { showToast('⚠️', 'Enter host code!'); return; }
+  if (cards.length === 0) { showToast('⚠️', 'Create cards first!'); return; }
   initPeer(); conn = peer.connect(code);
-  conn.on('open', () => {
-    document.getElementById('mpStatus').textContent = "Connected! Syncing...";
-    conn.send({ type: 'SYNC', cards });
-  });
+  conn.on('open', () => { document.getElementById('mpStatus').textContent = "Syncing..."; conn.send({ type: 'SYNC', cards }); });
   conn.on('data', data => handleNetworkData(data));
 });
 function handleNetworkData(data) {
@@ -810,10 +1589,12 @@ function handleNetworkData(data) {
   else if (data.type === 'MOVE') { applyNetworkMove(data); }
 }
 function startMultiplayerBattle(isHost) {
-  battleState = { mode: 'multiplayer', isHost, playerHP: 20, botHP: 20, playerCard: null, botCard: null, playerHand: [], turn: isHost ? 'player' : 'bot', over: false };
+  battleState = { mode: 'multiplayer', isHost, playerHP: 20, maxPlayerHP: 20, botHP: 20, maxBotHP: 20, playerCard: null, botCard: null, playerHand: [], turn: isHost ? 'player' : 'bot', over: false, difficulty: 'normal', difficultyName: 'PLAYER' };
   for (let i = 0; i < 3; i++) battleState.playerHand.push(cards[Math.floor(Math.random() * cards.length)]);
   battleState.playerCard = makeBattleCard(cards[Math.floor(Math.random() * cards.length)]);
   battleState.botCard = makeBattleCard(cards[Math.floor(Math.random() * cards.length)]);
+  document.getElementById('opponentLabel').textContent = 'PLAYER';
+  document.getElementById('opponentLabel').style.color = '#ff6b5b';
   document.getElementById('battleSetup').classList.add('hidden');
   document.getElementById('battleArena').classList.remove('hidden');
   document.getElementById('battleLog').innerHTML = '';
@@ -821,11 +1602,14 @@ function startMultiplayerBattle(isHost) {
 }
 function applyNetworkMove(data) {
   if (data.action === 'ATTACK') {
-    battleState.playerHP -= data.damage;
-    logBattle(`Opponent's ${data.cardName} attacked for ${data.damage}!`);
-    if (battleState.playerHP <= 0) { logBattle("You lost!"); battleState.over = true; }
-    else { battleState.turn = 'player'; }
-    updateBattleUI();
+    doAttackAnimation('botSlot', 'playerSlot', '💥', () => {
+      battleState.playerHP -= data.damage;
+      showDamageNumber('playerSlot', data.damage);
+      logBattle(`Opponent attacked for ${data.damage}!`);
+      if (battleState.playerHP <= 0) { battleState.over = true; showLoseSequence(); return; }
+      else { battleState.turn = 'player'; }
+      updateBattleUI();
+    });
   }
 }
 document.getElementById('leaveBattleBtn').addEventListener('click', () => {
@@ -838,7 +1622,7 @@ document.getElementById('leaveBattleBtn').addEventListener('click', () => {
 });
 
 // ================================================================
-// BOOT — auto-loads everything on page open
+// BOOT
 // ================================================================
 setLanguage(currentLang);
 document.getElementById('langSelect').value = currentLang;
@@ -846,11 +1630,12 @@ loadData();
 renderCollection();
 checkAdmin();
 updateAuraUI();
-
-// AUTO-LOAD CARDS FROM GITHUB (no user action needed)
 loadRemoteData();
 
-console.log("PSTCG loaded. Admin:", isAdmin, "Cards:", cards.length, "Items:", items.length, "Aura:", aura);
+// Try to init music (will only play if user interacts first, browsers block autoplay)
+setTimeout(initMusic, 500);
+
+console.log("PSTCG loaded. Cards:", cards.length, "Items:", items.length, "Aura:", aura);
 </script>
 </body>
 </html>
