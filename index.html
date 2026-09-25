@@ -8,15 +8,9 @@
 <style>
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
   :root {
-    --bg-1: #0a0e27;
-    --bg-2: #1a1f4a;
-    --accent: #00d9ff;
-    --accent-2: #7c3aed;
-    --gold: #ffdd44;
-    --glass: rgba(255,255,255,0.06);
-    --glass-border: rgba(255,255,255,0.12);
-    --text: #e8eaf6;
-    --text-dim: #8892b0;
+    --bg-1: #0a0e27; --bg-2: #1a1f4a; --accent: #00d9ff; --accent-2: #7c3aed;
+    --gold: #ffdd44; --glass: rgba(255,255,255,0.06); --glass-border: rgba(255,255,255,0.12);
+    --text: #e8eaf6; --text-dim: #8892b0;
   }
   html, body {
     margin: 0; padding: 0;
@@ -26,22 +20,12 @@
       radial-gradient(circle at 20% 20%, rgba(124,58,237,0.15) 0%, transparent 50%),
       radial-gradient(circle at 80% 80%, rgba(0,217,255,0.12) 0%, transparent 50%),
       radial-gradient(circle at 50% 50%, var(--bg-2) 0%, var(--bg-1) 100%);
-    color: var(--text);
-    min-height: 100vh;
-    overflow-x: hidden;
+    color: var(--text); min-height: 100vh; overflow-x: hidden;
   }
-
-  /* ============ MODERN HEADER ============ */
   header {
-    background: rgba(10,14,39,0.7);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    padding: 18px 24px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    border-bottom: 1px solid var(--glass-border);
-    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,14,39,0.7); backdrop-filter: blur(20px);
+    padding: 18px 24px; display: flex; align-items: center; justify-content: space-between;
+    border-bottom: 1px solid var(--glass-border); position: sticky; top: 0; z-index: 100;
     box-shadow: 0 4px 24px rgba(0,0,0,0.4);
   }
   .logo-wrap { display: flex; align-items: center; gap: 14px; }
@@ -50,167 +34,57 @@
     background: linear-gradient(135deg, var(--accent), var(--accent-2));
     display: flex; align-items: center; justify-content: center;
     font-weight: 900; font-size: 20px; color: #fff;
-    box-shadow: 0 0 20px rgba(0,217,255,0.5), inset 0 1px 0 rgba(255,255,255,0.3);
+    box-shadow: 0 0 20px rgba(0,217,255,0.5);
     animation: logoFloat 3s ease-in-out infinite;
   }
   @keyframes logoFloat { 0%, 100% { transform: translateY(0) rotate(0); } 50% { transform: translateY(-3px) rotate(2deg); } }
-  .logo-text h1 {
-    margin: 0; font-size: 20px; letter-spacing: 3px; font-weight: 300;
-    color: #fff; text-shadow: 0 0 12px rgba(0,217,255,0.6);
-  }
+  .logo-text h1 { margin: 0; font-size: 20px; letter-spacing: 3px; font-weight: 300; color: #fff; text-shadow: 0 0 12px rgba(0,217,255,0.6); }
   .logo-text h1 span { color: var(--accent); font-weight: 700; }
   .logo-text p { margin: 2px 0 0; font-size: 9px; color: var(--text-dim); letter-spacing: 3px; }
-
   .header-right { display: flex; align-items: center; gap: 12px; }
-
-  .pill {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 24px;
-    padding: 6px 14px;
-    font-size: 12px; font-weight: 600;
-    display: flex; align-items: center; gap: 6px;
-    transition: all 0.3s;
-  }
-  .pill.aura {
-    color: var(--accent);
-    border-color: rgba(0,217,255,0.4);
-    box-shadow: 0 0 12px rgba(0,217,255,0.2);
-  }
+  .pill { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 24px; padding: 6px 14px; font-size: 12px; font-weight: 600; display: flex; align-items: center; gap: 6px; transition: all 0.3s; }
+  .pill.aura { color: var(--accent); border-color: rgba(0,217,255,0.4); box-shadow: 0 0 12px rgba(0,217,255,0.2); }
   .pill.aura.pulse { animation: auraPulse 0.8s ease; }
-  @keyframes auraPulse {
-    0% { transform: scale(1); box-shadow: 0 0 12px rgba(0,217,255,0.2); }
-    40% { transform: scale(1.25); box-shadow: 0 0 30px rgba(0,217,255,0.9), 0 0 60px rgba(0,217,255,0.5); }
-    100% { transform: scale(1); box-shadow: 0 0 12px rgba(0,217,255,0.2); }
-  }
-  .icon-btn {
-    width: 34px; height: 34px; border-radius: 50%;
-    background: var(--glass); border: 1px solid var(--glass-border);
-    color: #fff; cursor: pointer; font-size: 14px;
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.2s;
-  }
+  @keyframes auraPulse { 0% { transform: scale(1); } 40% { transform: scale(1.25); box-shadow: 0 0 30px rgba(0,217,255,0.9); } 100% { transform: scale(1); } }
+  .icon-btn { width: 34px; height: 34px; border-radius: 50%; background: var(--glass); border: 1px solid var(--glass-border); color: #fff; cursor: pointer; font-size: 14px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
   .icon-btn:hover { background: rgba(0,217,255,0.15); border-color: var(--accent); transform: scale(1.1); }
-
-  #langSelect, #usernameInput {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    color: #fff; padding: 6px 12px; border-radius: 20px;
-    font-family: inherit; font-size: 12px; outline: none;
-    transition: all 0.2s;
-  }
+  .icon-btn.muted { opacity: 0.4; }
+  #langSelect, #usernameInput { background: var(--glass); border: 1px solid var(--glass-border); color: #fff; padding: 6px 12px; border-radius: 20px; font-family: inherit; font-size: 12px; outline: none; transition: all 0.2s; }
   #usernameInput { width: 200px; text-align: center; }
   #usernameInput:focus, #langSelect:focus { border-color: var(--accent); box-shadow: 0 0 12px rgba(0,217,255,0.3); }
-
-  /* ============ MODERN TABS ============ */
-  .tabs {
-    display: flex; gap: 6px;
-    padding: 16px 24px;
-    background: transparent;
-    overflow-x: auto;
-    max-width: 1200px;
-    margin: 0 auto;
-  }
-  .tab {
-    padding: 10px 20px; cursor: pointer;
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    color: var(--text-dim);
-    font-family: inherit; font-size: 12px; font-weight: 600;
-    border-radius: 20px;
-    letter-spacing: 1px;
-    transition: all 0.25s;
-    white-space: nowrap;
-  }
+  .tabs { display: flex; gap: 6px; padding: 16px 24px; overflow-x: auto; max-width: 1200px; margin: 0 auto; }
+  .tab { padding: 10px 20px; cursor: pointer; background: var(--glass); border: 1px solid var(--glass-border); color: var(--text-dim); font-family: inherit; font-size: 12px; font-weight: 600; border-radius: 20px; letter-spacing: 1px; transition: all 0.25s; white-space: nowrap; }
   .tab:hover { color: #fff; transform: translateY(-2px); }
-  .tab.active {
-    color: #fff;
-    background: linear-gradient(135deg, rgba(0,217,255,0.25), rgba(124,58,237,0.25));
-    border-color: var(--accent);
-    box-shadow: 0 4px 20px rgba(0,217,255,0.3), inset 0 1px 0 rgba(255,255,255,0.2);
-  }
-
+  .tab.active { color: #fff; background: linear-gradient(135deg, rgba(0,217,255,0.25), rgba(124,58,237,0.25)); border-color: var(--accent); box-shadow: 0 4px 20px rgba(0,217,255,0.3); }
   .page { display: none; padding: 24px; max-width: 1200px; margin: 0 auto; animation: fadeUp 0.3s ease; }
   .page.active { display: block; }
   @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   h2 { color: #fff; font-weight: 300; font-size: 24px; letter-spacing: 2px; margin-bottom: 20px; border-bottom: 1px solid var(--glass-border); padding-bottom: 12px; }
-
-  /* ============ MODERN BUTTONS ============ */
-  button {
-    font-family: inherit; cursor: pointer;
-    background: linear-gradient(135deg, #4facfe 0%, #00d9ff 100%);
-    color: #fff; border: none; padding: 12px 22px;
-    font-weight: 700; font-size: 13px;
-    border-radius: 12px;
-    letter-spacing: 1px;
-    transition: all 0.2s;
-    box-shadow: 0 4px 12px rgba(79,172,254,0.4), inset 0 1px 0 rgba(255,255,255,0.4);
-    position: relative; overflow: hidden;
-  }
-  button::after {
-    content: ''; position: absolute; inset: 0;
-    background: radial-gradient(circle at var(--rx, 50%) var(--ry, 50%), rgba(255,255,255,0.6), transparent 50%);
-    opacity: 0; transition: opacity 0.4s;
-    pointer-events: none;
-  }
-  button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,172,254,0.6), inset 0 1px 0 rgba(255,255,255,0.5); }
-  button:hover::after { opacity: 0.3; }
+  button { font-family: inherit; cursor: pointer; background: linear-gradient(135deg, #4facfe 0%, #00d9ff 100%); color: #fff; border: none; padding: 12px 22px; font-weight: 700; font-size: 13px; border-radius: 12px; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 4px 12px rgba(79,172,254,0.4); }
+  button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,172,254,0.6); }
   button:active { transform: scale(0.96); }
   button:disabled { background: #2a2f4a; color: #555c7a; cursor: not-allowed; box-shadow: none; transform: none; }
-  button.secondary { background: linear-gradient(135deg, #6c7a89, #455a64); box-shadow: 0 4px 12px rgba(108,122,137,0.3); }
-  button.danger { background: linear-gradient(135deg, #e74c3c, #c0392b); box-shadow: 0 4px 12px rgba(231,76,60,0.4); }
-  button.success { background: linear-gradient(135deg, #2ecc71, #27ae60); box-shadow: 0 4px 12px rgba(46,204,113,0.4); }
-  .admin-btn { background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #000; box-shadow: 0 4px 12px rgba(241,196,15,0.5); }
-
-  /* ============ MODERN CARDS ============ */
-  .card {
-    width: 150px;
-    background: linear-gradient(180deg, #ffffff 0%, #d4e4f7 100%);
-    border: 1px solid #a0c0e0;
-    border-radius: 12px;
-    padding: 8px;
-    color: #222; font-size: 11px;
-    position: relative;
-    transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s;
-    overflow: hidden;
-  }
-  .card::before {
-    content: ''; position: absolute; top: 0; left: -100%;
-    width: 100%; height: 100%;
-    background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.7) 50%, transparent 70%);
-    transition: left 0.6s;
-    pointer-events: none;
-  }
+  button.secondary { background: linear-gradient(135deg, #6c7a89, #455a64); }
+  button.danger { background: linear-gradient(135deg, #e74c3c, #c0392b); }
+  button.success { background: linear-gradient(135deg, #2ecc71, #27ae60); }
+  .admin-btn { background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #000; }
+  .card { width: 150px; background: linear-gradient(180deg, #ffffff 0%, #d4e4f7 100%); border: 1px solid #a0c0e0; border-radius: 12px; padding: 8px; color: #222; font-size: 11px; position: relative; transition: transform 0.3s, box-shadow 0.3s; overflow: hidden; }
   .card:hover { transform: translateY(-6px) scale(1.03); box-shadow: 0 15px 35px rgba(0,217,255,0.5); }
-  .card:hover::before { left: 100%; }
-  .card-img {
-    width: 100%; aspect-ratio: 1;
-    background: linear-gradient(135deg, #dfe9f3, #ffffff);
-    border-radius: 8px;
-    display: flex; align-items: center; justify-content: center;
-    color: #555; font-size: 40px; font-weight: bold;
-    overflow: hidden; margin-bottom: 6px;
-    border: 1px solid #b0c4de;
-  }
+  .card-img { width: 100%; aspect-ratio: 1; background: linear-gradient(135deg, #dfe9f3, #ffffff); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #555; font-size: 40px; font-weight: bold; overflow: hidden; margin-bottom: 6px; border: 1px solid #b0c4de; }
   .card-img img { width: 100%; height: 100%; object-fit: cover; }
   .card-name { font-weight: 800; text-align: center; font-size: 12px; margin-bottom: 5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #1a2a3a; }
   .card-stats { display: flex; justify-content: space-between; font-size: 11px; font-weight: bold; background: rgba(0,0,0,0.08); padding: 4px 6px; border-radius: 6px; margin-bottom: 5px; }
   .card-hp { color: #c0392b; }
   .card-attack { background: linear-gradient(135deg, #34495e, #2c3e50); color: #fff; padding: 5px 7px; border-radius: 6px; font-size: 10px; display: flex; justify-content: space-between; gap: 4px; }
   .card-attack-dmg { color: var(--gold); font-weight: bold; }
-  .card-drop { position: absolute; top: -6px; right: -6px; background: #2c3e50; color: #fff; font-size: 9px; padding: 3px 8px; border-radius: 12px; font-weight: bold; letter-spacing: 1px; z-index: 2; box-shadow: 0 3px 8px rgba(0,0,0,0.4); }
-
-  /* Rarity shine */
-  .card.r-common { border-color: #888; }
+  .card-drop { position: absolute; top: -6px; right: -6px; background: #2c3e50; color: #fff; font-size: 9px; padding: 3px 8px; border-radius: 12px; font-weight: bold; letter-spacing: 1px; }
   .card.r-uncommon { border-color: #22aa44; box-shadow: 0 0 10px rgba(34,170,68,0.5); }
   .card.r-rare { border-color: #2277ee; animation: rareShimmer 2.5s infinite; }
   @keyframes rareShimmer { 0%, 100% { box-shadow: 0 0 15px rgba(34,119,238,0.6); } 50% { box-shadow: 0 0 30px rgba(79,170,255,1); } }
   .card.r-epic { border-color: #aa22cc; animation: epicPulse 1.8s infinite; }
   @keyframes epicPulse { 0%, 100% { box-shadow: 0 0 20px rgba(170,34,204,0.7); } 50% { box-shadow: 0 0 40px rgba(204,68,238,1); } }
-  .card.r-legendary { border-color: #ffaa00; animation: legendaryHue 3s infinite linear, legendaryWobble 2s infinite ease-in-out; }
-  @keyframes legendaryHue { 0% { box-shadow: 0 0 25px rgba(255,170,0,1); filter: hue-rotate(0deg); } 50% { box-shadow: 0 0 45px rgba(255,102,0,1); filter: hue-rotate(180deg); } 100% { box-shadow: 0 0 25px rgba(255,170,0,1); filter: hue-rotate(360deg); } }
-  @keyframes legendaryWobble { 0%, 100% { transform: rotate(0deg); } 25% { transform: rotate(-1.5deg); } 75% { transform: rotate(1.5deg); } }
-
+  .card.r-legendary { border-color: #ffaa00; animation: legendaryHue 3s infinite linear; }
+  @keyframes legendaryHue { 0% { box-shadow: 0 0 25px rgba(255,170,0,1); } 50% { box-shadow: 0 0 45px rgba(255,102,0,1); } 100% { box-shadow: 0 0 25px rgba(255,170,0,1); } }
   .item { width: 150px; background: linear-gradient(180deg, #e8f4f8 0%, #b2dfdb 100%); border: 1px solid #80cbc4; border-radius: 12px; padding: 8px; color: #004d40; font-size: 11px; transition: transform 0.3s; }
   .item:hover { transform: translateY(-6px) scale(1.03); }
   .item-img { width: 100%; aspect-ratio: 1; background: rgba(255,255,255,0.5); border-radius: 8px; display: flex; align-items: center; justify-content: center; color: #00695c; font-size: 40px; overflow: hidden; margin-bottom: 6px; border: 1px solid #b2dfdb; }
@@ -218,30 +92,10 @@
   .item-name { font-weight: 800; text-align: center; font-size: 12px; margin-bottom: 4px; }
   .item-desc { font-size: 9px; text-align: center; color: #00695c; }
   .item-effect { background: #00897b; color: #fff; text-align: center; padding: 4px; border-radius: 6px; font-size: 10px; font-weight: bold; margin-top: 5px; }
-
   .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 24px 18px; padding: 20px 0; justify-items: center; }
-
-  /* ============ GLASS PANELS ============ */
-  .glass-panel {
-    background: var(--glass);
-    border: 1px solid var(--glass-border);
-    border-radius: 16px;
-    padding: 20px;
-    backdrop-filter: blur(10px);
-    transition: all 0.2s;
-  }
+  .glass-panel { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 16px; padding: 20px; backdrop-filter: blur(10px); transition: all 0.2s; }
   .glass-panel:hover { border-color: rgba(0,217,255,0.3); }
-
-  /* ============ BATTLE ============ */
-  .battle-slot {
-    width: 150px; height: 210px;
-    border: 2px dashed rgba(0,217,255,0.3);
-    border-radius: 14px;
-    display: flex; align-items: center; justify-content: center;
-    color: rgba(0,217,255,0.5); font-size: 12px; text-align: center;
-    padding: 10px; background: rgba(0,0,0,0.2);
-    position: relative; transition: all 0.3s;
-  }
+  .battle-slot { width: 150px; height: 210px; border: 2px dashed rgba(0,217,255,0.3); border-radius: 14px; display: flex; align-items: center; justify-content: center; color: rgba(0,217,255,0.5); font-size: 12px; text-align: center; padding: 10px; background: rgba(0,0,0,0.2); position: relative; transition: all 0.3s; }
   .battle-slot.attacking-player { animation: playerLunge 0.6s ease; z-index: 10; }
   @keyframes playerLunge { 0% { transform: translateY(0) scale(1); } 40% { transform: translateY(-70px) scale(1.2); } 60% { transform: translateY(-70px) scale(1.2); } 100% { transform: translateY(0) scale(1); } }
   .battle-slot.attacking-bot { animation: botLunge 0.6s ease; z-index: 10; }
@@ -250,80 +104,47 @@
   @keyframes playerHit { 0%, 100% { transform: translateX(0); filter: brightness(1); } 20% { transform: translateX(-14px); filter: brightness(2.5); } 40% { transform: translateX(14px); filter: brightness(2.5); } 60% { transform: translateX(-8px); filter: brightness(1.8); } 80% { transform: translateX(8px); filter: brightness(1.8); } }
   .battle-slot.hit-bot { animation: botHit 0.4s ease; }
   @keyframes botHit { 0%, 100% { transform: translateX(0); filter: brightness(1); } 20% { transform: translateX(14px); filter: brightness(2.5); } 40% { transform: translateX(-14px); filter: brightness(2.5); } 60% { transform: translateX(8px); filter: brightness(1.8); } 80% { transform: translateX(-8px); filter: brightness(1.8); } }
-
-  .hp-bar-wrap {
-    position: relative; width: 100%; height: 20px;
-    background: rgba(0,0,0,0.6); border-radius: 10px;
-    overflow: hidden; margin-top: 8px;
-    border: 1px solid rgba(255,255,255,0.15);
-    box-shadow: inset 0 2px 6px rgba(0,0,0,0.7);
-  }
-  .hp-bar-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #2ecc71, #27ae60); transition: width 0.6s ease, background 0.3s; position: relative; box-shadow: 0 0 12px rgba(46,204,113,0.5); }
+  .hp-bar-wrap { position: relative; width: 100%; height: 22px; background: rgba(0,0,0,0.7); border-radius: 11px; overflow: hidden; margin-top: 8px; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 2px 6px rgba(0,0,0,0.8); }
+  .hp-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, #2ecc71, #27ae60); transition: width 0.6s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s; position: relative; box-shadow: 0 0 12px rgba(46,204,113,0.5); }
   .hp-bar-fill.warn { background: linear-gradient(90deg, #f39c12, #e67e22); box-shadow: 0 0 12px rgba(243,156,18,0.6); }
   .hp-bar-fill.danger { background: linear-gradient(90deg, #e74c3c, #c0392b); animation: hpDanger 0.3s infinite; }
-  @keyframes hpDanger { 0%, 100% { filter: brightness(1); box-shadow: 0 0 12px rgba(231,76,60,0.7); } 50% { filter: brightness(1.8); box-shadow: 0 0 25px rgba(231,76,60,1); } }
-  .hp-bar-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; z-index: 2; letter-spacing: 1px; }
-
+  @keyframes hpDanger { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.8); } }
+  .hp-bar-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; z-index: 2; letter-spacing: 1px; }
   .dmg-number { position: fixed; font-size: 34px; font-weight: 900; color: #ff4444; text-shadow: 0 0 12px #ff0000, 3px 3px 5px #000; pointer-events: none; z-index: 100; animation: dmgFloat 1.3s ease forwards; }
   @keyframes dmgFloat { 0% { transform: translate(-50%, 0) scale(0.5); opacity: 0; } 20% { transform: translate(-50%, -30px) scale(1.6); opacity: 1; } 100% { transform: translate(-50%, -120px) scale(1); opacity: 0; } }
   .attack-particle { position: fixed; font-size: 40px; pointer-events: none; z-index: 90; filter: drop-shadow(0 0 15px currentColor); }
-
   .screen-shake { animation: screenShake 0.4s; }
   @keyframes screenShake { 0%, 100% { transform: translate(0, 0); } 10% { transform: translate(-10px, 5px); } 20% { transform: translate(10px, -5px); } 30% { transform: translate(-7px, -5px); } 40% { transform: translate(7px, 5px); } 50% { transform: translate(-5px, 3px); } 60% { transform: translate(5px, -3px); } 70% { transform: translate(-3px, 0); } 80% { transform: translate(3px, 0); } }
-
-  /* Difficulty buttons */
   .diff-btn { padding: 12px 18px; font-size: 12px; border-radius: 12px; border: 2px solid; background: transparent; font-weight: bold; letter-spacing: 1px; transition: all 0.25s; cursor: pointer; box-shadow: none; }
-  .diff-btn::after { display: none; }
   .diff-btn[data-diff="easy"] { color: #27ae60; border-color: #27ae60; }
-  .diff-btn[data-diff="easy"]:hover, .diff-btn[data-diff="easy"].selected { background: #27ae60; color: #fff; box-shadow: 0 0 25px #27ae60; transform: translateY(-2px); }
+  .diff-btn[data-diff="easy"]:hover, .diff-btn[data-diff="easy"].selected { background: #27ae60; color: #fff; box-shadow: 0 0 25px #27ae60; }
   .diff-btn[data-diff="normal"] { color: #3498db; border-color: #3498db; }
-  .diff-btn[data-diff="normal"]:hover, .diff-btn[data-diff="normal"].selected { background: #3498db; color: #fff; box-shadow: 0 0 25px #3498db; transform: translateY(-2px); }
+  .diff-btn[data-diff="normal"]:hover, .diff-btn[data-diff="normal"].selected { background: #3498db; color: #fff; box-shadow: 0 0 25px #3498db; }
   .diff-btn[data-diff="hard"] { color: #e67e22; border-color: #e67e22; }
-  .diff-btn[data-diff="hard"]:hover, .diff-btn[data-diff="hard"].selected { background: #e67e22; color: #fff; box-shadow: 0 0 25px #e67e22; transform: translateY(-2px); }
+  .diff-btn[data-diff="hard"]:hover, .diff-btn[data-diff="hard"].selected { background: #e67e22; color: #fff; box-shadow: 0 0 25px #e67e22; }
   .diff-btn[data-diff="insane"] { color: #c0392b; border-color: #c0392b; }
-  .diff-btn[data-diff="insane"]:hover, .diff-btn[data-diff="insane"].selected { background: #c0392b; color: #fff; box-shadow: 0 0 25px #c0392b; transform: translateY(-2px); }
+  .diff-btn[data-diff="insane"]:hover, .diff-btn[data-diff="insane"].selected { background: #c0392b; color: #fff; box-shadow: 0 0 25px #c0392b; }
   .diff-btn[data-diff="knight"] { color: #a855f7; border-color: #a855f7; font-family: 'Courier New', monospace; font-weight: 900; }
-  .diff-btn[data-diff="knight"]:hover, .diff-btn[data-diff="knight"].selected { background: #a855f7; color: #fff; box-shadow: 0 0 30px #a855f7, 0 0 60px #7c3aed; animation: knightPulse 1.5s infinite alternate; transform: translateY(-2px); }
-  @keyframes knightPulse { from { box-shadow: 0 0 25px #a855f7; } to { box-shadow: 0 0 50px #a855f7, 0 0 80px #7c3aed; } }
-
-  /* ============ OVERLAYS ============ */
+  .diff-btn[data-diff="knight"]:hover, .diff-btn[data-diff="knight"].selected { background: #a855f7; color: #fff; box-shadow: 0 0 30px #a855f7, 0 0 60px #7c3aed; }
   .result-overlay { position: fixed; inset: 0; z-index: 1500; display: flex; align-items: center; justify-content: center; pointer-events: none; }
   .result-overlay.active { pointer-events: auto; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px); }
   .result-text { font-size: 100px; font-weight: 900; letter-spacing: 8px; text-align: center; animation: resultPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
-  .result-text.win { color: var(--gold); text-shadow: 0 0 20px #ffaa00, 0 0 40px #ffaa00, 0 0 80px #ffaa00, 5px 5px 0 #000; }
-  .result-text.win.epic-win { font-size: 130px; color: #fff; text-shadow: 0 0 30px #fff, 0 0 60px #ffaa00, 0 0 100px #ff6600, 0 0 140px #ff0000, 6px 6px 0 #000; animation: resultPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), epicWinPulse 0.6s infinite alternate; }
+  .result-text.win { color: var(--gold); text-shadow: 0 0 20px #ffaa00, 0 0 40px #ffaa00, 5px 5px 0 #000; }
+  .result-text.win.epic-win { font-size: 130px; color: #fff; text-shadow: 0 0 30px #fff, 0 0 60px #ffaa00, 0 0 100px #ff6600, 6px 6px 0 #000; animation: resultPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1), epicWinPulse 0.6s infinite alternate; }
   @keyframes epicWinPulse { from { transform: scale(1) rotate(-1deg); } to { transform: scale(1.06) rotate(1deg); } }
   .result-text.lose { color: #b066d9; text-shadow: 0 0 20px #7c3aed, 0 0 40px #7c3aed, 5px 5px 0 #000; }
   @keyframes resultPop { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 60% { transform: scale(1.2) rotate(5deg); opacity: 1; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
-
   .particle { position: fixed; pointer-events: none; z-index: 1400; }
   .particle.gold { width: 9px; height: 9px; border-radius: 50%; background: radial-gradient(circle, #fff, #ffdd44); box-shadow: 0 0 14px #ffaa00; }
   .particle.purple { width: 11px; height: 11px; border-radius: 50%; background: radial-gradient(circle, #e9d5ff, #7c3aed); box-shadow: 0 0 14px #7c3aed; }
   .particle.rainbow { width: 13px; height: 13px; border-radius: 50%; background: radial-gradient(circle, #fff, #ff00ff); box-shadow: 0 0 18px #ff00ff, 0 0 28px #00ffff; animation: rainbowSpin 1s linear infinite; }
   @keyframes rainbowSpin { 0% { filter: hue-rotate(0deg); } 100% { filter: hue-rotate(360deg); } }
-
   .aura-flyer { position: fixed; z-index: 1600; font-size: 36px; font-weight: 900; color: var(--accent); text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent), 3px 3px 0 #000; pointer-events: none; }
-
-  /* ============ ACHIEVEMENT TOAST ============ */
-  .toast {
-    position: fixed; top: 80px; right: 24px; z-index: 1800;
-    background: linear-gradient(135deg, rgba(0,217,255,0.2), rgba(124,58,237,0.2));
-    border: 1px solid var(--accent);
-    border-radius: 12px;
-    padding: 14px 20px;
-    backdrop-filter: blur(20px);
-    box-shadow: 0 8px 30px rgba(0,217,255,0.4);
-    animation: toastSlide 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-    display: flex; align-items: center; gap: 12px;
-    font-size: 13px; font-weight: 600; color: #fff;
-    max-width: 320px;
-  }
+  .toast { position: fixed; top: 80px; right: 24px; z-index: 1800; background: linear-gradient(135deg, rgba(0,217,255,0.2), rgba(124,58,237,0.2)); border: 1px solid var(--accent); border-radius: 12px; padding: 14px 20px; backdrop-filter: blur(20px); box-shadow: 0 8px 30px rgba(0,217,255,0.4); animation: toastSlide 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; align-items: center; gap: 12px; font-size: 13px; font-weight: 600; color: #fff; max-width: 320px; }
   .toast.removing { animation: toastOut 0.3s ease forwards; }
   @keyframes toastSlide { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
   @keyframes toastOut { to { transform: translateX(400px); opacity: 0; } }
   .toast-icon { font-size: 24px; }
-
-  /* ============ PACK OPENING ============ */
   #packOverlay { position: fixed; inset: 0; z-index: 1000; background: radial-gradient(circle, #1b4f72 0%, #000 100%); display: flex; align-items: center; justify-content: center; overflow: hidden; }
   #packOverlay.hidden { display: none !important; }
   .pack-stage { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
@@ -331,9 +152,7 @@
   .pack-half { position: absolute; left: 0; right: 0; height: 50%; border: 2px solid var(--accent); overflow: hidden; }
   .pack-top { top: 0; border-radius: 16px 16px 0 0; border-bottom: none; background: linear-gradient(180deg, #4facfe 0%, #00d9ff 50%, #005c97 100%); display: flex; align-items: center; justify-content: center; transition: transform 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.9s ease; transform-origin: bottom center; }
   .pack-top.torn { transform: translate(-40px, -120%) rotate(-25deg); opacity: 0; }
-  .pack-top::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,0.7) 50%, transparent 70%); animation: shine 3s infinite; pointer-events: none; }
-  @keyframes shine { 0% { transform: translateX(-100%) rotate(0); } 100% { transform: translateX(100%) rotate(0); } }
-  .pack-logo { font-size: 34px; font-weight: 900; color: #fff; letter-spacing: 7px; text-shadow: 0 0 20px var(--accent), 3px 3px 0 #000; z-index: 1; animation: logoPulse 1.5s infinite alternate; }
+  .pack-logo { font-size: 34px; font-weight: 900; color: #fff; letter-spacing: 7px; text-shadow: 0 0 20px var(--accent), 3px 3px 0 #000; animation: logoPulse 1.5s infinite alternate; }
   @keyframes logoPulse { from { text-shadow: 0 0 20px var(--accent), 3px 3px 0 #000; } to { text-shadow: 0 0 35px #fff, 0 0 60px var(--accent), 3px 3px 0 #000; } }
   .pack-bottom { bottom: 0; border-radius: 0 0 16px 16px; border-top: none; background: linear-gradient(180deg, #0f3460 0%, #1a4a7a 50%, #0a0a1a 100%); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 20px; }
   .pack-tag { color: var(--accent); font-size: 11px; font-weight: bold; letter-spacing: 3px; text-shadow: 0 0 10px var(--accent); }
@@ -352,7 +171,6 @@
   .screen-flash { position: fixed; inset: 0; background: #fff; z-index: 2000; pointer-events: none; opacity: 0; }
   .screen-flash.flash { animation: screenFlash 0.4s ease; }
   @keyframes screenFlash { 0% { opacity: 0.9; } 100% { opacity: 0; } }
-
   .flash-msg { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #2ecc71, #27ae60); color: #fff; padding: 14px 26px; border-radius: 12px; font-weight: 700; font-size: 14px; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 999; box-shadow: 0 8px 30px rgba(46,204,113,0.5); letter-spacing: 1px; }
   .flash-msg.show { opacity: 1; transform: translateX(-50%) translateY(-8px); }
   .hidden { display: none !important; }
@@ -371,6 +189,7 @@
   <div class="header-right">
     <div class="pill aura" id="auraDisplay">AURA: <span id="auraCount">50</span></div>
     <button class="icon-btn" id="musicBtn" title="Toggle Music">♫</button>
+    <button class="icon-btn" id="sfxBtn" title="Toggle Sound Effects">🔊</button>
     <select id="langSelect" onchange="setLanguage(this.value)">
       <option value="en">EN</option>
       <option value="fa">FA</option>
@@ -408,7 +227,7 @@
   <div id="battleSetup">
     <div class="glass-panel" style="margin-top:16px;">
       <h3 style="color:var(--accent); margin-top:0; font-weight:300; letter-spacing:2px;">CHOOSE YOUR OPPONENT</h3>
-      <p style="font-size:12px; color:var(--text-dim); margin-bottom:16px;">Higher difficulty = more Aura. Whispers say naming yourself <b style="color:#a855f7;">"kris"</b> or <b style="color:#a855f7;">"rouring"</b> awakens something...</p>
+      <p style="font-size:12px; color:var(--text-dim); margin-bottom:16px;">Higher difficulty = more Aura. Name yourself <b style="color:#a855f7;">"kris"</b> for the Knight. Name yourself <b style="color:#a855f7;">"rouring"</b> for a gift.</p>
       <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:center; margin-bottom:16px;">
         <button class="diff-btn selected" data-diff="easy">EASY +25</button>
         <button class="diff-btn" data-diff="normal">NORMAL +50</button>
@@ -435,7 +254,7 @@
         <div style="display:flex; justify-content:center; gap:20px; align-items:center; min-height:210px; position:relative;">
           <div class="battle-slot" id="botSlot">No Active Card</div>
         </div>
-        <div class="hp-bar-wrap"><div class="hp-bar-fill" id="botHPBar"></div><div class="hp-bar-text" id="botHPText">20 / 20 HP</div></div>
+        <div class="hp-bar-wrap"><div class="hp-bar-fill" id="botHPBar" style="width:100%;"></div><div class="hp-bar-text" id="botHPText">20 / 20 HP</div></div>
       </div>
       <div id="battleLog" style="background:rgba(0,0,0,0.5); border:1px solid var(--glass-border); border-radius:10px; padding:12px; font-size:12px; max-height:110px; overflow-y:auto; margin:12px 0; color:#a9cce3; font-family:'Consolas', monospace;"></div>
       <div>
@@ -443,7 +262,7 @@
           <div class="battle-slot" id="playerSlot">No Active Card</div>
         </div>
         <div style="text-align:center; color:var(--accent); font-weight:bold; font-size:14px; letter-spacing:2px;">YOU</div>
-        <div class="hp-bar-wrap"><div class="hp-bar-fill" id="playerHPBar"></div><div class="hp-bar-text" id="playerHPText">20 / 20 HP</div></div>
+        <div class="hp-bar-wrap"><div class="hp-bar-fill" id="playerHPBar" style="width:100%;"></div><div class="hp-bar-text" id="playerHPText">20 / 20 HP</div></div>
       </div>
     </div>
     <div style="text-align:center; margin-top:12px; color:var(--text-dim); font-size:12px; letter-spacing:2px;">YOUR HAND (Click a card to play it)</div>
@@ -465,7 +284,7 @@
   </div>
   <div id="cardCreator" style="display:grid; grid-template-columns:240px 1fr; gap:24px; align-items:start;">
     <div class="glass-panel" style="text-align:center;">
-      <canvas id="drawCanvas" width="180" height="180" style="background:#000; border-radius:8px; cursor:crosshair; border:1px solid var(--accent); box-shadow: 0 0 15px rgba(0,217,255,0.3);"></canvas>
+      <canvas id="drawCanvas" width="180" height="180" style="background:#000; border-radius:8px; cursor:crosshair; border:1px solid var(--accent);"></canvas>
       <div style="display:flex; gap:8px; justify-content:center; margin-top:12px; flex-wrap:wrap;">
         <div class="color-swatch active" data-color="#00ff88" style="background:#00ff88; width:28px; height:28px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></div>
         <div class="color-swatch" data-color="#ff3355" style="background:#ff3355; width:28px; height:28px; border-radius:50%; cursor:pointer;"></div>
@@ -516,7 +335,7 @@
 <div id="data" class="page">
   <h2>Data & Files</h2>
   <div class="glass-panel" style="margin-bottom:16px;">
-    <h3 style="color:var(--accent); margin-top:0; font-weight:300; letter-spacing:1px;">LOAD CARDS FROM GITHUB</h3>
+    <h3 style="color:var(--accent); margin-top:0; font-weight:300;">LOAD CARDS FROM GITHUB</h3>
     <button id="loadGithubBtn" class="success" style="width:100%; margin-bottom:8px;">RELOAD FROM SERVER</button>
     <div id="crdDropZone" style="border:2px dashed rgba(0,217,255,0.4); padding:24px; text-align:center; border-radius:12px; margin:10px 0; color:var(--text-dim); background:rgba(0,0,0,0.2);">
       <input type="file" id="crdFileInput" multiple accept=".crd,.itm" style="display:none;">
@@ -524,12 +343,12 @@
     </div>
   </div>
   <div class="glass-panel" style="margin-bottom:16px;">
-    <h3 style="color:var(--accent); margin-top:0; font-weight:300; letter-spacing:1px;">SAVE / LOAD (.dat)</h3>
+    <h3 style="color:var(--accent); margin-top:0; font-weight:300;">SAVE / LOAD (.dat)</h3>
     <button id="saveDatBtn" class="success" style="width:100%; margin-bottom:8px;">DOWNLOAD SAVE FILE</button>
     <input type="file" id="loadDatInput" accept=".dat" style="color:#fff; width:100%;">
   </div>
   <div class="glass-panel" style="border-color:rgba(231,76,60,0.4);">
-    <h3 style="color:#e74c3c; margin-top:0; font-weight:300; letter-spacing:1px;">DANGER ZONE</h3>
+    <h3 style="color:#e74c3c; margin-top:0; font-weight:300;">DANGER ZONE</h3>
     <button class="danger" id="wipeBtn" style="width:100%;">ERASE ALL DATA</button>
   </div>
 </div>
@@ -562,62 +381,181 @@
 
 <script>
 // ================================================================
-// MUSIC PLAYER
+// SOUND ENGINE (Web Audio API — all generated, no files)
+// ================================================================
+const Sound = (() => {
+  let ctx = null;
+  let enabled = true;
+  function getCtx() {
+    if (!ctx) {
+      try { ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return null; }
+    }
+    if (ctx.state === 'suspended') ctx.resume();
+    return ctx;
+  }
+  function tone(freq, duration, type, vol, sweepTo) {
+    if (!enabled) return;
+    const c = getCtx(); if (!c) return;
+    try {
+      const osc = c.createOscillator();
+      const gain = c.createGain();
+      osc.type = type || 'sine';
+      osc.frequency.setValueAtTime(freq, c.currentTime);
+      if (sweepTo) osc.frequency.exponentialRampToValueAtTime(sweepTo, c.currentTime + duration);
+      gain.gain.setValueAtTime(vol || 0.12, c.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + duration);
+      osc.connect(gain).connect(c.destination);
+      osc.start();
+      osc.stop(c.currentTime + duration);
+    } catch(e) {}
+  }
+  return {
+    setEnabled(v) { enabled = v; },
+    isEnabled() { return enabled; },
+    unlock() { getCtx(); },
+    click() { tone(800, 0.05, 'square', 0.04); },
+    swipeTick() { tone(1200, 0.03, 'sine', 0.05); },
+    swipeComplete() { tone(400, 0.3, 'sine', 0.12, 1200); },
+    packTear() {
+      tone(300, 0.25, 'sawtooth', 0.12, 80);
+      setTimeout(() => tone(150, 0.35, 'sawtooth', 0.1, 50), 120);
+      setTimeout(() => tone(80, 0.4, 'square', 0.08, 30), 240);
+    },
+    cardReveal(rarity) {
+      const base = { common: 400, uncommon: 500, rare: 600, epic: 750, legendary: 900 }[rarity] || 400;
+      tone(base, 0.12, 'sine', 0.1);
+      setTimeout(() => tone(base * 1.5, 0.15, 'sine', 0.08), 70);
+    },
+    legendaryFanfare() {
+      [523, 659, 784, 1047, 1319].forEach((f, i) => setTimeout(() => tone(f, 0.3, 'triangle', 0.12), i * 90));
+    },
+    epicFanfare() {
+      [523, 659, 784].forEach((f, i) => setTimeout(() => tone(f, 0.25, 'triangle', 0.1), i * 80));
+    },
+    attack() {
+      tone(220, 0.1, 'sawtooth', 0.15, 100);
+      setTimeout(() => tone(180, 0.15, 'sawtooth', 0.12, 60), 60);
+    },
+    hit() {
+      tone(140, 0.18, 'square', 0.15, 50);
+      setTimeout(() => tone(80, 0.2, 'sawtooth', 0.12, 30), 60);
+    },
+    heal() {
+      [523, 659, 784].forEach((f, i) => setTimeout(() => tone(f, 0.2, 'sine', 0.1), i * 70));
+    },
+    buff() {
+      [400, 600, 800].forEach((f, i) => setTimeout(() => tone(f, 0.18, 'triangle', 0.1), i * 60));
+    },
+    victory() {
+      [523, 659, 784, 1047, 1319].forEach((f, i) => setTimeout(() => tone(f, 0.35, 'triangle', 0.15), i * 110));
+      setTimeout(() => tone(1568, 0.5, 'triangle', 0.15), 550);
+    },
+    defeat() {
+      [400, 350, 300, 250, 200].forEach((f, i) => setTimeout(() => tone(f, 0.35, 'sawtooth', 0.12), i * 140));
+    },
+    auraGain() {
+      [880, 1100, 1320, 1760].forEach((f, i) => setTimeout(() => tone(f, 0.15, 'sine', 0.08), i * 50));
+    },
+    auraSpend() {
+      [660, 550, 440].forEach((f, i) => setTimeout(() => tone(f, 0.12, 'sine', 0.08), i * 50));
+    },
+    knightWarn() {
+      [200, 150, 100, 80, 60].forEach((f, i) => setTimeout(() => tone(f, 0.4, 'sawtooth', 0.14), i * 120));
+    },
+    knightAttack() {
+      tone(300, 0.15, 'square', 0.15, 100);
+      setTimeout(() => tone(150, 0.3, 'sawtooth', 0.15, 40), 100);
+    },
+    easterEgg() {
+      [440, 554, 659, 880, 1108, 1318].forEach((f, i) => setTimeout(() => tone(f, 0.25, 'triangle', 0.12), i * 70));
+    }
+  };
+})();
+
+// ================================================================
+// MUSIC
 // ================================================================
 const MUSIC_TRACKS = ['1.mp3', '2.mp3', '3.mp3'];
 let currentTrackIndex = 0;
 let musicAudio = null;
 let musicEnabled = true;
+let musicStarted = false;
 
 function initMusic() {
+  if (musicAudio) return;
   musicAudio = new Audio();
-  musicAudio.volume = 0.4;
+  musicAudio.volume = 0.35;
   musicAudio.addEventListener('ended', () => {
     currentTrackIndex = (currentTrackIndex + 1) % MUSIC_TRACKS.length;
     playTrack();
   });
   musicAudio.addEventListener('error', () => {
-    // Silently skip missing files
     currentTrackIndex++;
-    if (currentTrackIndex < MUSIC_TRACKS.length) {
-      setTimeout(playTrack, 100);
-    } else {
-      // No tracks available, hide button
-      document.getElementById('musicBtn').style.display = 'none';
-    }
+    if (currentTrackIndex < MUSIC_TRACKS.length) setTimeout(playTrack, 100);
+    else document.getElementById('musicBtn').style.display = 'none';
   });
-  // Try starting first track
-  playTrack();
 }
 function playTrack() {
   if (!musicAudio || currentTrackIndex >= MUSIC_TRACKS.length) return;
   musicAudio.src = MUSIC_TRACKS[currentTrackIndex];
-  musicAudio.play().catch(() => {
-    // Autoplay blocked or file missing — user must click
-    document.getElementById('musicBtn').textContent = '♪';
+  musicAudio.play().then(() => {
+    musicStarted = true;
+    document.getElementById('musicBtn').classList.remove('muted');
+  }).catch(() => {
+    document.getElementById('musicBtn').classList.add('muted');
   });
 }
 document.getElementById('musicBtn').addEventListener('click', () => {
-  if (!musicAudio) { initMusic(); return; }
+  initMusic();
   musicEnabled = !musicEnabled;
   if (musicEnabled) {
-    musicAudio.play().catch(() => {});
+    playTrack();
     document.getElementById('musicBtn').textContent = '♫';
   } else {
-    musicAudio.pause();
+    if (musicAudio) musicAudio.pause();
     document.getElementById('musicBtn').textContent = '♪';
+    document.getElementById('musicBtn').classList.add('muted');
   }
 });
+document.getElementById('sfxBtn').addEventListener('click', () => {
+  const en = !Sound.isEnabled();
+  Sound.setEnabled(en);
+  document.getElementById('sfxBtn').textContent = en ? '🔊' : '🔇';
+  document.getElementById('sfxBtn').classList.toggle('muted', !en);
+  if (en) Sound.click();
+});
+
+// Auto-start music + unlock audio on first user interaction
+function unlockOnFirstInteraction() {
+  const handler = () => {
+    Sound.unlock();
+    if (musicEnabled && !musicStarted) {
+      initMusic();
+      playTrack();
+    }
+    document.removeEventListener('click', handler);
+    document.removeEventListener('keydown', handler);
+    document.removeEventListener('touchstart', handler);
+  };
+  document.addEventListener('click', handler);
+  document.addEventListener('keydown', handler);
+  document.addEventListener('touchstart', handler);
+}
+
+// Global button click sound
+document.addEventListener('click', e => {
+  if (e.target.tagName === 'BUTTON') Sound.click();
+}, true);
 
 // ================================================================
 // DIFFICULTIES
 // ================================================================
 const DIFFICULTIES = {
-  easy:    { name: 'EASY',               hp: 15,  attackChance: 0.15, dmg: 3,  aura: 25,  color: '#27ae60' },
-  normal:  { name: 'NORMAL',             hp: 25,  attackChance: 0.45, dmg: 5,  aura: 50,  color: '#3498db' },
-  hard:    { name: 'HARD',               hp: 40,  attackChance: 0.75, dmg: 8,  aura: 100, color: '#e67e22' },
-  insane:  { name: 'INSANE',             hp: 60,  attackChance: 0.95, dmg: 12, aura: 250, color: '#c0392b' },
-  knight:  { name: 'THE ROARING KNIGHT', hp: 120, attackChance: 1.0,  dmg: 18, attacksPerTurn: 2, aura: 1000, color: '#a855f7' }
+  easy:   { name: 'EASY', hp: 15, attackChance: 0.15, dmg: 3, aura: 25, color: '#27ae60' },
+  normal: { name: 'NORMAL', hp: 25, attackChance: 0.45, dmg: 5, aura: 50, color: '#3498db' },
+  hard:   { name: 'HARD', hp: 40, attackChance: 0.75, dmg: 8, aura: 100, color: '#e67e22' },
+  insane: { name: 'INSANE', hp: 60, attackChance: 0.95, dmg: 12, aura: 250, color: '#c0392b' },
+  knight: { name: 'THE ROARING KNIGHT', hp: 120, attackChance: 1.0, dmg: 18, attacksPerTurn: 2, aura: 1000, color: '#a855f7' }
 };
 
 // ================================================================
@@ -636,29 +574,15 @@ function showToast(icon, text) {
   toast.className = 'toast';
   toast.innerHTML = `<div class="toast-icon">${icon}</div><div>${text}</div>`;
   document.body.appendChild(toast);
-  setTimeout(() => {
-    toast.classList.add('removing');
-    setTimeout(() => toast.remove(), 400);
-  }, 2500);
+  setTimeout(() => { toast.classList.add('removing'); setTimeout(() => toast.remove(), 400); }, 2500);
 }
-
-// ================================================================
-// BUTTON RIPPLE
-// ================================================================
-document.addEventListener('mousemove', e => {
-  if (e.target.tagName === 'BUTTON') {
-    const r = e.target.getBoundingClientRect();
-    e.target.style.setProperty('--rx', ((e.clientX - r.left) / r.width * 100) + '%');
-    e.target.style.setProperty('--ry', ((e.clientY - r.top) / r.height * 100) + '%');
-  }
-});
 
 // ================================================================
 // TRANSLATIONS
 // ================================================================
 const translations = {
   en: { subtitle: "PAPERSHOP TRADING CARD GAME", playerManual: "PLAYER MANUAL", adminManual: "ADMIN MANUAL",
-    playerDesc: "Welcome to PSTCG! Cards auto-load on open.", adminDesc: "You are logged in as Admin.",
+    playerDesc: "Welcome to PSTCG!", adminDesc: "Admin mode.",
     gettingCards: "1. Getting Cards", gettingCardsDesc: "Open packs to get random cards.",
     battling: "2. Battling", battlingDesc: "Fight the bot or play P2P online.",
     savingProgress: "3. Saving", savingProgressDesc: "Download your .dat file often!",
@@ -688,10 +612,6 @@ function setLanguage(lang) {
     const key = el.getAttribute('data-i18n');
     if (translations[lang][key]) el.textContent = translations[lang][key];
   });
-  document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
-    const key = el.getAttribute('data-i18n-placeholder');
-    if (translations[lang][key]) el.placeholder = translations[lang][key];
-  });
   updateAboutPage(); updateAuraUI();
 }
 
@@ -702,8 +622,8 @@ let cards = []; let items = []; let collection = {}; let itemCollection = {};
 let isAdmin = false; let username = ""; let aura = 50; let freePackAvailable = true;
 let battleState = null; let peer = null; let conn = null; let packState = null;
 let selectedDifficulty = 'easy';
-let unlockedRouring = false;
 let unlockedKris = false;
+let unlockedRouring = false;
 
 function loadData() {
   try {
@@ -715,8 +635,8 @@ function loadData() {
     if (u) { username = u; document.getElementById('usernameInput').value = u; checkAdmin(); }
     const a = localStorage.getItem('pstcg_aura'); if (a) aura = parseInt(a);
     const f = localStorage.getItem('pstcg_freePack'); if (f) freePackAvailable = f === 'true';
-    if (localStorage.getItem('pstcg_kris')) unlockedKris = true;
-    if (localStorage.getItem('pstcg_rouring')) unlockedRouring = true;
+    if (localStorage.getItem('pstcg_kris') === 'true') unlockedKris = true;
+    if (localStorage.getItem('pstcg_rouring') === 'true') unlockedRouring = true;
   } catch(e) { console.error(e); }
 }
 function saveData() {
@@ -748,7 +668,6 @@ function checkAdmin() {
   const lower = input.toLowerCase();
   username = input;
   localStorage.setItem('pstcg_username', username);
-
   if (input === ADMIN_KEY) {
     isAdmin = true;
     document.getElementById('createTabBtn').classList.remove('hidden');
@@ -758,13 +677,13 @@ function checkAdmin() {
     document.getElementById('createTabBtn').classList.add('hidden');
     document.getElementById('adminAuraBtn').classList.add('hidden');
   }
-
-  // EASTER EGG: kris → unlock Roaring Knight mode
+  // EASTER EGG: kris → unlock Roaring Knight
   if (lower === 'kris') {
     document.getElementById('knightBtn').classList.remove('hidden');
     if (!unlockedKris) {
       unlockedKris = true;
       saveData();
+      Sound.knightWarn();
       showToast('🦌', 'THE ROARING KNIGHT AWAKENS...');
     }
   } else {
@@ -775,16 +694,17 @@ function checkAdmin() {
       document.querySelector('[data-diff="easy"]').classList.add('selected');
     }
   }
-
-  // EASTER EGG: rouring → +12,000 aura (once)
+  // EASTER EGG: rouring → +12,000 aura
   if (lower === 'rouring' && !unlockedRouring) {
     unlockedRouring = true;
     aura += 12000;
     saveData(); updateAuraUI(); pulseAura();
+    Sound.easterEgg();
     const flashEl = document.getElementById('screenFlash');
     flashEl.style.background = 'linear-gradient(45deg, #a855f7, #fff, #7c3aed)';
     flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash');
     showToast('🦌', 'R O U R I N G  —  +12,000 AURA');
+    setTimeout(() => Sound.auraGain(), 500);
     for (let i = 0; i < 100; i++) {
       setTimeout(() => {
         const p = document.createElement('div');
@@ -797,7 +717,6 @@ function checkAdmin() {
       }, i * 15);
     }
   }
-
   updateAboutPage();
 }
 document.getElementById('usernameInput').addEventListener('input', checkAdmin);
@@ -805,6 +724,7 @@ document.getElementById('usernameInput').addEventListener('input', checkAdmin);
 document.getElementById('adminAuraBtn').addEventListener('click', () => {
   if (!isAdmin) return;
   aura += 9999; saveData(); updateAuraUI(); pulseAura();
+  Sound.auraGain();
   showToast('⚡', '+9999 AURA GRANTED');
 });
 
@@ -818,12 +738,9 @@ document.querySelectorAll('.diff-btn').forEach(btn => {
 
 function updateAboutPage() {
   const content = document.getElementById('aboutContent');
-  const box = (title, body) => `<div class="glass-panel" style="margin-bottom:16px; line-height:1.7;"><h3 style="margin-top:0; color:var(--accent); font-weight:300; letter-spacing:1px;">${title}</h3><p>${body}</p></div>`;
-  if (isAdmin) {
-    content.innerHTML = box(t('adminManual'), t('adminDesc')) + box(t('makeCards'), t('makeCardsDesc')) + box(t('exportGithub'), t('exportGithubDesc')) + box(t('saveDatAdmin'), t('saveDatAdminDesc'));
-  } else {
-    content.innerHTML = box(t('playerManual'), t('playerDesc')) + box(t('gettingCards'), t('gettingCardsDesc')) + box(t('battling'), t('battlingDesc')) + box(t('savingProgress'), t('savingProgressDesc'));
-  }
+  const box = (title, body) => `<div class="glass-panel" style="margin-bottom:16px; line-height:1.7;"><h3 style="margin-top:0; color:var(--accent); font-weight:300;">${title}</h3><p>${body}</p></div>`;
+  if (isAdmin) content.innerHTML = box(t('adminManual'), t('adminDesc')) + box(t('makeCards'), t('makeCardsDesc')) + box(t('exportGithub'), t('exportGithubDesc')) + box(t('saveDatAdmin'), t('saveDatAdminDesc'));
+  else content.innerHTML = box(t('playerManual'), t('playerDesc')) + box(t('gettingCards'), t('gettingCardsDesc')) + box(t('battling'), t('battlingDesc')) + box(t('savingProgress'), t('savingProgressDesc'));
 }
 
 document.querySelectorAll('.tab').forEach(tab => {
@@ -881,6 +798,13 @@ function rarityClass(r) {
   if (r >= 1) return 'r-epic';
   return 'r-legendary';
 }
+function rarityName(r) {
+  if (r >= 50) return 'common';
+  if (r >= 20) return 'uncommon';
+  if (r >= 5) return 'rare';
+  if (r >= 1) return 'epic';
+  return 'legendary';
+}
 function getRarityColor(r) {
   if (r >= 50) return '#888'; if (r >= 20) return '#22aa44';
   if (r >= 5) return '#2277ee'; if (r >= 1) return '#aa22cc'; return '#ffaa00';
@@ -937,7 +861,7 @@ function renderCollection() {
       const wrap = document.createElement('div'); wrap.style.position = 'relative';
       wrap.appendChild(makeCardElement(card));
       const badge = document.createElement('div'); badge.textContent = 'x' + collection[card.codename];
-      badge.style.cssText = 'position:absolute; bottom:-8px; left:50%; transform:translateX(-50%); background:#0a0e27; color:var(--accent); font-size:11px; font-weight:bold; padding:3px 12px; border-radius:12px; border:1px solid var(--accent); box-shadow:0 0 12px rgba(0,217,255,0.5);';
+      badge.style.cssText = 'position:absolute; bottom:-8px; left:50%; transform:translateX(-50%); background:#0a0e27; color:var(--accent); font-size:11px; font-weight:bold; padding:3px 12px; border-radius:12px; border:1px solid var(--accent);';
       wrap.appendChild(badge); grid.appendChild(wrap);
     });
   }
@@ -982,6 +906,7 @@ document.getElementById('openPackBtn').addEventListener('click', () => {
   if (!freePackAvailable) {
     if (aura < 50) { showToast('💧', 'Not enough Aura!'); return; }
     aura -= 50;
+    Sound.auraSpend();
   } else { freePackAvailable = false; }
   saveData(); updateAuraUI();
   if (cards.length === 0) { showToast('⚠️', 'No cards loaded!'); return; }
@@ -993,7 +918,7 @@ document.getElementById('openPackBtn').addEventListener('click', () => {
   const it = pickRandomItem();
   if (it) { pulled.push(it); itemCollection[it.id] = (itemCollection[it.id] || 0) + 1; }
   saveData();
-  packState = { cards: pulled, currentIndex: -1 };
+  packState = { cards: pulled, currentIndex: -1, lastTick: 0 };
   document.getElementById('packTop').classList.remove('torn');
   document.getElementById('swipeProgress').style.width = '0%';
   document.getElementById('swipeHint').style.display = 'block';
@@ -1009,11 +934,21 @@ document.getElementById('openPackBtn').addEventListener('click', () => {
   const swipeProgress = document.getElementById('swipeProgress');
   let dragging = false, startX = 0;
   function getX(e) { return e.clientX !== undefined ? e.clientX : (e.touches && e.touches[0] ? e.touches[0].clientX : 0); }
-  function start(e) { if (!packState || packState.currentIndex >= 0) return; dragging = true; startX = getX(e); swipeProgress.style.width = '0%'; }
+  function start(e) {
+    if (!packState || packState.currentIndex >= 0) return;
+    dragging = true; startX = getX(e); swipeProgress.style.width = '0%';
+    Sound.swipeStart && Sound.swipeStart();
+  }
   function move(e) {
     if (!dragging || !packState) return;
     const pct = Math.min(100, (Math.abs(getX(e) - startX) / 200) * 100);
     swipeProgress.style.width = pct + '%';
+    // Tick sound every ~15% progress
+    const tickBucket = Math.floor(pct / 15);
+    if (tickBucket !== packState.lastTick) {
+      packState.lastTick = tickBucket;
+      if (pct < 100) Sound.swipeTick();
+    }
     if (pct >= 100) { dragging = false; tearOpenPack(); }
   }
   function end() { dragging = false; }
@@ -1028,6 +963,8 @@ document.getElementById('openPackBtn').addEventListener('click', () => {
 function tearOpenPack() {
   document.getElementById('swipeHint').style.display = 'none';
   document.getElementById('packTop').classList.add('torn');
+  Sound.swipeComplete();
+  setTimeout(() => Sound.packTear(), 200);
   setTimeout(() => {
     document.getElementById('sealedPack').style.display = 'none';
     const revealArea = document.getElementById('revealArea');
@@ -1052,8 +989,17 @@ function revealNextCard() {
   const rar = rarClass(dropRate);
   revealArea.innerHTML = '';
   const flashEl = document.getElementById('screenFlash');
-  if (rar === 'rarity-epic') { flashEl.style.background = '#fff'; flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash'); }
-  else if (rar === 'rarity-legendary') { flashEl.style.background = 'linear-gradient(45deg, #ffaa00, #fff, #ff6600)'; flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash'); }
+  if (rar === 'rarity-epic') {
+    flashEl.style.background = '#fff';
+    flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash');
+    Sound.epicFanfare();
+  } else if (rar === 'rarity-legendary') {
+    flashEl.style.background = 'linear-gradient(45deg, #ffaa00, #fff, #ff6600)';
+    flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash');
+    Sound.legendaryFanfare();
+  } else {
+    Sound.cardReveal(rarityName(dropRate));
+  }
   const counter = document.createElement('div');
   counter.className = 'reveal-counter';
   counter.textContent = 'CARD ' + (packState.currentIndex + 1) + ' / ' + packState.cards.length;
@@ -1244,17 +1190,22 @@ function logBattle(msg) {
   const div = document.createElement('div'); div.textContent = '> ' + msg;
   log.appendChild(div); log.scrollTop = log.scrollHeight;
 }
+
+// ============ FIXED HP BAR ============
 function updateHpBar(id, current, max) {
-  const pct = Math.max(0, (current / max) * 100);
+  const safeMax = Math.max(1, max);
+  const clampedCurrent = Math.max(0, current);
+  const pct = Math.min(100, (clampedCurrent / safeMax) * 100);
   const bar = document.getElementById(id + 'Bar');
   const text = document.getElementById(id + 'Text');
-  if (!bar) return;
+  if (!bar || !text) return;
   bar.style.width = pct + '%';
   bar.classList.remove('warn', 'danger');
   if (pct <= 25) bar.classList.add('danger');
   else if (pct <= 50) bar.classList.add('warn');
-  if (text) text.textContent = Math.max(0, Math.round(current)) + ' / ' + max + ' HP';
+  text.textContent = clampedCurrent + ' / ' + safeMax + ' HP';
 }
+
 function updateBattleUI() {
   if (!battleState) return;
   const ps = document.getElementById('playerSlot'), bs = document.getElementById('botSlot');
@@ -1298,6 +1249,7 @@ function doAttackAnimation(attackerSlotId, defenderSlotId, particleEmoji, onImpa
   const attackerSide = attackerSlotId === 'playerSlot' ? 'player' : 'bot';
   const defenderSide = defenderSlotId === 'playerSlot' ? 'player' : 'bot';
   attacker.classList.add('attacking-' + attackerSide);
+  Sound.attack();
   setTimeout(() => {
     const aRect = attacker.getBoundingClientRect();
     const dRect = defender.getBoundingClientRect();
@@ -1318,6 +1270,7 @@ function doAttackAnimation(attackerSlotId, defenderSlotId, particleEmoji, onImpa
       particle.remove();
       defender.classList.add('hit-' + defenderSide);
       document.body.classList.add('screen-shake');
+      Sound.hit();
       setTimeout(() => {
         document.body.classList.remove('screen-shake');
         defender.classList.remove('hit-' + defenderSide);
@@ -1332,9 +1285,10 @@ function showDamageNumber(slotId, amount) {
   const rect = slot.getBoundingClientRect();
   const dmg = document.createElement('div');
   dmg.className = 'dmg-number';
-  dmg.textContent = '-' + amount;
+  dmg.textContent = (amount >= 0 ? '-' : '+') + Math.abs(amount);
   dmg.style.left = (rect.left + rect.width / 2) + 'px';
   dmg.style.top = (rect.top + rect.height / 2) + 'px';
+  if (amount < 0) { dmg.style.color = '#2ecc71'; dmg.style.textShadow = '0 0 12px #2ecc71, 3px 3px 5px #000'; }
   document.body.appendChild(dmg);
   setTimeout(() => dmg.remove(), 1300);
 }
@@ -1359,7 +1313,7 @@ document.getElementById('startBotBtn').addEventListener('click', () => {
   document.getElementById('battleLog').innerHTML = '';
   logBattle(`Battle vs ${diff.name}!`);
   logBattle(`Reward: +${diff.aura} Aura`);
-  if (selectedDifficulty === 'knight') logBattle("THE ROARING KNIGHT emerges...");
+  if (selectedDifficulty === 'knight') { logBattle("THE ROARING KNIGHT emerges..."); Sound.knightWarn(); }
   updateBattleUI();
 });
 document.getElementById('attackBtn').onclick = () => {
@@ -1400,8 +1354,9 @@ document.getElementById('useItemBtn').onclick = () => {
   const item = items[Math.floor(Math.random() * items.length)];
   logBattle(`You used ${item.name}!`);
   if (item.type === 'heal') {
-    battleState.playerHP += item.value;
+    battleState.playerHP = Math.min(battleState.maxPlayerHP, battleState.playerHP + item.value);
     logBattle(`Healed ${item.value} HP!`);
+    Sound.heal();
     const slot = document.getElementById('playerSlot');
     const rect = slot.getBoundingClientRect();
     for (let i = 0; i < 12; i++) {
@@ -1419,9 +1374,11 @@ document.getElementById('useItemBtn').onclick = () => {
     battleState.botHP -= item.value;
     logBattle(`Dealt ${item.value} damage!`);
     showDamageNumber('botSlot', item.value);
+    Sound.hit();
   } else if (item.type === 'buff') {
     battleState.playerCard.damage += item.value;
     logBattle(`Attack +${item.value}!`);
+    Sound.buff();
   }
   updateBattleUI();
 };
@@ -1437,10 +1394,11 @@ function botTurn() {
       () => logBattle("The bot is thinking..."),
       () => logBattle("The bot plays with its cards."),
       () => logBattle("The bot looks at you."),
-      () => { if (b) { b.hp = Math.min(b.maxHp, b.hp + 5); logBattle("The bot healed 5 HP."); } },
+      () => { if (b) { b.hp = Math.min(b.maxHp, b.hp + 5); logBattle("The bot healed 5 HP."); Sound.heal(); } },
       () => { if (b) { logBattle("The bot does a little dance."); } }
     ];
     peaceful[Math.floor(Math.random() * peaceful.length)]();
+    updateBattleUI();
     battleState.turn = 'player'; updateBattleUI();
   }
 }
@@ -1451,7 +1409,7 @@ function executeBotAttack(remainingAttacks, diff) {
   }
   const attackerCard = battleState.botCard;
   let emoji = '💢';
-  if (battleState.difficulty === 'knight') emoji = ['🦌', '🗡️', '💜', '⛧'][Math.floor(Math.random() * 4)];
+  if (battleState.difficulty === 'knight') { emoji = ['🦌', '🗡️', '💜', '⛧'][Math.floor(Math.random() * 4)]; Sound.knightAttack(); }
   else emoji = ['💢', '💥', '⚔️', '🔥'][Math.floor(Math.random() * 4)];
   const dmg = diff.dmg;
   logBattle(`${diff.name}'s ${attackerCard.name} attacks!`);
@@ -1478,6 +1436,7 @@ function showWinSequence(reward, difficulty) {
   else if (difficulty === 'insane') flashEl.style.background = 'linear-gradient(45deg, #ff0000, #fff, #ff6600)';
   else flashEl.style.background = 'linear-gradient(45deg, #ffdd44, #fff, #ffaa00)';
   flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash');
+  Sound.victory();
   const overlay = document.createElement('div');
   overlay.className = 'result-overlay active';
   const textCls = isEpic ? 'result-text win epic-win' : 'result-text win';
@@ -1499,6 +1458,7 @@ function showWinSequence(reward, difficulty) {
     }, i * (difficulty === 'knight' ? 8 : 20));
   }
   setTimeout(() => {
+    Sound.auraGain();
     const auraFly = document.createElement('div');
     auraFly.className = 'aura-flyer';
     auraFly.textContent = '+' + reward + ' AURA';
@@ -1530,6 +1490,7 @@ function showLoseSequence() {
   const flashEl = document.getElementById('screenFlash');
   flashEl.style.background = 'linear-gradient(45deg, #7c3aed, #b066d9, #4c1d95)';
   flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash');
+  Sound.defeat();
   const overlay = document.createElement('div');
   overlay.className = 'result-overlay active';
   overlay.innerHTML = '<div class="result-text lose">YOU LOST</div>';
@@ -1631,9 +1592,7 @@ renderCollection();
 checkAdmin();
 updateAuraUI();
 loadRemoteData();
-
-// Try to init music (will only play if user interacts first, browsers block autoplay)
-setTimeout(initMusic, 500);
+unlockOnFirstInteraction();
 
 console.log("PSTCG loaded. Cards:", cards.length, "Items:", items.length, "Aura:", aura);
 </script>
