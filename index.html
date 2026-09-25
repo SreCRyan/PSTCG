@@ -185,6 +185,15 @@
   .flash-msg { position: fixed; bottom: 22px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #2ecc71, #27ae60); color: #fff; padding: 11px 22px; border-radius: 11px; font-weight: 700; font-size: 12px; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 999; box-shadow: 0 8px 30px rgba(46,204,113,0.5); }
   .flash-msg.show { opacity: 1; transform: translateX(-50%) translateY(-8px); }
   .hidden { display: none !important; }
+
+  #itemPickerOverlay { position: fixed; inset: 0; z-index: 1700; background: rgba(0,0,0,0.78); backdrop-filter: blur(8px); display: flex; align-items: center; justify-content: center; padding: 20px; }
+  #itemPickerOverlay.hidden { display: none !important; }
+  .item-picker-panel { background: linear-gradient(180deg, rgba(26,31,74,0.96), rgba(10,14,39,0.98)); border: 1px solid var(--accent); border-radius: 16px; padding: 18px; max-width: 620px; width: 100%; max-height: 82vh; overflow-y: auto; box-shadow: 0 20px 60px rgba(0,217,255,0.35); animation: cardPop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .item-pick-slot { position: relative; cursor: pointer; transition: transform 0.2s; }
+  .item-pick-slot:hover { transform: translateY(-5px) scale(1.04); }
+  .item-pick-slot:hover .item { box-shadow: 0 0 22px rgba(0,217,255,0.8); }
+  .item-pick-count { position: absolute; bottom: -7px; left: 50%; transform: translateX(-50%); background: #0a0e27; color: #2ecc71; font-size: 10px; font-weight: bold; padding: 2px 10px; border-radius: 11px; border: 1px solid #2ecc71; }
+  .item-pick-empty { grid-column: 1/-1; text-align: center; padding: 40px 10px; color: var(--text-dim); font-style: italic; }
 </style>
 </head>
 <body>
@@ -379,6 +388,15 @@
   </div>
 </div>
 
+<div id="itemPickerOverlay" class="hidden">
+  <div class="item-picker-panel">
+    <h3 style="margin-top:0; color:var(--accent); font-weight:300; letter-spacing:2px; font-size:16px; text-align:center;">CHOOSE AN ITEM</h3>
+    <p style="font-size:11px; color:var(--text-dim); text-align:center; margin:4px 0 10px;">Items reset every battle!</p>
+    <div id="itemPickerGrid" class="card-grid" style="min-height:120px;"></div>
+    <button class="secondary" id="closeItemPickerBtn" style="width:100%; margin-top:12px;">CANCEL</button>
+  </div>
+</div>
+
 <div class="screen-flash" id="screenFlash"></div>
 <div class="flash-msg" id="flashMsg"></div>
 
@@ -419,7 +437,6 @@ document.getElementById('sfxBtn').addEventListener('click', () => { const en = !
 function unlockOnFirstInteraction() { const handler = () => { Sound.unlock(); if (musicEnabled && !musicStarted) { initMusic(); playTrack(); } document.removeEventListener('click', handler); document.removeEventListener('keydown', handler); document.removeEventListener('touchstart', handler); }; document.addEventListener('click', handler); document.addEventListener('keydown', handler); document.addEventListener('touchstart', handler); }
 document.addEventListener('click', e => { if (e.target.tagName === 'BUTTON') Sound.click(); }, true);
 
-// === FIXED DIFFICULTIES: no hardcoded HP, uses multiplier instead ===
 const DIFFICULTIES = {
   easy:   { name: 'EASY', attackChance: 0.15, dmg: 3, aura: 25, hpMultiplier: 0.5, color: '#27ae60' },
   normal: { name: 'NORMAL', attackChance: 0.45, dmg: 5, aura: 50, hpMultiplier: 1.0, color: '#3498db' },
@@ -715,7 +732,12 @@ function updateBattleUI() {
   const canAct = !battleState.over && battleState.turn === 'player';
   document.getElementById('attackBtn').disabled = !canAct;
   document.getElementById('passTurnBtn').disabled = !canAct;
-  document.getElementById('useItemBtn').disabled = !canAct;
+
+  // === ITEM BUTTON: shows remaining count for THIS battle ===
+  const totalItemsLeft = battleState.itemsAvailable ? Object.values(battleState.itemsAvailable).reduce((a, b) => a + b, 0) : 0;
+  const itemBtn = document.getElementById('useItemBtn');
+  itemBtn.disabled = !canAct || totalItemsLeft === 0;
+  itemBtn.textContent = totalItemsLeft > 0 ? `ITEM (${totalItemsLeft})` : 'ITEM';
 
   const handDiv = document.getElementById('playerHand'); handDiv.innerHTML = '';
   if (battleState.playerHand) {
@@ -761,13 +783,17 @@ document.getElementById('startBotBtn').addEventListener('click', () => {
   if (cards.length === 0) { showToast('⚠️', 'Create cards first!'); return; }
   const diff = DIFFICULTIES[selectedDifficulty];
   const playerDeck = [...cards], botDeck = [...cards];
-  battleState = { mode: 'bot', difficulty: selectedDifficulty, difficultyName: diff.name, playerCard: null, botCard: null, playerHand: [], turn: 'player', over: false, playerDeck, botDeck };
+  battleState = {
+    mode: 'bot', difficulty: selectedDifficulty, difficultyName: diff.name,
+    playerCard: null, botCard: null, playerHand: [], turn: 'player', over: false,
+    playerDeck, botDeck,
+    // === BATTLE ITEM BAG: snapshot of your items, used up per-battle ===
+    itemsAvailable: { ...itemCollection }
+  };
 
-  // Set up player's hand + active card
   for (let i = 0; i < 3; i++) if (playerDeck.length > 0) battleState.playerHand.push(playerDeck[Math.floor(Math.random() * playerDeck.length)]);
   battleState.playerCard = makeBattleCard(playerDeck[Math.floor(Math.random() * playerDeck.length)]);
 
-  // === THE FIX: bot HP scales from YOUR card's HP ===
   const botBase = botDeck[Math.floor(Math.random() * botDeck.length)];
   const botHp = Math.max(20, Math.floor(battleState.playerCard.hp * diff.hpMultiplier));
   battleState.botCard = { ...botBase, hp: botHp, maxHp: botHp };
@@ -781,6 +807,8 @@ document.getElementById('startBotBtn').addEventListener('click', () => {
   logBattle(`Your ${battleState.playerCard.name}: ${battleState.playerCard.hp} HP`);
   logBattle(`Bot's ${battleState.botCard.name}: ${botHp} HP`);
   logBattle(`Reward: +${diff.aura} Aura`);
+  const itemCount = Object.values(battleState.itemsAvailable).reduce((a,b)=>a+b, 0);
+  if (itemCount > 0) logBattle(`Items ready: ${itemCount} (reset each battle)`);
   if (selectedDifficulty === 'knight') { logBattle("THE ROARING KNIGHT emerges..."); Sound.knightWarn(); }
   updateBattleUI();
 });
@@ -812,16 +840,96 @@ document.getElementById('attackBtn').onclick = () => {
   });
 };
 document.getElementById('passTurnBtn').onclick = () => { if (!battleState || battleState.over || battleState.turn !== 'player') return; logBattle("You passed."); battleState.turn = 'bot'; updateBattleUI(); setTimeout(botTurn, 900); };
+
+// ===== ITEM PICKER — items use a battle-only bag (reset each battle) =====
 document.getElementById('useItemBtn').onclick = () => {
   if (!battleState || battleState.over || battleState.turn !== 'player') return;
-  if (items.length === 0) { logBattle("No items!"); return; }
-  const item = items[Math.floor(Math.random() * items.length)];
-  logBattle(`You used ${item.name}!`);
-  if (item.type === 'heal') { battleState.playerCard.hp = Math.min(battleState.playerCard.maxHp, battleState.playerCard.hp + item.value); logBattle(`Healed ${item.value} HP!`); Sound.heal(); }
-  else if (item.type === 'damage') { battleState.botCard.hp -= item.value; logBattle(`Dealt ${item.value} damage!`); showDamageNumber('botSlot', item.value); Sound.hit(); }
-  else if (item.type === 'buff') { battleState.playerCard.damage += item.value; logBattle(`Attack +${item.value}!`); Sound.buff(); }
-  updateBattleUI();
+  openItemPicker();
 };
+
+function openItemPicker() {
+  const grid = document.getElementById('itemPickerGrid');
+  grid.innerHTML = '';
+
+  // Use BATTLE bag, not permanent collection
+  const bag = battleState && battleState.itemsAvailable ? battleState.itemsAvailable : {};
+  const availableItems = items.filter(i => (bag[i.id] || 0) > 0);
+
+  if (availableItems.length === 0) {
+    grid.innerHTML = '<div class="item-pick-empty">No items left this battle!</div>';
+  } else {
+    availableItems.forEach(item => {
+      const slot = document.createElement('div');
+      slot.className = 'item-pick-slot';
+      slot.appendChild(makeItemElement(item));
+
+      const badge = document.createElement('div');
+      badge.className = 'item-pick-count';
+      badge.textContent = 'x' + bag[item.id];
+      slot.appendChild(badge);
+
+      slot.onclick = () => useItemInBattle(item);
+      grid.appendChild(slot);
+    });
+  }
+
+  document.getElementById('itemPickerOverlay').classList.remove('hidden');
+  Sound.click();
+}
+
+function closeItemPicker() {
+  document.getElementById('itemPickerOverlay').classList.add('hidden');
+}
+
+document.getElementById('closeItemPickerBtn').addEventListener('click', closeItemPicker);
+document.getElementById('itemPickerOverlay').addEventListener('click', (e) => {
+  if (e.target.id === 'itemPickerOverlay') closeItemPicker();
+});
+
+function useItemInBattle(item) {
+  if (!battleState || battleState.over) { closeItemPicker(); return; }
+  if (!battleState.playerCard || !battleState.botCard) { closeItemPicker(); return; }
+  if ((battleState.itemsAvailable[item.id] || 0) <= 0) { closeItemPicker(); return; }
+
+  // === Consume from BATTLE BAG only. Permanent collection is untouched. ===
+  battleState.itemsAvailable[item.id]--;
+  if (battleState.itemsAvailable[item.id] <= 0) delete battleState.itemsAvailable[item.id];
+
+  logBattle(`You used ${item.name}!`);
+
+  if (item.type === 'heal') {
+    const before = battleState.playerCard.hp;
+    battleState.playerCard.hp = Math.min(battleState.playerCard.maxHp, battleState.playerCard.hp + item.value);
+    const healed = battleState.playerCard.hp - before;
+    logBattle(`Healed ${healed} HP!`);
+    showDamageNumber('playerSlot', -healed);
+    Sound.heal();
+  }
+  else if (item.type === 'damage') {
+    battleState.botCard.hp -= item.value;
+    logBattle(`Dealt ${item.value} damage!`);
+    showDamageNumber('botSlot', item.value);
+    Sound.hit();
+    doAttackAnimation('playerSlot', 'botSlot', '🎯', () => {});
+  }
+  else if (item.type === 'buff') {
+    battleState.playerCard.damage += item.value;
+    logBattle(`Attack +${item.value}!`);
+    Sound.buff();
+  }
+
+  closeItemPicker();
+  updateBattleUI();
+
+  if (battleState.botCard.hp <= 0 && !battleState.over) {
+    battleState.over = true;
+    const reward = DIFFICULTIES[battleState.difficulty].aura;
+    logBattle(`Opponent defeated! +${reward} AURA`);
+    aura += reward; saveData(); updateAuraUI();
+    showWinSequence(reward, battleState.difficulty);
+  }
+}
+
 function botTurn() {
   if (!battleState || battleState.over) return;
   const diff = DIFFICULTIES[battleState.difficulty];
@@ -905,7 +1013,13 @@ function handleNetworkData(data) {
   else if (data.type === 'MOVE') { applyNetworkMove(data); }
 }
 function startMultiplayerBattle(isHost) {
-  battleState = { mode: 'multiplayer', isHost, playerCard: null, botCard: null, playerHand: [], turn: isHost ? 'player' : 'bot', over: false, difficulty: 'normal', difficultyName: 'PLAYER' };
+  battleState = {
+    mode: 'multiplayer', isHost, playerCard: null, botCard: null,
+    playerHand: [], turn: isHost ? 'player' : 'bot', over: false,
+    difficulty: 'normal', difficultyName: 'PLAYER',
+    // battle item bag for multiplayer too
+    itemsAvailable: { ...itemCollection }
+  };
   for (let i = 0; i < 3; i++) battleState.playerHand.push(cards[Math.floor(Math.random() * cards.length)]);
   battleState.playerCard = makeBattleCard(cards[Math.floor(Math.random() * cards.length)]);
   battleState.botCard = makeBattleCard(cards[Math.floor(Math.random() * cards.length)]);
