@@ -12,143 +12,98 @@
     --gold: #ffdd44; --glass: rgba(255,255,255,0.06); --glass-border: rgba(255,255,255,0.12);
     --text: #e8eaf6; --text-dim: #8892b0;
   }
-  html, body {
-    margin: 0; padding: 0;
-    font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif;
-    background: var(--bg-1);
-    background-image:
-      radial-gradient(circle at 20% 20%, rgba(124,58,237,0.15) 0%, transparent 50%),
-      radial-gradient(circle at 80% 80%, rgba(0,217,255,0.12) 0%, transparent 50%),
-      radial-gradient(circle at 50% 50%, var(--bg-2) 0%, var(--bg-1) 100%);
-    color: var(--text); min-height: 100vh; overflow-x: hidden;
-  }
-  body { overflow: hidden; }
-  body.scroll-ok { overflow: auto; }
-  header {
-    background: rgba(10,14,39,0.7); backdrop-filter: blur(20px);
-    padding: 10px 20px; display: flex; align-items: center; justify-content: space-between;
-    border-bottom: 1px solid var(--glass-border); z-index: 100;
-    box-shadow: 0 4px 24px rgba(0,0,0,0.4);
-    height: 58px;
-  }
-  .logo-wrap { display: flex; align-items: center; gap: 12px; }
-  .logo-mark {
-    width: 36px; height: 36px; border-radius: 10px;
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
-    display: flex; align-items: center; justify-content: center;
-    font-weight: 900; font-size: 16px; color: #fff;
-    box-shadow: 0 0 20px rgba(0,217,255,0.5);
-  }
-  .logo-text h1 { margin: 0; font-size: 16px; letter-spacing: 3px; font-weight: 300; color: #fff; text-shadow: 0 0 12px rgba(0,217,255,0.6); }
+  html, body { margin: 0; padding: 0; font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; background: var(--bg-1); background-image: radial-gradient(circle at 20% 20%, rgba(124,58,237,0.15) 0%, transparent 50%), radial-gradient(circle at 80% 80%, rgba(0,217,255,0.12) 0%, transparent 50%), radial-gradient(circle at 50% 50%, var(--bg-2) 0%, var(--bg-1) 100%); color: var(--text); height: 100vh; overflow: hidden; }
+  header { background: rgba(10,14,39,0.7); backdrop-filter: blur(20px); padding: 4px 14px; display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--glass-border); z-index: 100; box-shadow: 0 4px 24px rgba(0,0,0,0.4); height: 40px; }
+  .logo-wrap { display: flex; align-items: center; gap: 8px; }
+  .logo-mark { width: 26px; height: 26px; border-radius: 7px; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: flex; align-items: center; justify-content: center; font-weight: 900; font-size: 12px; color: #fff; box-shadow: 0 0 12px rgba(0,217,255,0.5); }
+  .logo-text h1 { margin: 0; font-size: 12px; letter-spacing: 2px; font-weight: 300; color: #fff; text-shadow: 0 0 10px rgba(0,217,255,0.6); }
   .logo-text h1 span { color: var(--accent); font-weight: 700; }
-  .logo-text p { margin: 1px 0 0; font-size: 8px; color: var(--text-dim); letter-spacing: 3px; }
-  .header-right { display: flex; align-items: center; gap: 8px; }
-  .pill { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 20px; padding: 5px 12px; font-size: 11px; font-weight: 600; display: flex; align-items: center; gap: 6px; transition: all 0.3s; }
+  .header-right { display: flex; align-items: center; gap: 5px; }
+  .pill { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; padding: 3px 9px; font-size: 9px; font-weight: 600; display: flex; align-items: center; gap: 4px; }
   .pill.aura { color: var(--accent); border-color: rgba(0,217,255,0.4); }
   .pill.aura.pulse { animation: auraPulse 0.8s ease; }
-  @keyframes auraPulse { 0% { transform: scale(1); } 40% { transform: scale(1.25); box-shadow: 0 0 30px rgba(0,217,255,0.9); } 100% { transform: scale(1); } }
-  .icon-btn { width: 30px; height: 30px; border-radius: 50%; background: var(--glass); border: 1px solid var(--glass-border); color: #fff; cursor: pointer; font-size: 12px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
-  .icon-btn:hover { background: rgba(0,217,255,0.15); border-color: var(--accent); transform: scale(1.1); }
+  @keyframes auraPulse { 0% { transform: scale(1); } 40% { transform: scale(1.3); box-shadow: 0 0 30px rgba(0,217,255,0.9); } 100% { transform: scale(1); } }
+  .icon-btn { width: 24px; height: 24px; border-radius: 50%; background: var(--glass); border: 1px solid var(--glass-border); color: #fff; cursor: pointer; font-size: 10px; display: flex; align-items: center; justify-content: center; transition: all 0.2s; }
+  .icon-btn:hover { background: rgba(0,217,255,0.15); border-color: var(--accent); }
   .icon-btn.muted { opacity: 0.4; }
-  #langSelect, #usernameInput { background: var(--glass); border: 1px solid var(--glass-border); color: #fff; padding: 5px 10px; border-radius: 18px; font-family: inherit; font-size: 11px; outline: none; }
-  #usernameInput { width: 160px; text-align: center; }
-  #usernameInput:focus, #langSelect:focus { border-color: var(--accent); }
-  .tabs { display: flex; gap: 5px; padding: 8px 20px; overflow-x: auto; max-width: 1200px; margin: 0 auto; height: 48px; align-items: center; }
-  .tab { padding: 7px 16px; cursor: pointer; background: var(--glass); border: 1px solid var(--glass-border); color: var(--text-dim); font-family: inherit; font-size: 11px; font-weight: 600; border-radius: 18px; letter-spacing: 1px; transition: all 0.25s; white-space: nowrap; }
+  #langSelect, #usernameInput { background: var(--glass); border: 1px solid var(--glass-border); color: #fff; padding: 3px 8px; border-radius: 12px; font-family: inherit; font-size: 9px; outline: none; }
+  #usernameInput { width: 120px; text-align: center; }
+  .tabs { display: flex; gap: 3px; padding: 4px 14px; overflow-x: auto; max-width: 1200px; margin: 0 auto; height: 32px; align-items: center; }
+  .tab { padding: 4px 11px; cursor: pointer; background: var(--glass); border: 1px solid var(--glass-border); color: var(--text-dim); font-family: inherit; font-size: 9px; font-weight: 600; border-radius: 12px; letter-spacing: 1px; transition: all 0.25s; white-space: nowrap; }
   .tab:hover { color: #fff; }
   .tab.active { color: #fff; background: linear-gradient(135deg, rgba(0,217,255,0.25), rgba(124,58,237,0.25)); border-color: var(--accent); }
-  .page { display: none; padding: 16px; max-width: 1200px; margin: 0 auto; }
+  .page { display: none; padding: 10px 14px; max-width: 1200px; margin: 0 auto; }
   .page.active { display: block; }
-  h2 { color: #fff; font-weight: 300; font-size: 20px; letter-spacing: 2px; margin-bottom: 14px; border-bottom: 1px solid var(--glass-border); padding-bottom: 8px; }
-  button { font-family: inherit; cursor: pointer; background: linear-gradient(135deg, #4facfe 0%, #00d9ff 100%); color: #fff; border: none; padding: 9px 16px; font-weight: 700; font-size: 12px; border-radius: 10px; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 4px 12px rgba(79,172,254,0.4); }
-  button:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(79,172,254,0.6); }
+  h2 { color: #fff; font-weight: 300; font-size: 15px; letter-spacing: 2px; margin-bottom: 10px; border-bottom: 1px solid var(--glass-border); padding-bottom: 5px; }
+  button { font-family: inherit; cursor: pointer; background: linear-gradient(135deg, #4facfe 0%, #00d9ff 100%); color: #fff; border: none; padding: 7px 13px; font-weight: 700; font-size: 10px; border-radius: 8px; letter-spacing: 1px; transition: all 0.2s; box-shadow: 0 3px 10px rgba(79,172,254,0.4); }
+  button:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(79,172,254,0.6); }
   button:active { transform: scale(0.96); }
   button:disabled { background: #2a2f4a; color: #555c7a; cursor: not-allowed; box-shadow: none; transform: none; }
   button.secondary { background: linear-gradient(135deg, #6c7a89, #455a64); }
   button.danger { background: linear-gradient(135deg, #e74c3c, #c0392b); }
   button.success { background: linear-gradient(135deg, #2ecc71, #27ae60); }
   .admin-btn { background: linear-gradient(135deg, #f1c40f, #d4ac0d); color: #000; }
-  .card { width: 130px; background: linear-gradient(180deg, #ffffff 0%, #d4e4f7 100%); border: 1px solid #a0c0e0; border-radius: 10px; padding: 6px; color: #222; font-size: 10px; position: relative; transition: transform 0.3s; overflow: hidden; }
+  .card { width: 118px; background: linear-gradient(180deg, #ffffff 0%, #d4e4f7 100%); border: 1px solid #a0c0e0; border-radius: 9px; padding: 5px; color: #222; font-size: 9px; position: relative; transition: transform 0.3s; overflow: hidden; }
   .card:hover { transform: translateY(-4px) scale(1.02); box-shadow: 0 10px 25px rgba(0,217,255,0.4); }
-  .card-img { width: 100%; aspect-ratio: 1; background: linear-gradient(135deg, #dfe9f3, #ffffff); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #555; font-size: 32px; font-weight: bold; overflow: hidden; margin-bottom: 4px; border: 1px solid #b0c4de; }
+  .card-img { width: 100%; aspect-ratio: 1; background: linear-gradient(135deg, #dfe9f3, #ffffff); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #555; font-size: 28px; font-weight: bold; overflow: hidden; margin-bottom: 3px; border: 1px solid #b0c4de; }
   .card-img img { width: 100%; height: 100%; object-fit: cover; }
-  .card-name { font-weight: 800; text-align: center; font-size: 10px; margin-bottom: 3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #1a2a3a; }
-  .card-stats { display: flex; justify-content: space-between; font-size: 9px; font-weight: bold; background: rgba(0,0,0,0.08); padding: 3px 5px; border-radius: 5px; margin-bottom: 3px; }
+  .card-name { font-weight: 800; text-align: center; font-size: 9px; margin-bottom: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: #1a2a3a; }
+  .card-stats { display: flex; justify-content: space-between; font-size: 8px; font-weight: bold; background: rgba(0,0,0,0.08); padding: 2px 4px; border-radius: 4px; margin-bottom: 2px; }
   .card-hp { color: #c0392b; }
-  .card-attack { background: linear-gradient(135deg, #34495e, #2c3e50); color: #fff; padding: 3px 5px; border-radius: 5px; font-size: 9px; display: flex; justify-content: space-between; gap: 4px; }
+  .card-attack { background: linear-gradient(135deg, #34495e, #2c3e50); color: #fff; padding: 2px 4px; border-radius: 4px; font-size: 8px; display: flex; justify-content: space-between; gap: 3px; }
   .card-attack-dmg { color: var(--gold); font-weight: bold; }
-  .card-drop { position: absolute; top: -5px; right: -5px; background: #2c3e50; color: #fff; font-size: 8px; padding: 2px 6px; border-radius: 10px; font-weight: bold; }
-  .card.r-uncommon { border-color: #22aa44; box-shadow: 0 0 8px rgba(34,170,68,0.5); }
-  .card.r-rare { border-color: #2277ee; box-shadow: 0 0 12px rgba(34,119,238,0.6); }
-  .card.r-epic { border-color: #aa22cc; box-shadow: 0 0 15px rgba(170,34,204,0.7); }
-  .card.r-legendary { border-color: #ffaa00; box-shadow: 0 0 18px rgba(255,170,0,0.9); }
-  .item { width: 130px; background: linear-gradient(180deg, #e8f4f8 0%, #b2dfdb 100%); border: 1px solid #80cbc4; border-radius: 10px; padding: 6px; color: #004d40; font-size: 10px; }
-  .item-img { width: 100%; aspect-ratio: 1; background: rgba(255,255,255,0.5); border-radius: 6px; display: flex; align-items: center; justify-content: center; color: #00695c; font-size: 32px; overflow: hidden; margin-bottom: 4px; border: 1px solid #b2dfdb; }
+  .card-drop { position: absolute; top: -4px; right: -4px; background: #2c3e50; color: #fff; font-size: 7px; padding: 1px 5px; border-radius: 8px; font-weight: bold; }
+  .card.r-uncommon { border-color: #22aa44; box-shadow: 0 0 6px rgba(34,170,68,0.5); }
+  .card.r-rare { border-color: #2277ee; box-shadow: 0 0 10px rgba(34,119,238,0.6); }
+  .card.r-epic { border-color: #aa22cc; box-shadow: 0 0 12px rgba(170,34,204,0.7); }
+  .card.r-legendary { border-color: #ffaa00; box-shadow: 0 0 15px rgba(255,170,0,0.9); }
+  .item { width: 118px; background: linear-gradient(180deg, #e8f4f8 0%, #b2dfdb 100%); border: 1px solid #80cbc4; border-radius: 9px; padding: 5px; color: #004d40; font-size: 9px; }
+  .item-img { width: 100%; aspect-ratio: 1; background: rgba(255,255,255,0.5); border-radius: 5px; display: flex; align-items: center; justify-content: center; color: #00695c; font-size: 28px; overflow: hidden; margin-bottom: 3px; border: 1px solid #b2dfdb; }
   .item-img img { width: 100%; height: 100%; object-fit: cover; }
-  .item-name { font-weight: 800; text-align: center; font-size: 10px; margin-bottom: 3px; }
-  .item-desc { font-size: 8px; text-align: center; color: #00695c; }
-  .item-effect { background: #00897b; color: #fff; text-align: center; padding: 3px; border-radius: 5px; font-size: 9px; font-weight: bold; margin-top: 4px; }
-  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 18px 14px; padding: 12px 0; justify-items: center; }
-  .glass-panel { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; padding: 14px; backdrop-filter: blur(10px); }
+  .item-name { font-weight: 800; text-align: center; font-size: 9px; margin-bottom: 2px; }
+  .item-desc { font-size: 7px; text-align: center; color: #00695c; }
+  .item-effect { background: #00897b; color: #fff; text-align: center; padding: 2px; border-radius: 4px; font-size: 8px; font-weight: bold; margin-top: 3px; }
+  .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(118px, 1fr)); gap: 15px 12px; padding: 10px 0; justify-items: center; }
+  .glass-panel { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 12px; padding: 10px; backdrop-filter: blur(10px); }
 
-  /* ============ BATTLE — FITS THE SCREEN ============ */
-  #battle.active {
-    display: flex; flex-direction: column;
-    height: calc(100vh - 106px);
-    overflow: hidden;
-  }
-  #battleArena {
-    display: flex; flex-direction: column;
-    flex: 1; min-height: 0;
-    gap: 6px;
-  }
-  #battleSetup { overflow-y: auto; }
+  /* BATTLE FITS SCREEN */
+  #battle.active { display: flex; flex-direction: column; height: calc(100vh - 74px); overflow: hidden; padding: 6px 14px; }
+  #battleSetup { overflow-y: auto; flex: 1; }
+  #battleArena { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 4px; }
   #battleArena.hidden { display: none !important; }
+  #battleSetup.hidden { display: none !important; }
 
-  .battle-header {
-    display: flex; justify-content: space-between; align-items: center;
-    font-size: 11px; font-weight: bold; letter-spacing: 1px;
-    margin-bottom: 3px;
-  }
-  .battle-slot {
-    width: 96px; height: 130px;
-    border: 2px dashed rgba(0,217,255,0.3);
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    color: rgba(0,217,255,0.5); font-size: 10px; text-align: center;
-    padding: 6px; background: rgba(0,0,0,0.2);
-    position: relative; transition: all 0.3s; flex-shrink: 0;
-  }
-  .battle-slot .card { width: 96px !important; padding: 4px; font-size: 9px; border-radius: 8px; }
-  .battle-slot .card .card-img { font-size: 22px; margin-bottom: 2px; border-radius: 4px; }
-  .battle-slot .card .card-name { font-size: 9px; margin-bottom: 2px; }
-  .battle-slot .card .card-stats { font-size: 8px; padding: 2px 4px; margin-bottom: 2px; }
-  .battle-slot .card .card-attack { font-size: 8px; padding: 2px 4px; }
-  .battle-slot .card .card-drop { font-size: 7px; padding: 1px 4px; }
-
+  .battle-header { display: flex; justify-content: space-between; align-items: center; font-size: 9px; font-weight: bold; letter-spacing: 1px; margin-bottom: 2px; }
+  .battle-slot { width: 68px; height: 94px; border: 2px dashed rgba(0,217,255,0.3); border-radius: 7px; display: flex; align-items: center; justify-content: center; color: rgba(0,217,255,0.5); font-size: 8px; text-align: center; padding: 3px; background: rgba(0,0,0,0.2); position: relative; transition: all 0.3s; flex-shrink: 0; }
+  .battle-slot .card { width: 68px !important; padding: 2px; font-size: 7px; border-radius: 5px; }
+  .battle-slot .card .card-img { font-size: 16px; margin-bottom: 1px; border-radius: 3px; }
+  .battle-slot .card .card-name { font-size: 7px; margin-bottom: 1px; }
+  .battle-slot .card .card-stats { font-size: 6px; padding: 1px 2px; margin-bottom: 1px; border-radius: 3px; }
+  .battle-slot .card .card-attack { font-size: 6px; padding: 1px 3px; border-radius: 3px; }
+  .battle-slot .card .card-drop { font-size: 6px; padding: 1px 3px; top: -4px; right: -4px; }
   .battle-slot.attacking-player { animation: playerLunge 0.6s ease; z-index: 10; }
-  @keyframes playerLunge { 0% { transform: translateY(0); } 40% { transform: translateY(-40px) scale(1.15); } 60% { transform: translateY(-40px) scale(1.15); } 100% { transform: translateY(0); } }
+  @keyframes playerLunge { 0% { transform: translateY(0); } 40% { transform: translateY(-30px) scale(1.15); } 60% { transform: translateY(-30px) scale(1.15); } 100% { transform: translateY(0); } }
   .battle-slot.attacking-bot { animation: botLunge 0.6s ease; z-index: 10; }
-  @keyframes botLunge { 0% { transform: translateY(0); } 40% { transform: translateY(40px) scale(1.15); } 60% { transform: translateY(40px) scale(1.15); } 100% { transform: translateY(0); } }
+  @keyframes botLunge { 0% { transform: translateY(0); } 40% { transform: translateY(30px) scale(1.15); } 60% { transform: translateY(30px) scale(1.15); } 100% { transform: translateY(0); } }
   .battle-slot.hit-player { animation: playerHit 0.4s ease; }
-  @keyframes playerHit { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-12px); filter: brightness(2.5); } 40% { transform: translateX(12px); filter: brightness(2.5); } 60% { transform: translateX(-6px); } 80% { transform: translateX(6px); } }
+  @keyframes playerHit { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-10px); filter: brightness(2.5); } 40% { transform: translateX(10px); filter: brightness(2.5); } 60% { transform: translateX(-5px); } 80% { transform: translateX(5px); } }
   .battle-slot.hit-bot { animation: botHit 0.4s ease; }
-  @keyframes botHit { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(12px); filter: brightness(2.5); } 40% { transform: translateX(-12px); filter: brightness(2.5); } 60% { transform: translateX(6px); } 80% { transform: translateX(-6px); } }
+  @keyframes botHit { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(10px); filter: brightness(2.5); } 40% { transform: translateX(-10px); filter: brightness(2.5); } 60% { transform: translateX(5px); } 80% { transform: translateX(-5px); } }
 
-  .hp-bar-wrap { position: relative; width: 100%; height: 18px; background: rgba(0,0,0,0.7); border-radius: 9px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 2px 6px rgba(0,0,0,0.8); }
+  .hp-bar-wrap { position: relative; width: 100%; height: 14px; background: rgba(0,0,0,0.7); border-radius: 7px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 2px 6px rgba(0,0,0,0.8); }
   .hp-bar-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #2ecc71, #27ae60); transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s; box-shadow: 0 0 10px rgba(46,204,113,0.5); }
   .hp-bar-fill.warn { background: linear-gradient(90deg, #f39c12, #e67e22); }
   .hp-bar-fill.danger { background: linear-gradient(90deg, #e74c3c, #c0392b); animation: hpDanger 0.3s infinite; }
   @keyframes hpDanger { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.8); } }
-  .hp-bar-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; z-index: 2; }
+  .hp-bar-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 8px; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; z-index: 2; }
 
-  .dmg-number { position: fixed; font-size: 26px; font-weight: 900; color: #ff4444; text-shadow: 0 0 12px #ff0000, 3px 3px 5px #000; pointer-events: none; z-index: 100; animation: dmgFloat 1.2s ease forwards; }
-  @keyframes dmgFloat { 0% { transform: translate(-50%, 0) scale(0.5); opacity: 0; } 20% { transform: translate(-50%, -25px) scale(1.5); opacity: 1; } 100% { transform: translate(-50%, -90px) scale(1); opacity: 0; } }
-  .attack-particle { position: fixed; font-size: 32px; pointer-events: none; z-index: 90; filter: drop-shadow(0 0 12px currentColor); }
+  .dmg-number { position: fixed; font-size: 22px; font-weight: 900; color: #ff4444; text-shadow: 0 0 12px #ff0000, 3px 3px 5px #000; pointer-events: none; z-index: 100; animation: dmgFloat 1.2s ease forwards; }
+  @keyframes dmgFloat { 0% { transform: translate(-50%, 0) scale(0.5); opacity: 0; } 20% { transform: translate(-50%, -25px) scale(1.5); opacity: 1; } 100% { transform: translate(-50%, -80px) scale(1); opacity: 0; } }
+  .attack-particle { position: fixed; font-size: 28px; pointer-events: none; z-index: 90; filter: drop-shadow(0 0 12px currentColor); }
   .screen-shake { animation: screenShake 0.4s; }
   @keyframes screenShake { 0%, 100% { transform: translate(0, 0); } 10% { transform: translate(-8px, 4px); } 20% { transform: translate(8px, -4px); } 30% { transform: translate(-5px, -4px); } 40% { transform: translate(5px, 4px); } 50% { transform: translate(-4px, 2px); } 60% { transform: translate(4px, -2px); } 70% { transform: translate(-2px, 0); } 80% { transform: translate(2px, 0); } }
 
-  .diff-btn { padding: 9px 14px; font-size: 10px; border-radius: 10px; border: 2px solid; background: transparent; font-weight: bold; letter-spacing: 1px; transition: all 0.25s; cursor: pointer; box-shadow: none; }
+  .diff-btn { padding: 7px 12px; font-size: 9px; border-radius: 8px; border: 2px solid; background: transparent; font-weight: bold; letter-spacing: 1px; transition: all 0.25s; cursor: pointer; box-shadow: none; }
   .diff-btn[data-diff="easy"] { color: #27ae60; border-color: #27ae60; }
   .diff-btn[data-diff="easy"]:hover, .diff-btn[data-diff="easy"].selected { background: #27ae60; color: #fff; box-shadow: 0 0 20px #27ae60; }
   .diff-btn[data-diff="normal"] { color: #3498db; border-color: #3498db; }
@@ -160,62 +115,60 @@
   .diff-btn[data-diff="knight"] { color: #a855f7; border-color: #a855f7; font-family: 'Courier New', monospace; font-weight: 900; }
   .diff-btn[data-diff="knight"]:hover, .diff-btn[data-diff="knight"].selected { background: #a855f7; color: #fff; box-shadow: 0 0 25px #a855f7, 0 0 50px #7c3aed; }
 
-  .battle-log-compact { background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: 8px; padding: 5px 8px; font-size: 10px; height: 48px; overflow-y: auto; color: #a9cce3; font-family: 'Consolas', monospace; flex-shrink: 0; }
-
-  .hand-cards { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; padding: 2px 0; min-height: 100px; max-height: 110px; overflow: hidden; flex-shrink: 0; }
-  .hand-cards .card { width: 85px; padding: 4px; font-size: 9px; }
-  .hand-cards .card .card-img { font-size: 22px; margin-bottom: 2px; }
-  .hand-cards .card .card-name { font-size: 9px; margin-bottom: 2px; }
-  .hand-cards .card .card-stats { font-size: 8px; padding: 2px 3px; margin-bottom: 2px; }
-  .hand-cards .card .card-attack { font-size: 8px; padding: 2px 4px; }
-  .hand-cards .card .card-drop { font-size: 7px; padding: 1px 4px; }
-
-  .action-row { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; padding: 4px 0; flex-shrink: 0; }
-  .action-row button { padding: 9px 16px; font-size: 11px; }
+  .battle-log-compact { background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: 6px; padding: 3px 6px; font-size: 9px; height: 34px; overflow-y: auto; color: #a9cce3; font-family: 'Consolas', monospace; flex-shrink: 0; }
+  .hand-cards { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; padding: 1px 0; min-height: 78px; max-height: 82px; overflow: hidden; flex-shrink: 0; }
+  .hand-cards .card { width: 68px; padding: 2px; font-size: 7px; }
+  .hand-cards .card .card-img { font-size: 16px; margin-bottom: 1px; }
+  .hand-cards .card .card-name { font-size: 7px; margin-bottom: 1px; }
+  .hand-cards .card .card-stats { font-size: 6px; padding: 1px 2px; margin-bottom: 1px; }
+  .hand-cards .card .card-attack { font-size: 6px; padding: 1px 3px; }
+  .hand-cards .card .card-drop { font-size: 6px; padding: 1px 3px; }
+  .action-row { display: flex; gap: 5px; justify-content: center; flex-wrap: wrap; padding: 3px 0; flex-shrink: 0; }
+  .action-row button { padding: 7px 14px; font-size: 10px; }
 
   .result-overlay { position: fixed; inset: 0; z-index: 1500; display: flex; align-items: center; justify-content: center; pointer-events: none; }
   .result-overlay.active { pointer-events: auto; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px); }
-  .result-text { font-size: 80px; font-weight: 900; letter-spacing: 6px; text-align: center; animation: resultPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
+  .result-text { font-size: 70px; font-weight: 900; letter-spacing: 5px; text-align: center; animation: resultPop 0.8s cubic-bezier(0.34, 1.56, 0.64, 1); }
   .result-text.win { color: var(--gold); text-shadow: 0 0 20px #ffaa00, 0 0 40px #ffaa00, 5px 5px 0 #000; }
-  .result-text.win.epic-win { font-size: 110px; color: #fff; text-shadow: 0 0 30px #fff, 0 0 60px #ffaa00, 0 0 100px #ff6600, 6px 6px 0 #000; }
+  .result-text.win.epic-win { font-size: 100px; color: #fff; text-shadow: 0 0 30px #fff, 0 0 60px #ffaa00, 0 0 100px #ff6600, 6px 6px 0 #000; }
   .result-text.lose { color: #b066d9; text-shadow: 0 0 20px #7c3aed, 0 0 40px #7c3aed, 5px 5px 0 #000; }
   @keyframes resultPop { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 60% { transform: scale(1.2) rotate(5deg); opacity: 1; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
   .particle { position: fixed; pointer-events: none; z-index: 1400; }
-  .particle.gold { width: 9px; height: 9px; border-radius: 50%; background: radial-gradient(circle, #fff, #ffdd44); box-shadow: 0 0 14px #ffaa00; }
-  .particle.purple { width: 11px; height: 11px; border-radius: 50%; background: radial-gradient(circle, #e9d5ff, #7c3aed); box-shadow: 0 0 14px #7c3aed; }
-  .particle.rainbow { width: 13px; height: 13px; border-radius: 50%; background: radial-gradient(circle, #fff, #ff00ff); box-shadow: 0 0 18px #ff00ff, 0 0 28px #00ffff; }
-  .aura-flyer { position: fixed; z-index: 1600; font-size: 28px; font-weight: 900; color: var(--accent); text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent), 3px 3px 0 #000; pointer-events: none; }
-  .toast { position: fixed; top: 70px; right: 20px; z-index: 1800; background: linear-gradient(135deg, rgba(0,217,255,0.2), rgba(124,58,237,0.2)); border: 1px solid var(--accent); border-radius: 12px; padding: 12px 18px; backdrop-filter: blur(20px); box-shadow: 0 8px 30px rgba(0,217,255,0.4); animation: toastSlide 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; align-items: center; gap: 10px; font-size: 12px; font-weight: 600; color: #fff; max-width: 300px; }
+  .particle.gold { width: 8px; height: 8px; border-radius: 50%; background: radial-gradient(circle, #fff, #ffdd44); box-shadow: 0 0 12px #ffaa00; }
+  .particle.purple { width: 10px; height: 10px; border-radius: 50%; background: radial-gradient(circle, #e9d5ff, #7c3aed); box-shadow: 0 0 12px #7c3aed; }
+  .particle.rainbow { width: 12px; height: 12px; border-radius: 50%; background: radial-gradient(circle, #fff, #ff00ff); box-shadow: 0 0 15px #ff00ff, 0 0 25px #00ffff; }
+  .aura-flyer { position: fixed; z-index: 1600; font-size: 26px; font-weight: 900; color: var(--accent); text-shadow: 0 0 20px var(--accent), 0 0 40px var(--accent), 3px 3px 0 #000; pointer-events: none; }
+  .toast { position: fixed; top: 55px; right: 16px; z-index: 1800; background: linear-gradient(135deg, rgba(0,217,255,0.2), rgba(124,58,237,0.2)); border: 1px solid var(--accent); border-radius: 10px; padding: 10px 16px; backdrop-filter: blur(20px); box-shadow: 0 8px 30px rgba(0,217,255,0.4); animation: toastSlide 0.4s cubic-bezier(0.34, 1.56, 0.64, 1); display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 600; color: #fff; max-width: 280px; }
   .toast.removing { animation: toastOut 0.3s ease forwards; }
   @keyframes toastSlide { from { transform: translateX(400px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
   @keyframes toastOut { to { transform: translateX(400px); opacity: 0; } }
-  .toast-icon { font-size: 20px; }
+  .toast-icon { font-size: 18px; }
   #packOverlay { position: fixed; inset: 0; z-index: 1000; background: radial-gradient(circle, #1b4f72 0%, #000 100%); display: flex; align-items: center; justify-content: center; overflow: hidden; }
   #packOverlay.hidden { display: none !important; }
   .pack-stage { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
-  .sealed-pack { width: 240px; height: 380px; position: relative; filter: drop-shadow(0 25px 60px rgba(0,217,255,0.5)); }
+  .sealed-pack { width: 220px; height: 350px; position: relative; filter: drop-shadow(0 25px 60px rgba(0,217,255,0.5)); }
   .pack-half { position: absolute; left: 0; right: 0; height: 50%; border: 2px solid var(--accent); overflow: hidden; }
-  .pack-top { top: 0; border-radius: 16px 16px 0 0; border-bottom: none; background: linear-gradient(180deg, #4facfe 0%, #00d9ff 50%, #005c97 100%); display: flex; align-items: center; justify-content: center; transition: transform 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.9s ease; transform-origin: bottom center; }
+  .pack-top { top: 0; border-radius: 14px 14px 0 0; border-bottom: none; background: linear-gradient(180deg, #4facfe 0%, #00d9ff 50%, #005c97 100%); display: flex; align-items: center; justify-content: center; transition: transform 0.9s cubic-bezier(0.68, -0.55, 0.27, 1.55), opacity 0.9s ease; transform-origin: bottom center; }
   .pack-top.torn { transform: translate(-40px, -120%) rotate(-25deg); opacity: 0; }
-  .pack-logo { font-size: 34px; font-weight: 900; color: #fff; letter-spacing: 7px; text-shadow: 0 0 20px var(--accent), 3px 3px 0 #000; }
-  .pack-bottom { bottom: 0; border-radius: 0 0 16px 16px; border-top: none; background: linear-gradient(180deg, #0f3460 0%, #1a4a7a 50%, #0a0a1a 100%); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 20px; }
-  .pack-tag { color: var(--accent); font-size: 11px; font-weight: bold; letter-spacing: 3px; }
+  .pack-logo { font-size: 30px; font-weight: 900; color: #fff; letter-spacing: 6px; text-shadow: 0 0 20px var(--accent), 3px 3px 0 #000; }
+  .pack-bottom { bottom: 0; border-radius: 0 0 14px 14px; border-top: none; background: linear-gradient(180deg, #0f3460 0%, #1a4a7a 50%, #0a0a1a 100%); display: flex; align-items: flex-end; justify-content: center; padding-bottom: 18px; }
+  .pack-tag { color: var(--accent); font-size: 10px; font-weight: bold; letter-spacing: 3px; }
   .swipe-line { position: absolute; top: 50%; left: -20px; right: -20px; height: 10px; background: rgba(0,0,0,0.7); border-radius: 5px; transform: translateY(-50%); cursor: grab; overflow: hidden; border: 1px solid var(--accent); box-shadow: 0 0 20px rgba(0,217,255,0.6); z-index: 10; touch-action: none; }
   .swipe-progress { height: 100%; width: 0%; background: linear-gradient(90deg, var(--accent), #fff, var(--accent)); box-shadow: 0 0 20px var(--accent); transition: width 0.05s linear; }
-  .swipe-hint { position: absolute; top: -34px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 12px; font-weight: bold; letter-spacing: 3px; animation: hintBlink 1s infinite alternate; white-space: nowrap; }
+  .swipe-hint { position: absolute; top: -32px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 11px; font-weight: bold; letter-spacing: 3px; animation: hintBlink 1s infinite alternate; white-space: nowrap; }
   @keyframes hintBlink { from { opacity: 0.4; } to { opacity: 1; } }
   .reveal-area { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; pointer-events: none; }
   .reveal-area.active { pointer-events: auto; cursor: pointer; }
-  .reveal-counter { color: var(--accent); font-size: 15px; font-weight: bold; letter-spacing: 4px; margin-bottom: 24px; text-shadow: 0 0 15px var(--accent); }
+  .reveal-counter { color: var(--accent); font-size: 13px; font-weight: bold; letter-spacing: 4px; margin-bottom: 20px; text-shadow: 0 0 15px var(--accent); }
   .revealed-card { position: relative; animation: cardPop 0.5s cubic-bezier(0.34, 1.56, 0.64, 1); transform-origin: center; }
   @keyframes cardPop { 0% { transform: scale(0) rotate(-180deg); opacity: 0; } 60% { transform: scale(1.15) rotate(10deg); opacity: 1; } 100% { transform: scale(1) rotate(0); opacity: 1; } }
-  .tap-hint { position: absolute; bottom: 60px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 13px; letter-spacing: 4px; animation: hintBlink 0.8s infinite alternate; text-shadow: 0 0 12px var(--accent); }
-  .sparkle { position: absolute; width: 7px; height: 7px; border-radius: 50%; background: #fff; box-shadow: 0 0 12px #fff, 0 0 22px var(--accent); pointer-events: none; animation: sparkleFloat 2s infinite; }
+  .tap-hint { position: absolute; bottom: 50px; left: 50%; transform: translateX(-50%); color: #fff; font-size: 12px; letter-spacing: 4px; animation: hintBlink 0.8s infinite alternate; text-shadow: 0 0 12px var(--accent); }
+  .sparkle { position: absolute; width: 6px; height: 6px; border-radius: 50%; background: #fff; box-shadow: 0 0 12px #fff, 0 0 22px var(--accent); pointer-events: none; animation: sparkleFloat 2s infinite; }
   @keyframes sparkleFloat { 0% { transform: translateY(0) scale(0); opacity: 0; } 20% { transform: translateY(-30px) scale(1.3); opacity: 1; } 100% { transform: translateY(-130px) scale(0); opacity: 0; } }
   .screen-flash { position: fixed; inset: 0; background: #fff; z-index: 2000; pointer-events: none; opacity: 0; }
   .screen-flash.flash { animation: screenFlash 0.4s ease; }
   @keyframes screenFlash { 0% { opacity: 0.9; } 100% { opacity: 0; } }
-  .flash-msg { position: fixed; bottom: 24px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #2ecc71, #27ae60); color: #fff; padding: 12px 22px; border-radius: 12px; font-weight: 700; font-size: 13px; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 999; box-shadow: 0 8px 30px rgba(46,204,113,0.5); letter-spacing: 1px; }
+  .flash-msg { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: linear-gradient(135deg, #2ecc71, #27ae60); color: #fff; padding: 10px 20px; border-radius: 10px; font-weight: 700; font-size: 11px; opacity: 0; transition: all 0.3s; pointer-events: none; z-index: 999; box-shadow: 0 8px 30px rgba(46,204,113,0.5); }
   .flash-msg.show { opacity: 1; transform: translateX(-50%) translateY(-8px); }
   .hidden { display: none !important; }
 </style>
@@ -225,19 +178,13 @@
 <header>
   <div class="logo-wrap">
     <div class="logo-mark">P</div>
-    <div class="logo-text">
-      <h1>P<span>STCG</span></h1>
-      <p>PAPERSHOP TCG</p>
-    </div>
+    <div class="logo-text"><h1>P<span>STCG</span></h1></div>
   </div>
   <div class="header-right">
     <div class="pill aura" id="auraDisplay">AURA: <span id="auraCount">50</span></div>
     <button class="icon-btn" id="musicBtn" title="Music">♫</button>
     <button class="icon-btn" id="sfxBtn" title="SFX">🔊</button>
-    <select id="langSelect" onchange="setLanguage(this.value)">
-      <option value="en">EN</option>
-      <option value="fa">FA</option>
-    </select>
+    <select id="langSelect" onchange="setLanguage(this.value)"><option value="en">EN</option><option value="fa">FA</option></select>
     <input type="text" id="usernameInput" placeholder="Username..." maxlength="50">
   </div>
 </header>
@@ -253,53 +200,53 @@
 
 <div id="play" class="page active">
   <h2>Open a Pack</h2>
-  <p style="font-size:12px; color:var(--text-dim); margin-bottom:16px;">5 cards per pack. Win battles to earn Aura!</p>
-  <button id="openPackBtn" style="font-size:15px; padding:16px 34px;">OPEN PACK</button>
-  <button id="adminAuraBtn" class="admin-btn hidden" style="font-size:12px; padding:10px 20px; margin-top: 10px; display: block;">ADMIN: ADD 9999 AURA</button>
+  <p style="font-size:11px; color:var(--text-dim); margin-bottom:12px;">5 cards per pack. Win battles to earn Aura!</p>
+  <button id="openPackBtn" style="font-size:14px; padding:14px 30px;">OPEN PACK</button>
+  <button id="adminAuraBtn" class="admin-btn hidden" style="font-size:11px; padding:9px 18px; margin-top: 8px; display: block;">ADMIN: ADD 9999 AURA</button>
 </div>
 
 <div id="collection" class="page">
   <h2>Your Collection</h2>
-  <p style="font-size:12px; color:var(--text-dim);">Unique Cards: <b id="uniqueCount" style="color:var(--accent);">0</b> · Total: <b id="totalCount" style="color:var(--accent);">0</b></p>
+  <p style="font-size:11px; color:var(--text-dim);">Unique Cards: <b id="uniqueCount" style="color:var(--accent);">0</b> · Total: <b id="totalCount" style="color:var(--accent);">0</b></p>
   <div id="collectionGrid" class="card-grid"></div>
-  <h2 style="margin-top:30px;">Your Items</h2>
+  <h2 style="margin-top:20px;">Your Items</h2>
   <div id="itemGrid" class="card-grid"></div>
 </div>
 
 <div id="battle" class="page">
   <div id="battleSetup">
-    <div class="glass-panel" style="margin-top:10px;">
-      <h3 style="color:var(--accent); margin-top:0; font-weight:300; letter-spacing:2px;">CHOOSE YOUR OPPONENT</h3>
-      <p style="font-size:11px; color:var(--text-dim); margin-bottom:12px;">Name yourself <b style="color:#a855f7;">"kris"</b> for the Knight. Name yourself <b style="color:#a855f7;">"rouring"</b> for a gift.</p>
-      <div style="display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-bottom:12px;">
+    <div class="glass-panel" style="margin-top:8px;">
+      <h3 style="color:var(--accent); margin-top:0; font-weight:300; letter-spacing:2px; font-size:13px;">CHOOSE YOUR OPPONENT</h3>
+      <p style="font-size:10px; color:var(--text-dim); margin-bottom:10px;">Name yourself <b style="color:#a855f7;">"kris"</b> for the Knight. Name yourself <b style="color:#a855f7;">"rouring"</b> for a gift.</p>
+      <div style="display:flex; gap:6px; flex-wrap:wrap; justify-content:center; margin-bottom:10px;">
         <button class="diff-btn selected" data-diff="easy">EASY +25</button>
         <button class="diff-btn" data-diff="normal">NORMAL +50</button>
         <button class="diff-btn" data-diff="hard">HARD +100</button>
         <button class="diff-btn" data-diff="insane">INSANE +250</button>
         <button class="diff-btn hidden" id="knightBtn" data-diff="knight">ROARING KNIGHT +1000</button>
       </div>
-      <button id="startBotBtn" class="success" style="width:100%; padding:12px; font-size:13px;">BEGIN BATTLE</button>
+      <button id="startBotBtn" class="success" style="width:100%; padding:10px; font-size:11px;">BEGIN BATTLE</button>
     </div>
-    <div class="glass-panel" style="margin-top:12px; text-align:center;">
-      <h3 style="color:var(--accent); margin-top:0; font-weight:300; letter-spacing:2px;">MULTIPLAYER (P2P)</h3>
-      <button id="hostBtn" class="secondary" style="width:100%; padding:9px; margin-bottom:6px;">HOST GAME</button>
-      <input type="text" id="joinCodeInput" placeholder="Enter Host Code" style="width:100%; padding:9px; margin-bottom:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; text-align:center; border-radius:10px; font-family:inherit;">
-      <button id="joinBtn" class="secondary" style="width:100%; padding:9px;">JOIN GAME</button>
+    <div class="glass-panel" style="margin-top:10px; text-align:center;">
+      <h3 style="color:var(--accent); margin-top:0; font-weight:300; letter-spacing:2px; font-size:13px;">MULTIPLAYER (P2P)</h3>
+      <button id="hostBtn" class="secondary" style="width:100%; padding:7px; margin-bottom:5px;">HOST GAME</button>
+      <input type="text" id="joinCodeInput" placeholder="Enter Host Code" style="width:100%; padding:7px; margin-bottom:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; text-align:center; border-radius:8px; font-family:inherit; font-size:11px;">
+      <button id="joinBtn" class="secondary" style="width:100%; padding:7px;">JOIN GAME</button>
     </div>
-    <div id="mpStatus" style="text-align:center; margin-top:10px; font-weight:bold; color:var(--gold); font-size:12px;"></div>
+    <div id="mpStatus" style="text-align:center; margin-top:8px; font-weight:bold; color:var(--gold); font-size:11px;"></div>
   </div>
 
   <div id="battleArena" class="hidden">
-    <div style="text-align:center; font-size:12px; font-weight:bold; color:var(--gold); letter-spacing:2px; margin-bottom:4px;" id="turnIndicator">WAITING...</div>
+    <div style="text-align:center; font-size:11px; font-weight:bold; color:var(--gold); letter-spacing:2px;" id="turnIndicator">WAITING...</div>
 
-    <div id="battleField" class="glass-panel" style="flex:1; min-height:0; display:flex; flex-direction:column; gap:6px; padding:10px; overflow:hidden;">
-      <!-- OPPONENT ROW -->
+    <div id="battleField" class="glass-panel" style="flex:1; min-height:0; display:flex; flex-direction:column; gap:4px; padding:8px; overflow:hidden;">
+      <!-- OPPONENT -->
       <div>
         <div class="battle-header">
           <span style="color:#ff6b5b;" id="opponentLabel">OPPONENT</span>
           <span style="color:var(--text-dim);" id="botHPText">-- / -- HP</span>
         </div>
-        <div style="display:flex; gap:10px; align-items:center;">
+        <div style="display:flex; gap:8px; align-items:center;">
           <div class="battle-slot" id="botSlot">No Active Card</div>
           <div style="flex:1; min-width:0;">
             <div class="hp-bar-wrap"><div class="hp-bar-fill" id="botHPBar"></div><div class="hp-bar-text" id="botHPBarText">-- / --</div></div>
@@ -307,25 +254,24 @@
         </div>
       </div>
 
-      <!-- BATTLE LOG -->
       <div id="battleLog" class="battle-log-compact"></div>
 
-      <!-- PLAYER ROW -->
+      <!-- PLAYER -->
       <div>
-        <div style="display:flex; gap:10px; align-items:center;">
+        <div style="display:flex; gap:8px; align-items:center;">
           <div class="battle-slot" id="playerSlot">No Active Card</div>
           <div style="flex:1; min-width:0;">
             <div class="hp-bar-wrap"><div class="hp-bar-fill" id="playerHPBar"></div><div class="hp-bar-text" id="playerHPBarText">-- / --</div></div>
           </div>
         </div>
-        <div class="battle-header" style="margin-top:3px; margin-bottom:0;">
+        <div class="battle-header" style="margin-top:2px; margin-bottom:0;">
           <span style="color:var(--accent);">YOU</span>
           <span style="color:var(--text-dim);" id="playerHPText">-- / -- HP</span>
         </div>
       </div>
     </div>
 
-    <div style="text-align:center; margin-top:6px; color:var(--text-dim); font-size:10px; letter-spacing:2px;">YOUR HAND</div>
+    <div style="text-align:center; margin-top:4px; color:var(--text-dim); font-size:9px; letter-spacing:2px;">YOUR HAND</div>
     <div class="hand-cards" id="playerHand"></div>
 
     <div class="action-row">
@@ -339,77 +285,77 @@
 
 <div id="create" class="page">
   <h2>Create Content (Admin Only)</h2>
-  <div style="display:flex; gap:16px; margin-bottom:16px;">
+  <div style="display:flex; gap:12px; margin-bottom:12px;">
     <button class="tab-btn active" onclick="switchCreator('card')" style="flex:1;">CARD</button>
     <button class="tab-btn" onclick="switchCreator('item')" style="flex:1;">ITEM</button>
   </div>
-  <div id="cardCreator" style="display:grid; grid-template-columns:220px 1fr; gap:20px; align-items:start;">
+  <div id="cardCreator" style="display:grid; grid-template-columns:200px 1fr; gap:16px; align-items:start;">
     <div class="glass-panel" style="text-align:center;">
-      <canvas id="drawCanvas" width="180" height="180" style="background:#000; border-radius:8px; cursor:crosshair; border:1px solid var(--accent);"></canvas>
-      <div style="display:flex; gap:6px; justify-content:center; margin-top:10px; flex-wrap:wrap;">
-        <div class="color-swatch active" data-color="#00ff88" style="background:#00ff88; width:26px; height:26px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></div>
-        <div class="color-swatch" data-color="#ff3355" style="background:#ff3355; width:26px; height:26px; border-radius:50%; cursor:pointer;"></div>
-        <div class="color-swatch" data-color="#00d9ff" style="background:#00d9ff; width:26px; height:26px; border-radius:50%; cursor:pointer;"></div>
-        <div class="color-swatch" data-color="#ffcc00" style="background:#ffcc00; width:26px; height:26px; border-radius:50%; cursor:pointer;"></div>
-        <div class="color-swatch" data-color="#ffffff" style="background:#ffffff; width:26px; height:26px; border-radius:50%; cursor:pointer;"></div>
-        <div class="color-swatch" data-color="#000000" style="background:#000000; width:26px; height:26px; border-radius:50%; border:2px solid #555; cursor:pointer;"></div>
+      <canvas id="drawCanvas" width="180" height="180" style="background:#000; border-radius:6px; cursor:crosshair; border:1px solid var(--accent); max-width:100%;"></canvas>
+      <div style="display:flex; gap:5px; justify-content:center; margin-top:8px; flex-wrap:wrap;">
+        <div class="color-swatch active" data-color="#00ff88" style="background:#00ff88; width:22px; height:22px; border-radius:50%; border:2px solid #fff; cursor:pointer;"></div>
+        <div class="color-swatch" data-color="#ff3355" style="background:#ff3355; width:22px; height:22px; border-radius:50%; cursor:pointer;"></div>
+        <div class="color-swatch" data-color="#00d9ff" style="background:#00d9ff; width:22px; height:22px; border-radius:50%; cursor:pointer;"></div>
+        <div class="color-swatch" data-color="#ffcc00" style="background:#ffcc00; width:22px; height:22px; border-radius:50%; cursor:pointer;"></div>
+        <div class="color-swatch" data-color="#ffffff" style="background:#ffffff; width:22px; height:22px; border-radius:50%; cursor:pointer;"></div>
+        <div class="color-swatch" data-color="#000000" style="background:#000000; width:22px; height:22px; border-radius:50%; border:2px solid #555; cursor:pointer;"></div>
       </div>
-      <div style="display:flex; gap:6px; justify-content:center; margin-top:10px;">
-        <button class="secondary" id="clearCanvasBtn" style="font-size:10px; padding:5px 10px;">CLEAR</button>
-        <button class="secondary" id="eraserBtn" style="font-size:10px; padding:5px 10px;">ERASER</button>
+      <div style="display:flex; gap:5px; justify-content:center; margin-top:8px;">
+        <button class="secondary" id="clearCanvasBtn" style="font-size:9px; padding:4px 9px;">CLEAR</button>
+        <button class="secondary" id="eraserBtn" style="font-size:9px; padding:4px 9px;">ERASER</button>
       </div>
-      <div style="margin-top:10px; font-size:10px; color:var(--text-dim);">OR IMPORT PNG:</div>
-      <input type="file" id="cardImageUpload" accept="image/png, image/jpeg" style="font-size:10px; color:#fff; margin-top:4px; width:100%;">
+      <div style="margin-top:8px; font-size:9px; color:var(--text-dim);">OR PNG:</div>
+      <input type="file" id="cardImageUpload" accept="image/png, image/jpeg" style="font-size:9px; color:#fff; margin-top:3px; width:100%;">
     </div>
     <div>
-      <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Card Name</label><input type="text" id="cardName" placeholder="Kris Get The Banana" maxlength="30" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit;"></div>
-      <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Codename</label><input type="text" id="cardCodename" placeholder="kris_banana" maxlength="30" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit;"></div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-        <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">HP</label><input type="number" id="cardHP" value="60" min="1" max="999" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit;"></div>
-        <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Damage</label><input type="number" id="cardDamage" value="20" min="0" max="999" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit;"></div>
+      <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Name</label><input type="text" id="cardName" placeholder="Kris Get The Banana" maxlength="30" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
+      <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Codename</label><input type="text" id="cardCodename" placeholder="kris_banana" maxlength="30" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+        <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">HP</label><input type="number" id="cardHP" value="60" min="1" max="999" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
+        <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Damage</label><input type="number" id="cardDamage" value="20" min="0" max="999" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
       </div>
-      <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Attack Name</label><input type="text" id="cardAttack" placeholder="Potassium" maxlength="20" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit;"></div>
-      <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Drop Rate (%)</label><input type="number" id="cardDropRate" value="10" min="0.01" max="100" step="0.01" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit;"></div>
-      <button id="saveCardBtn" class="success" style="width:100%; padding:12px; margin-bottom:6px;">SAVE CARD</button>
-      <button id="exportCardBtn" class="secondary" style="width:100%; padding:12px;">EXPORT .crd FILE</button>
+      <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Attack</label><input type="text" id="cardAttack" placeholder="Potassium" maxlength="20" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
+      <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Drop Rate (%)</label><input type="number" id="cardDropRate" value="10" min="0.01" max="100" step="0.01" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
+      <button id="saveCardBtn" class="success" style="width:100%; padding:9px; margin-bottom:5px;">SAVE CARD</button>
+      <button id="exportCardBtn" class="secondary" style="width:100%; padding:9px;">EXPORT .crd</button>
     </div>
   </div>
-  <div id="itemCreator" style="display:none; grid-template-columns:220px 1fr; gap:20px; align-items:start;">
+  <div id="itemCreator" style="display:none; grid-template-columns:200px 1fr; gap:16px; align-items:start;">
     <div class="glass-panel" style="text-align:center;">
-      <div style="font-size:40px; padding:60px 0;">ITEM</div>
-      <div style="margin-top:10px; font-size:10px; color:var(--text-dim);">OR IMPORT PNG:</div>
-      <input type="file" id="itemImageUpload" accept="image/png, image/jpeg" style="font-size:10px; color:#fff; margin-top:4px; width:100%;">
+      <div style="font-size:36px; padding:50px 0;">ITEM</div>
+      <div style="margin-top:10px; font-size:9px; color:var(--text-dim);">OR PNG:</div>
+      <input type="file" id="itemImageUpload" accept="image/png, image/jpeg" style="font-size:9px; color:#fff; margin-top:3px; width:100%;">
     </div>
     <div>
-      <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Item Name</label><input type="text" id="itemName" placeholder="Health Potion" maxlength="20" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit;"></div>
-      <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Codename</label><input type="text" id="itemCodename" placeholder="health_potion" maxlength="30" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit;"></div>
-      <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Description</label><input type="text" id="itemDesc" placeholder="Heals your active card" maxlength="50" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit;"></div>
-      <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px;">
-        <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Effect</label><select id="itemType" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit;"><option value="heal">Heal</option><option value="damage">Damage</option><option value="buff">Buff</option></select></div>
-        <div style="margin-bottom:10px;"><label style="display:block; font-size:10px; color:var(--accent); text-transform:uppercase; margin-bottom:4px; font-weight:700;">Value</label><input type="number" id="itemValue" value="20" min="1" max="999" style="width:100%; padding:8px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:8px; font-family:inherit;"></div>
+      <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Item Name</label><input type="text" id="itemName" placeholder="Health Potion" maxlength="20" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
+      <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Codename</label><input type="text" id="itemCodename" placeholder="health_potion" maxlength="30" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
+      <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Description</label><input type="text" id="itemDesc" placeholder="Heals" maxlength="50" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:8px;">
+        <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Effect</label><select id="itemType" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"><option value="heal">Heal</option><option value="damage">Damage</option><option value="buff">Buff</option></select></div>
+        <div style="margin-bottom:8px;"><label style="display:block; font-size:9px; color:var(--accent); text-transform:uppercase; margin-bottom:3px; font-weight:700;">Value</label><input type="number" id="itemValue" value="20" min="1" max="999" style="width:100%; padding:6px; background:rgba(0,0,0,0.4); border:1px solid var(--glass-border); color:#fff; border-radius:7px; font-family:inherit; font-size:11px;"></div>
       </div>
-      <button id="saveItemBtn" class="success" style="width:100%; padding:12px;">SAVE ITEM</button>
+      <button id="saveItemBtn" class="success" style="width:100%; padding:9px;">SAVE ITEM</button>
     </div>
   </div>
 </div>
 
 <div id="data" class="page">
   <h2>Data & Files</h2>
-  <div class="glass-panel" style="margin-bottom:12px;">
-    <h3 style="color:var(--accent); margin-top:0; font-weight:300;">LOAD FROM GITHUB</h3>
-    <button id="loadGithubBtn" class="success" style="width:100%; margin-bottom:6px;">RELOAD FROM SERVER</button>
-    <div id="crdDropZone" style="border:2px dashed rgba(0,217,255,0.4); padding:16px; text-align:center; border-radius:10px; margin:8px 0; color:var(--text-dim); background:rgba(0,0,0,0.2); font-size:12px;">
+  <div class="glass-panel" style="margin-bottom:10px;">
+    <h3 style="color:var(--accent); margin-top:0; font-weight:300; font-size:13px;">LOAD FROM GITHUB</h3>
+    <button id="loadGithubBtn" class="success" style="width:100%; margin-bottom:5px;">RELOAD FROM SERVER</button>
+    <div id="crdDropZone" style="border:2px dashed rgba(0,217,255,0.4); padding:14px; text-align:center; border-radius:10px; margin:6px 0; color:var(--text-dim); background:rgba(0,0,0,0.2); font-size:11px;">
       <input type="file" id="crdFileInput" multiple accept=".crd,.itm" style="display:none;">
       <p>Drop files or <span style="color:var(--accent); text-decoration:underline; cursor:pointer;" onclick="document.getElementById('crdFileInput').click()">browse</span></p>
     </div>
   </div>
-  <div class="glass-panel" style="margin-bottom:12px;">
-    <h3 style="color:var(--accent); margin-top:0; font-weight:300;">SAVE / LOAD (.dat)</h3>
-    <button id="saveDatBtn" class="success" style="width:100%; margin-bottom:6px;">DOWNLOAD SAVE FILE</button>
-    <input type="file" id="loadDatInput" accept=".dat" style="color:#fff; width:100%;">
+  <div class="glass-panel" style="margin-bottom:10px;">
+    <h3 style="color:var(--accent); margin-top:0; font-weight:300; font-size:13px;">SAVE / LOAD (.dat)</h3>
+    <button id="saveDatBtn" class="success" style="width:100%; margin-bottom:5px;">DOWNLOAD SAVE</button>
+    <input type="file" id="loadDatInput" accept=".dat" style="color:#fff; width:100%; font-size:11px;">
   </div>
   <div class="glass-panel" style="border-color:rgba(231,76,60,0.4);">
-    <h3 style="color:#e74c3c; margin-top:0; font-weight:300;">DANGER ZONE</h3>
+    <h3 style="color:#e74c3c; margin-top:0; font-weight:300; font-size:13px;">DANGER ZONE</h3>
     <button class="danger" id="wipeBtn" style="width:100%;">ERASE ALL DATA</button>
   </div>
 </div>
@@ -422,16 +368,9 @@
 <div id="packOverlay" class="hidden">
   <div class="pack-stage">
     <div id="sealedPack" class="sealed-pack">
-      <div class="pack-half pack-top" id="packTop">
-        <div class="pack-logo">PSTCG</div>
-      </div>
-      <div class="swipe-line" id="swipeLine">
-        <div class="swipe-progress" id="swipeProgress"></div>
-        <div class="swipe-hint" id="swipeHint">SWIPE ACROSS</div>
-      </div>
-      <div class="pack-half pack-bottom">
-        <div class="pack-tag">5 CARDS</div>
-      </div>
+      <div class="pack-half pack-top" id="packTop"><div class="pack-logo">PSTCG</div></div>
+      <div class="swipe-line" id="swipeLine"><div class="swipe-progress" id="swipeProgress"></div><div class="swipe-hint" id="swipeHint">SWIPE ACROSS</div></div>
+      <div class="pack-half pack-bottom"><div class="pack-tag">5 CARDS</div></div>
     </div>
     <div id="revealArea" class="reveal-area hidden"></div>
   </div>
@@ -446,28 +385,16 @@ const Sound = (() => {
   function getCtx() { if (!ctx) { try { ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch(e) { return null; } } if (ctx.state === 'suspended') ctx.resume(); return ctx; }
   function tone(freq, duration, type, vol, sweepTo) {
     if (!enabled) return; const c = getCtx(); if (!c) return;
-    try {
-      const osc = c.createOscillator(); const gain = c.createGain();
-      osc.type = type || 'sine';
-      osc.frequency.setValueAtTime(freq, c.currentTime);
-      if (sweepTo) osc.frequency.exponentialRampToValueAtTime(sweepTo, c.currentTime + duration);
-      gain.gain.setValueAtTime(vol || 0.12, c.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + duration);
-      osc.connect(gain).connect(c.destination);
-      osc.start(); osc.stop(c.currentTime + duration);
-    } catch(e) {}
+    try { const osc = c.createOscillator(); const gain = c.createGain(); osc.type = type || 'sine'; osc.frequency.setValueAtTime(freq, c.currentTime); if (sweepTo) osc.frequency.exponentialRampToValueAtTime(sweepTo, c.currentTime + duration); gain.gain.setValueAtTime(vol || 0.12, c.currentTime); gain.gain.exponentialRampToValueAtTime(0.001, c.currentTime + duration); osc.connect(gain).connect(c.destination); osc.start(); osc.stop(c.currentTime + duration); } catch(e) {}
   }
   return {
     setEnabled(v) { enabled = v; }, isEnabled() { return enabled; }, unlock() { getCtx(); },
-    click() { tone(800, 0.05, 'square', 0.04); },
-    swipeTick() { tone(1200, 0.03, 'sine', 0.05); },
-    swipeComplete() { tone(400, 0.3, 'sine', 0.12, 1200); },
+    click() { tone(800, 0.05, 'square', 0.04); }, swipeTick() { tone(1200, 0.03, 'sine', 0.05); }, swipeComplete() { tone(400, 0.3, 'sine', 0.12, 1200); },
     packTear() { tone(300, 0.25, 'sawtooth', 0.12, 80); setTimeout(() => tone(150, 0.35, 'sawtooth', 0.1, 50), 120); },
     cardReveal(r) { const base = { common: 400, uncommon: 500, rare: 600, epic: 750, legendary: 900 }[r] || 400; tone(base, 0.12, 'sine', 0.1); setTimeout(() => tone(base * 1.5, 0.15, 'sine', 0.08), 70); },
     legendaryFanfare() { [523, 659, 784, 1047, 1319].forEach((f, i) => setTimeout(() => tone(f, 0.3, 'triangle', 0.12), i * 90)); },
     epicFanfare() { [523, 659, 784].forEach((f, i) => setTimeout(() => tone(f, 0.25, 'triangle', 0.1), i * 80)); },
-    attack() { tone(220, 0.1, 'sawtooth', 0.15, 100); },
-    hit() { tone(140, 0.18, 'square', 0.15, 50); },
+    attack() { tone(220, 0.1, 'sawtooth', 0.15, 100); }, hit() { tone(140, 0.18, 'square', 0.15, 50); },
     heal() { [523, 659, 784].forEach((f, i) => setTimeout(() => tone(f, 0.2, 'sine', 0.1), i * 70)); },
     buff() { [400, 600, 800].forEach((f, i) => setTimeout(() => tone(f, 0.18, 'triangle', 0.1), i * 60)); },
     victory() { [523, 659, 784, 1047, 1319].forEach((f, i) => setTimeout(() => tone(f, 0.35, 'triangle', 0.15), i * 110)); },
@@ -482,36 +409,11 @@ const Sound = (() => {
 
 const MUSIC_TRACKS = ['1.mp3', '2.mp3', '3.mp3'];
 let currentTrackIndex = 0; let musicAudio = null; let musicEnabled = true; let musicStarted = false;
-function initMusic() {
-  if (musicAudio) return;
-  musicAudio = new Audio(); musicAudio.volume = 0.35;
-  musicAudio.addEventListener('ended', () => { currentTrackIndex = (currentTrackIndex + 1) % MUSIC_TRACKS.length; playTrack(); });
-  musicAudio.addEventListener('error', () => { currentTrackIndex++; if (currentTrackIndex < MUSIC_TRACKS.length) setTimeout(playTrack, 100); else document.getElementById('musicBtn').style.display = 'none'; });
-}
-function playTrack() {
-  if (!musicAudio || currentTrackIndex >= MUSIC_TRACKS.length) return;
-  musicAudio.src = MUSIC_TRACKS[currentTrackIndex];
-  musicAudio.play().then(() => { musicStarted = true; document.getElementById('musicBtn').classList.remove('muted'); }).catch(() => { document.getElementById('musicBtn').classList.add('muted'); });
-}
-document.getElementById('musicBtn').addEventListener('click', () => {
-  initMusic(); musicEnabled = !musicEnabled;
-  if (musicEnabled) { playTrack(); document.getElementById('musicBtn').textContent = '♫'; }
-  else { if (musicAudio) musicAudio.pause(); document.getElementById('musicBtn').textContent = '♪'; document.getElementById('musicBtn').classList.add('muted'); }
-});
-document.getElementById('sfxBtn').addEventListener('click', () => {
-  const en = !Sound.isEnabled(); Sound.setEnabled(en);
-  document.getElementById('sfxBtn').textContent = en ? '🔊' : '🔇';
-  document.getElementById('sfxBtn').classList.toggle('muted', !en);
-  if (en) Sound.click();
-});
-function unlockOnFirstInteraction() {
-  const handler = () => {
-    Sound.unlock();
-    if (musicEnabled && !musicStarted) { initMusic(); playTrack(); }
-    document.removeEventListener('click', handler); document.removeEventListener('keydown', handler); document.removeEventListener('touchstart', handler);
-  };
-  document.addEventListener('click', handler); document.addEventListener('keydown', handler); document.addEventListener('touchstart', handler);
-}
+function initMusic() { if (musicAudio) return; musicAudio = new Audio(); musicAudio.volume = 0.35; musicAudio.addEventListener('ended', () => { currentTrackIndex = (currentTrackIndex + 1) % MUSIC_TRACKS.length; playTrack(); }); musicAudio.addEventListener('error', () => { currentTrackIndex++; if (currentTrackIndex < MUSIC_TRACKS.length) setTimeout(playTrack, 100); else document.getElementById('musicBtn').style.display = 'none'; }); }
+function playTrack() { if (!musicAudio || currentTrackIndex >= MUSIC_TRACKS.length) return; musicAudio.src = MUSIC_TRACKS[currentTrackIndex]; musicAudio.play().then(() => { musicStarted = true; document.getElementById('musicBtn').classList.remove('muted'); }).catch(() => { document.getElementById('musicBtn').classList.add('muted'); }); }
+document.getElementById('musicBtn').addEventListener('click', () => { initMusic(); musicEnabled = !musicEnabled; if (musicEnabled) { playTrack(); document.getElementById('musicBtn').textContent = '♫'; } else { if (musicAudio) musicAudio.pause(); document.getElementById('musicBtn').textContent = '♪'; document.getElementById('musicBtn').classList.add('muted'); } });
+document.getElementById('sfxBtn').addEventListener('click', () => { const en = !Sound.isEnabled(); Sound.setEnabled(en); document.getElementById('sfxBtn').textContent = en ? '🔊' : '🔇'; document.getElementById('sfxBtn').classList.toggle('muted', !en); if (en) Sound.click(); });
+function unlockOnFirstInteraction() { const handler = () => { Sound.unlock(); if (musicEnabled && !musicStarted) { initMusic(); playTrack(); } document.removeEventListener('click', handler); document.removeEventListener('keydown', handler); document.removeEventListener('touchstart', handler); }; document.addEventListener('click', handler); document.addEventListener('keydown', handler); document.addEventListener('touchstart', handler); }
 document.addEventListener('click', e => { if (e.target.tagName === 'BUTTON') Sound.click(); }, true);
 
 const DIFFICULTIES = {
@@ -524,30 +426,11 @@ const DIFFICULTIES = {
 
 let flashTimer;
 function flash(msg) { const el = document.getElementById('flashMsg'); el.textContent = msg; el.classList.add('show'); clearTimeout(flashTimer); flashTimer = setTimeout(() => el.classList.remove('show'), 2200); }
-function showToast(icon, text) {
-  const toast = document.createElement('div'); toast.className = 'toast';
-  toast.innerHTML = `<div class="toast-icon">${icon}</div><div>${text}</div>`;
-  document.body.appendChild(toast);
-  setTimeout(() => { toast.classList.add('removing'); setTimeout(() => toast.remove(), 400); }, 2500);
-}
+function showToast(icon, text) { const toast = document.createElement('div'); toast.className = 'toast'; toast.innerHTML = `<div class="toast-icon">${icon}</div><div>${text}</div>`; document.body.appendChild(toast); setTimeout(() => { toast.classList.add('removing'); setTimeout(() => toast.remove(), 400); }, 2500); }
 
 const translations = {
-  en: { playerManual: "PLAYER MANUAL", adminManual: "ADMIN MANUAL", playerDesc: "Welcome to PSTCG!", adminDesc: "Admin mode.",
-    gettingCards: "1. Getting Cards", gettingCardsDesc: "Open packs to get random cards.",
-    battling: "2. Battling", battlingDesc: "Fight the bot or play P2P online.",
-    savingProgress: "3. Saving", savingProgressDesc: "Download your .dat file often!",
-    makeCards: "1. Making Cards", makeCardsDesc: "Use the CREATE tab to design cards.",
-    exportGithub: "2. GitHub Hosting", exportGithubDesc: "Put .crd files in the card folder.",
-    manifestDesc: "Create list.json:", autoLoad: "Auto-loads on refresh.",
-    saveDatAdmin: "3. Save Files", saveDatAdminDesc: "Players download .dat files." },
-  fa: { playerManual: "راهنمای بازیکن", adminManual: "راهنمای ادمین", playerDesc: "به PSTCG خوش آمدید!", adminDesc: "شما ادمین هستید.",
-    gettingCards: "۱. دریافت کارت‌ها", gettingCardsDesc: "پک باز کنید.",
-    battling: "۲. نبرد", battlingDesc: "با ربات یا دوستان بجنگید.",
-    savingProgress: "۳. ذخیره", savingProgressDesc: "فایل .dat را دانلود کنید.",
-    makeCards: "۱. ساخت کارت", makeCardsDesc: "از تب ساخت استفاده کنید.",
-    exportGithub: "۲. گیت‌هاب", exportGithubDesc: "فایل‌های .crd را در پوشه card بگذارید.",
-    manifestDesc: "فایل list.json بسازید:", autoLoad: "خودکار بارگذاری می‌شود.",
-    saveDatAdmin: "۳. ذخیره", saveDatAdminDesc: "بازیکنان .dat دانلود می‌کنند." }
+  en: { playerManual: "PLAYER MANUAL", adminManual: "ADMIN MANUAL", playerDesc: "Welcome to PSTCG!", adminDesc: "Admin mode.", gettingCards: "1. Getting Cards", gettingCardsDesc: "Open packs to get random cards.", battling: "2. Battling", battlingDesc: "Fight the bot or play P2P online.", savingProgress: "3. Saving", savingProgressDesc: "Download your .dat file often!", makeCards: "1. Making Cards", makeCardsDesc: "Use the CREATE tab.", exportGithub: "2. GitHub Hosting", exportGithubDesc: "Put .crd files in card folder.", manifestDesc: "Create list.json:", autoLoad: "Auto-loads on refresh.", saveDatAdmin: "3. Save Files", saveDatAdminDesc: "Players download .dat files." },
+  fa: { playerManual: "راهنمای بازیکن", adminManual: "راهنمای ادمین", playerDesc: "به PSTCG خوش آمدید!", adminDesc: "شما ادمین هستید.", gettingCards: "۱. دریافت کارت‌ها", gettingCardsDesc: "پک باز کنید.", battling: "۲. نبرد", battlingDesc: "با ربات یا دوستان بجنگید.", savingProgress: "۳. ذخیره", savingProgressDesc: "فایل .dat را دانلود کنید.", makeCards: "۱. ساخت کارت", makeCardsDesc: "از تب ساخت استفاده کنید.", exportGithub: "۲. گیت‌هاب", exportGithubDesc: "فایل‌های .crd را در پوشه card بگذارید.", manifestDesc: "فایل list.json بسازید:", autoLoad: "خودکار بارگذاری می‌شود.", saveDatAdmin: "۳. ذخیره", saveDatAdminDesc: "بازیکنان .dat دانلود می‌کنند." }
 };
 let currentLang = localStorage.getItem('pstcg_lang') || 'en';
 function t(key) { return translations[currentLang][key] || key; }
@@ -572,22 +455,9 @@ function loadData() {
   } catch(e) { console.error(e); }
 }
 function saveData() {
-  try {
-    localStorage.setItem('pstcg_card_cache', JSON.stringify(cards));
-    localStorage.setItem('pstcg_item_cache', JSON.stringify(items));
-    localStorage.setItem('pstcg_collection', JSON.stringify(collection));
-    localStorage.setItem('pstcg_itemCollection', JSON.stringify(itemCollection));
-    localStorage.setItem('pstcg_aura', aura.toString());
-    localStorage.setItem('pstcg_freePack', freePackAvailable.toString());
-    localStorage.setItem('pstcg_kris', unlockedKris.toString());
-    localStorage.setItem('pstcg_rouring', unlockedRouring.toString());
-  } catch(e) { console.error("Storage full"); }
+  try { localStorage.setItem('pstcg_card_cache', JSON.stringify(cards)); localStorage.setItem('pstcg_item_cache', JSON.stringify(items)); localStorage.setItem('pstcg_collection', JSON.stringify(collection)); localStorage.setItem('pstcg_itemCollection', JSON.stringify(itemCollection)); localStorage.setItem('pstcg_aura', aura.toString()); localStorage.setItem('pstcg_freePack', freePackAvailable.toString()); localStorage.setItem('pstcg_kris', unlockedKris.toString()); localStorage.setItem('pstcg_rouring', unlockedRouring.toString()); } catch(e) {}
 }
-function updateAuraUI() {
-  document.getElementById('auraCount').textContent = aura;
-  const btn = document.getElementById('openPackBtn');
-  if (btn) btn.textContent = freePackAvailable ? "OPEN FREE PACK" : "OPEN PACK (50 AURA)";
-}
+function updateAuraUI() { document.getElementById('auraCount').textContent = aura; const btn = document.getElementById('openPackBtn'); if (btn) btn.textContent = freePackAvailable ? "OPEN FREE PACK" : "OPEN PACK (50 AURA)"; }
 function pulseAura() { const el = document.getElementById('auraDisplay'); el.classList.add('pulse'); setTimeout(() => el.classList.remove('pulse'), 800); }
 
 const ADMIN_KEY = "1234567890qwertyuiopasdfghjklzxcvbnm";
@@ -597,19 +467,11 @@ function checkAdmin() {
   username = input; localStorage.setItem('pstcg_username', username);
   if (input === ADMIN_KEY) { isAdmin = true; document.getElementById('createTabBtn').classList.remove('hidden'); document.getElementById('adminAuraBtn').classList.remove('hidden'); }
   else { isAdmin = false; document.getElementById('createTabBtn').classList.add('hidden'); document.getElementById('adminAuraBtn').classList.add('hidden'); }
-  if (lower === 'kris') {
-    document.getElementById('knightBtn').classList.remove('hidden');
-    if (!unlockedKris) { unlockedKris = true; saveData(); Sound.knightWarn(); showToast('🦌', 'THE ROARING KNIGHT AWAKENS...'); }
-  } else {
-    document.getElementById('knightBtn').classList.add('hidden');
-    if (selectedDifficulty === 'knight') { selectedDifficulty = 'easy'; document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected')); document.querySelector('[data-diff="easy"]').classList.add('selected'); }
-  }
+  if (lower === 'kris') { document.getElementById('knightBtn').classList.remove('hidden'); if (!unlockedKris) { unlockedKris = true; saveData(); Sound.knightWarn(); showToast('🦌', 'THE ROARING KNIGHT AWAKENS...'); } }
+  else { document.getElementById('knightBtn').classList.add('hidden'); if (selectedDifficulty === 'knight') { selectedDifficulty = 'easy'; document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected')); document.querySelector('[data-diff="easy"]').classList.add('selected'); } }
   if (lower === 'rouring' && !unlockedRouring) {
-    unlockedRouring = true; aura += 12000; saveData(); updateAuraUI(); pulseAura();
-    Sound.easterEgg();
-    const flashEl = document.getElementById('screenFlash');
-    flashEl.style.background = 'linear-gradient(45deg, #a855f7, #fff, #7c3aed)';
-    flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash');
+    unlockedRouring = true; aura += 12000; saveData(); updateAuraUI(); pulseAura(); Sound.easterEgg();
+    const flashEl = document.getElementById('screenFlash'); flashEl.style.background = 'linear-gradient(45deg, #a855f7, #fff, #7c3aed)'; flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash');
     showToast('🦌', 'R O U R I N G  —  +12,000 AURA');
     setTimeout(() => Sound.auraGain(), 500);
     for (let i = 0; i < 100; i++) { setTimeout(() => { const p = document.createElement('div'); p.className = 'particle purple'; p.style.left = Math.random() * window.innerWidth + 'px'; p.style.top = '-20px'; p.style.animation = `goldFall ${1.5 + Math.random() * 1.5}s ease-in forwards`; document.body.appendChild(p); setTimeout(() => p.remove(), 3000); }, i * 15); }
@@ -617,24 +479,15 @@ function checkAdmin() {
   updateAboutPage();
 }
 document.getElementById('usernameInput').addEventListener('input', checkAdmin);
-document.getElementById('adminAuraBtn').addEventListener('click', () => { if (!isAdmin) return; aura += 9999; saveData(); updateAuraUI(); pulseAura(); Sound.auraGain(); showToast('⚡', '+9999 AURA GRANTED'); });
+document.getElementById('adminAuraBtn').addEventListener('click', () => { if (!isAdmin) return; aura += 9999; saveData(); updateAuraUI(); pulseAura(); Sound.auraGain(); showToast('⚡', '+9999 AURA'); });
 document.querySelectorAll('.diff-btn').forEach(btn => { btn.addEventListener('click', () => { document.querySelectorAll('.diff-btn').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedDifficulty = btn.dataset.diff; }); });
 function updateAboutPage() {
   const content = document.getElementById('aboutContent');
-  const box = (title, body) => `<div class="glass-panel" style="margin-bottom:12px; line-height:1.6;"><h3 style="margin-top:0; color:var(--accent); font-weight:300;">${title}</h3><p>${body}</p></div>`;
+  const box = (title, body) => `<div class="glass-panel" style="margin-bottom:10px; line-height:1.5; font-size:12px;"><h3 style="margin-top:0; color:var(--accent); font-weight:300; font-size:14px;">${title}</h3><p>${body}</p></div>`;
   if (isAdmin) content.innerHTML = box(t('adminManual'), t('adminDesc')) + box(t('makeCards'), t('makeCardsDesc')) + box(t('exportGithub'), t('exportGithubDesc')) + box(t('saveDatAdmin'), t('saveDatAdminDesc'));
   else content.innerHTML = box(t('playerManual'), t('playerDesc')) + box(t('gettingCards'), t('gettingCardsDesc')) + box(t('battling'), t('battlingDesc')) + box(t('savingProgress'), t('savingProgressDesc'));
 }
-document.querySelectorAll('.tab').forEach(tab => {
-  tab.addEventListener('click', () => {
-    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-    tab.classList.add('active');
-    document.getElementById(tab.dataset.page).classList.add('active');
-    if (tab.dataset.page === 'collection') renderCollection();
-    if (tab.dataset.page === 'about') updateAboutPage();
-  });
-});
+document.querySelectorAll('.tab').forEach(tab => { tab.addEventListener('click', () => { document.querySelectorAll('.tab').forEach(t => t.classList.remove('active')); document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); tab.classList.add('active'); document.getElementById(tab.dataset.page).classList.add('active'); if (tab.dataset.page === 'collection') renderCollection(); if (tab.dataset.page === 'about') updateAboutPage(); }); });
 
 function parseSafe(text) { if (text.charCodeAt(0) === 0xFEFF) text = text.slice(1); return JSON.parse(text.trim()); }
 async function loadRemoteData() {
@@ -665,16 +518,18 @@ function getRarityColor(r) { if (r >= 50) return '#888'; if (r >= 20) return '#2
 function pickWeightedCard() { if (cards.length === 0) return null; const total = cards.reduce((s, c) => s + (c.dropRate || 10), 0); let roll = Math.random() * total; for (const c of cards) { roll -= (c.dropRate || 10); if (roll <= 0) return c; } return cards[cards.length - 1]; }
 function pickRandomItem() { if (items.length === 0) return null; return items[Math.floor(Math.random() * items.length)]; }
 
-function makeCardElement(card) {
+// IMPORTANT: Now accepts optional overrideHp so battle cards show LIVE hp
+function makeCardElement(card, overrideHp) {
   const div = document.createElement('div');
   const r = card.dropRate || 10;
   div.className = 'card ' + rarityClass(r);
   const rColor = getRarityColor(r);
+  const displayHp = (overrideHp !== undefined && overrideHp !== null) ? Math.max(0, overrideHp) : card.hp;
   div.innerHTML = `
     <div class="card-drop" style="background:${rColor}; color:${r>=1?'#fff':'#000'}">${r.toFixed(2)}%</div>
     <div class="card-img">${card.image ? `<img src="${card.image}">` : (card.name||'?')[0].toUpperCase()}</div>
     <div class="card-name">${card.name || 'Unnamed'}</div>
-    <div class="card-stats"><span class="card-hp">HP ${card.hp}</span></div>
+    <div class="card-stats"><span class="card-hp">HP ${displayHp}</span></div>
     <div class="card-attack"><span>${card.attack || '-'}</span><span class="card-attack-dmg">${card.damage}</span></div>
   `;
   if (!card.image) div.querySelector('.card-img').style.color = rColor;
@@ -682,12 +537,7 @@ function makeCardElement(card) {
 }
 function makeItemElement(item) {
   const div = document.createElement('div'); div.className = 'item';
-  div.innerHTML = `
-    <div class="item-img">${item.image ? `<img src="${item.image}">` : 'ITEM'}</div>
-    <div class="item-name">${item.name || 'Item'}</div>
-    <div class="item-desc">${item.desc || ''}</div>
-    <div class="item-effect">${item.type.toUpperCase()} ${item.value}</div>
-  `;
+  div.innerHTML = `<div class="item-img">${item.image ? `<img src="${item.image}">` : 'ITEM'}</div><div class="item-name">${item.name || 'Item'}</div><div class="item-desc">${item.desc || ''}</div><div class="item-effect">${item.type.toUpperCase()} ${item.value}</div>`;
   return div;
 }
 function renderCollection() {
@@ -702,7 +552,7 @@ function renderCollection() {
       const wrap = document.createElement('div'); wrap.style.position = 'relative';
       wrap.appendChild(makeCardElement(card));
       const badge = document.createElement('div'); badge.textContent = 'x' + collection[card.codename];
-      badge.style.cssText = 'position:absolute; bottom:-8px; left:50%; transform:translateX(-50%); background:#0a0e27; color:var(--accent); font-size:10px; font-weight:bold; padding:2px 10px; border-radius:12px; border:1px solid var(--accent);';
+      badge.style.cssText = 'position:absolute; bottom:-6px; left:50%; transform:translateX(-50%); background:#0a0e27; color:var(--accent); font-size:9px; font-weight:bold; padding:2px 9px; border-radius:10px; border:1px solid var(--accent);';
       wrap.appendChild(badge); grid.appendChild(wrap);
     });
   }
@@ -714,7 +564,7 @@ function renderCollection() {
       const wrap = document.createElement('div'); wrap.style.position = 'relative';
       wrap.appendChild(makeItemElement(item));
       const badge = document.createElement('div'); badge.textContent = 'x' + itemCollection[item.id];
-      badge.style.cssText = 'position:absolute; bottom:-8px; left:50%; transform:translateX(-50%); background:#0a0e27; color:#2ecc71; font-size:10px; font-weight:bold; padding:2px 10px; border-radius:12px; border:1px solid #2ecc71;';
+      badge.style.cssText = 'position:absolute; bottom:-6px; left:50%; transform:translateX(-50%); background:#0a0e27; color:#2ecc71; font-size:9px; font-weight:bold; padding:2px 9px; border-radius:10px; border:1px solid #2ecc71;';
       wrap.appendChild(badge); iGrid.appendChild(wrap);
     });
   }
@@ -752,18 +602,7 @@ document.getElementById('openPackBtn').addEventListener('click', () => {
   swipeLine.addEventListener('pointerdown', start); swipeLine.addEventListener('pointermove', move); swipeLine.addEventListener('pointerup', end); swipeLine.addEventListener('pointerleave', end);
   swipeLine.addEventListener('touchstart', start, { passive: false }); swipeLine.addEventListener('touchmove', move, { passive: false }); swipeLine.addEventListener('touchend', end);
 })();
-function tearOpenPack() {
-  document.getElementById('swipeHint').style.display = 'none';
-  document.getElementById('packTop').classList.add('torn');
-  Sound.swipeComplete(); setTimeout(() => Sound.packTear(), 200);
-  setTimeout(() => {
-    document.getElementById('sealedPack').style.display = 'none';
-    const revealArea = document.getElementById('revealArea');
-    revealArea.classList.remove('hidden'); revealArea.classList.add('active');
-    packState.currentIndex = -1;
-    revealNextCard();
-  }, 900);
-}
+function tearOpenPack() { document.getElementById('swipeHint').style.display = 'none'; document.getElementById('packTop').classList.add('torn'); Sound.swipeComplete(); setTimeout(() => Sound.packTear(), 200); setTimeout(() => { document.getElementById('sealedPack').style.display = 'none'; const revealArea = document.getElementById('revealArea'); revealArea.classList.remove('hidden'); revealArea.classList.add('active'); packState.currentIndex = -1; revealNextCard(); }, 900); }
 function revealNextCard() {
   if (!packState) return;
   packState.currentIndex++;
@@ -786,11 +625,7 @@ function revealNextCard() {
   if (rar === 'rarity-rare') spawnSparkles(revealArea, 5); else if (rar === 'rarity-epic') spawnSparkles(revealArea, 10); else if (rar === 'rarity-legendary') spawnSparkles(revealArea, 25);
   const tapHint = document.createElement('div'); tapHint.className = 'tap-hint'; tapHint.textContent = packState.currentIndex === packState.cards.length - 1 ? 'TAP TO FINISH' : 'TAP FOR NEXT'; revealArea.appendChild(tapHint);
 }
-document.getElementById('revealArea').addEventListener('click', () => {
-  if (!packState) return;
-  if (packState.currentIndex >= packState.cards.length) { document.getElementById('packOverlay').classList.add('hidden'); packState = null; flash("Pack opened!"); }
-  else revealNextCard();
-});
+document.getElementById('revealArea').addEventListener('click', () => { if (!packState) return; if (packState.currentIndex >= packState.cards.length) { document.getElementById('packOverlay').classList.add('hidden'); packState = null; flash("Pack opened!"); } else revealNextCard(); });
 
 function switchCreator(mode) { document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active')); event.target.classList.add('active'); document.getElementById('cardCreator').style.display = mode === 'card' ? 'grid' : 'none'; document.getElementById('itemCreator').style.display = mode === 'item' ? 'grid' : 'none'; }
 const canvas = document.getElementById('drawCanvas'); const ctx = canvas.getContext('2d');
@@ -830,52 +665,13 @@ document.getElementById('saveItemBtn').addEventListener('click', () => {
   document.getElementById('itemName').value = ''; document.getElementById('itemCodename').value = ''; document.getElementById('itemDesc').value = ''; uploadedItemImage = null; document.getElementById('itemImageUpload').value = '';
 });
 
-function importFile(file) {
-  const reader = new FileReader();
-  reader.onload = ev => {
-    try {
-      const data = parseSafe(ev.target.result);
-      if (file.name.endsWith('.crd') && data.codename && data.name && !cards.find(c => c.codename === data.codename)) { cards.push(data); }
-      else if (file.name.endsWith('.itm') && data.codename && data.name && !items.find(i => i.codename === data.codename)) { items.push(data); }
-      saveData(); renderCollection();
-    } catch(err) { console.error("Bad file:", file.name, err); }
-  };
-  reader.readAsText(file);
-}
+function importFile(file) { const reader = new FileReader(); reader.onload = ev => { try { const data = parseSafe(ev.target.result); if (file.name.endsWith('.crd') && data.codename && data.name && !cards.find(c => c.codename === data.codename)) { cards.push(data); } else if (file.name.endsWith('.itm') && data.codename && data.name && !items.find(i => i.codename === data.codename)) { items.push(data); } saveData(); renderCollection(); } catch(err) { console.error("Bad file:", file.name, err); } }; reader.readAsText(file); }
 document.getElementById('crdFileInput').addEventListener('change', e => { Array.from(e.target.files).forEach(importFile); showToast('📁', 'Files loaded!'); e.target.value = ''; });
 const dropZone = document.getElementById('crdDropZone');
-if (dropZone) {
-  dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = 'var(--accent)'; });
-  dropZone.addEventListener('dragleave', () => dropZone.style.borderColor = 'rgba(0,217,255,0.4)');
-  dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.style.borderColor = 'rgba(0,217,255,0.4)'; Array.from(e.dataTransfer.files).forEach(importFile); showToast('📁', 'Files dropped!'); });
-}
-document.getElementById('saveDatBtn').addEventListener('click', () => {
-  const saveData = { collection, itemCollection, username, aura, freePackAvailable, timestamp: new Date().toISOString() };
-  const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(saveData, null, 2));
-  const a = document.createElement('a'); a.href = dataStr; a.download = "pstcg_save.dat"; a.click(); showToast('💾', 'Save downloaded!');
-});
-document.getElementById('loadDatInput').addEventListener('change', e => {
-  const file = e.target.files[0]; if (!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    try {
-      const data = parseSafe(ev.target.result);
-      if (data.collection) collection = data.collection;
-      if (data.itemCollection) itemCollection = data.itemCollection;
-      if (data.username) { username = data.username; document.getElementById('usernameInput').value = username; checkAdmin(); }
-      if (data.aura !== undefined) aura = data.aura;
-      if (data.freePackAvailable !== undefined) freePackAvailable = data.freePackAvailable;
-      saveData(); renderCollection(); updateAuraUI(); showToast('💾', 'Save loaded!');
-    } catch(err) { showToast('⚠️', 'Invalid .dat file!'); }
-  };
-  reader.readAsText(file); e.target.value = '';
-});
-document.getElementById('wipeBtn').addEventListener('click', () => {
-  if (!confirm("Erase ALL data?")) return;
-  localStorage.clear(); cards = []; items = []; collection = {}; itemCollection = {};
-  aura = 50; freePackAvailable = true; unlockedKris = false; unlockedRouring = false;
-  saveData(); renderCollection(); updateAuraUI(); showToast('🗑️', 'Erased!');
-});
+if (dropZone) { dropZone.addEventListener('dragover', e => { e.preventDefault(); dropZone.style.borderColor = 'var(--accent)'; }); dropZone.addEventListener('dragleave', () => dropZone.style.borderColor = 'rgba(0,217,255,0.4)'); dropZone.addEventListener('drop', e => { e.preventDefault(); dropZone.style.borderColor = 'rgba(0,217,255,0.4)'; Array.from(e.dataTransfer.files).forEach(importFile); showToast('📁', 'Files dropped!'); }); }
+document.getElementById('saveDatBtn').addEventListener('click', () => { const saveData = { collection, itemCollection, username, aura, freePackAvailable, timestamp: new Date().toISOString() }; const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(saveData, null, 2)); const a = document.createElement('a'); a.href = dataStr; a.download = "pstcg_save.dat"; a.click(); showToast('💾', 'Save downloaded!'); });
+document.getElementById('loadDatInput').addEventListener('change', e => { const file = e.target.files[0]; if (!file) return; const reader = new FileReader(); reader.onload = ev => { try { const data = parseSafe(ev.target.result); if (data.collection) collection = data.collection; if (data.itemCollection) itemCollection = data.itemCollection; if (data.username) { username = data.username; document.getElementById('usernameInput').value = username; checkAdmin(); } if (data.aura !== undefined) aura = data.aura; if (data.freePackAvailable !== undefined) freePackAvailable = data.freePackAvailable; saveData(); renderCollection(); updateAuraUI(); showToast('💾', 'Save loaded!'); } catch(err) { showToast('⚠️', 'Invalid .dat!'); } }; reader.readAsText(file); e.target.value = ''; });
+document.getElementById('wipeBtn').addEventListener('click', () => { if (!confirm("Erase ALL data?")) return; localStorage.clear(); cards = []; items = []; collection = {}; itemCollection = {}; aura = 50; freePackAvailable = true; unlockedKris = false; unlockedRouring = false; saveData(); renderCollection(); updateAuraUI(); showToast('🗑️', 'Erased!'); });
 
 // ================================================================
 // BATTLE
@@ -883,7 +679,7 @@ document.getElementById('wipeBtn').addEventListener('click', () => {
 function makeBattleCard(card) { return { ...card, maxHp: card.hp }; }
 function logBattle(msg) { const log = document.getElementById('battleLog'); const div = document.createElement('div'); div.textContent = '> ' + msg; log.appendChild(div); log.scrollTop = log.scrollHeight; }
 
-// THE FIX: HP bar shows CARD HP
+// HP bar (uses CARD's hp, not separate pool)
 function updateHpBar(id, current, max) {
   const safeMax = Math.max(1, Number(max) || 1);
   const clamped = Math.max(0, Math.min(safeMax, Number(current) || 0));
@@ -891,36 +687,27 @@ function updateHpBar(id, current, max) {
   const bar = document.getElementById(id + 'Bar');
   const barText = document.getElementById(id + 'BarText');
   const hpText = document.getElementById(id + 'Text');
-  if (bar) {
-    bar.style.width = pct + '%';
-    bar.classList.remove('warn', 'danger');
-    if (pct <= 25) bar.classList.add('danger');
-    else if (pct <= 50) bar.classList.add('warn');
-  }
-  const label = clamped + ' / ' + safeMax + ' HP';
+  if (bar) { bar.style.width = pct + '%'; bar.classList.remove('warn', 'danger'); if (pct <= 25) bar.classList.add('danger'); else if (pct <= 50) bar.classList.add('warn'); }
   if (barText) barText.textContent = clamped + ' / ' + safeMax;
-  if (hpText) hpText.textContent = label;
+  if (hpText) hpText.textContent = clamped + ' / ' + safeMax + ' HP';
 }
 
 function updateBattleUI() {
   if (!battleState) return;
   const ps = document.getElementById('playerSlot'), bs = document.getElementById('botSlot');
+  // KEY FIX: pass the card's LIVE hp to makeCardElement
   if (battleState.playerCard) {
     ps.innerHTML = ''; ps.style.borderStyle = 'solid'; ps.style.borderColor = 'var(--accent)'; ps.style.padding = '0';
-    ps.appendChild(makeCardElement(battleState.playerCard));
-  } else { ps.textContent = 'No Active Card'; ps.style.borderStyle = 'dashed'; ps.style.padding = '10px'; }
+    ps.appendChild(makeCardElement(battleState.playerCard, battleState.playerCard.hp));
+  } else { ps.textContent = 'No Active Card'; ps.style.borderStyle = 'dashed'; ps.style.padding = '6px'; }
   if (battleState.botCard) {
     bs.innerHTML = ''; bs.style.borderStyle = 'solid'; bs.style.borderColor = '#ff6b5b'; bs.style.padding = '0';
-    bs.appendChild(makeCardElement(battleState.botCard));
-  } else { bs.textContent = 'No Active Card'; bs.style.borderStyle = 'dashed'; bs.style.padding = '10px'; }
+    bs.appendChild(makeCardElement(battleState.botCard, battleState.botCard.hp));
+  } else { bs.textContent = 'No Active Card'; bs.style.borderStyle = 'dashed'; bs.style.padding = '6px'; }
 
-  // FIX: use the CARD's HP, not the pool HP
-  if (battleState.playerCard) {
-    updateHpBar('playerHP', battleState.playerCard.hp, battleState.playerCard.maxHp);
-  }
-  if (battleState.botCard) {
-    updateHpBar('botHP', battleState.botCard.hp, battleState.botCard.maxHp);
-  }
+  // HP bars use the CARD's hp
+  if (battleState.playerCard) updateHpBar('playerHP', battleState.playerCard.hp, battleState.playerCard.maxHp);
+  if (battleState.botCard) updateHpBar('botHP', battleState.botCard.hp, battleState.botCard.maxHp);
 
   const ind = document.getElementById('turnIndicator');
   if (battleState.over) { ind.textContent = "GAME OVER"; ind.style.color = "var(--gold)"; }
@@ -942,39 +729,21 @@ function updateBattleUI() {
     });
   }
 }
-function playCardFromHand(i) {
-  const card = battleState.playerHand[i]; if (!card) return;
-  battleState.playerCard = makeBattleCard(card); battleState.playerHand.splice(i, 1);
-  logBattle(`You played ${battleState.playerCard.name}!`); updateBattleUI();
-}
+function playCardFromHand(i) { const card = battleState.playerHand[i]; if (!card) return; battleState.playerCard = makeBattleCard(card); battleState.playerHand.splice(i, 1); logBattle(`You played ${battleState.playerCard.name}!`); updateBattleUI(); }
 function doAttackAnimation(attackerSlotId, defenderSlotId, particleEmoji, onImpact) {
-  const attacker = document.getElementById(attackerSlotId);
-  const defender = document.getElementById(defenderSlotId);
+  const attacker = document.getElementById(attackerSlotId); const defender = document.getElementById(defenderSlotId);
   const attackerSide = attackerSlotId === 'playerSlot' ? 'player' : 'bot';
   const defenderSide = defenderSlotId === 'playerSlot' ? 'player' : 'bot';
   attacker.classList.add('attacking-' + attackerSide);
   Sound.attack();
   setTimeout(() => {
-    const aRect = attacker.getBoundingClientRect();
-    const dRect = defender.getBoundingClientRect();
-    const particle = document.createElement('div');
-    particle.className = 'attack-particle';
-    particle.textContent = particleEmoji;
-    particle.style.left = (aRect.left + aRect.width / 2) + 'px';
-    particle.style.top = (aRect.top + aRect.height / 2) + 'px';
-    particle.style.transform = 'translate(-50%, -50%)';
-    document.body.appendChild(particle);
-    requestAnimationFrame(() => {
-      particle.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)';
-      particle.style.left = (dRect.left + dRect.width / 2) + 'px';
-      particle.style.top = (dRect.top + dRect.height / 2) + 'px';
-      particle.style.fontSize = '70px';
-    });
+    const aRect = attacker.getBoundingClientRect(); const dRect = defender.getBoundingClientRect();
+    const particle = document.createElement('div'); particle.className = 'attack-particle'; particle.textContent = particleEmoji;
+    particle.style.left = (aRect.left + aRect.width / 2) + 'px'; particle.style.top = (aRect.top + aRect.height / 2) + 'px';
+    particle.style.transform = 'translate(-50%, -50%)'; document.body.appendChild(particle);
+    requestAnimationFrame(() => { particle.style.transition = 'all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1)'; particle.style.left = (dRect.left + dRect.width / 2) + 'px'; particle.style.top = (dRect.top + dRect.height / 2) + 'px'; particle.style.fontSize = '60px'; });
     setTimeout(() => {
-      particle.remove();
-      defender.classList.add('hit-' + defenderSide);
-      document.body.classList.add('screen-shake');
-      Sound.hit();
+      particle.remove(); defender.classList.add('hit-' + defenderSide); document.body.classList.add('screen-shake'); Sound.hit();
       setTimeout(() => { document.body.classList.remove('screen-shake'); defender.classList.remove('hit-' + defenderSide); }, 400);
       if (onImpact) onImpact();
     }, 420);
@@ -982,16 +751,12 @@ function doAttackAnimation(attackerSlotId, defenderSlotId, particleEmoji, onImpa
   setTimeout(() => { attacker.classList.remove('attacking-' + attackerSide); }, 700);
 }
 function showDamageNumber(slotId, amount) {
-  const slot = document.getElementById(slotId);
-  const rect = slot.getBoundingClientRect();
-  const dmg = document.createElement('div');
-  dmg.className = 'dmg-number';
+  const slot = document.getElementById(slotId); const rect = slot.getBoundingClientRect();
+  const dmg = document.createElement('div'); dmg.className = 'dmg-number';
   dmg.textContent = (amount >= 0 ? '-' : '+') + Math.abs(amount);
-  dmg.style.left = (rect.left + rect.width / 2) + 'px';
-  dmg.style.top = (rect.top + rect.height / 2) + 'px';
+  dmg.style.left = (rect.left + rect.width / 2) + 'px'; dmg.style.top = (rect.top + rect.height / 2) + 'px';
   if (amount < 0) { dmg.style.color = '#2ecc71'; dmg.style.textShadow = '0 0 12px #2ecc71, 3px 3px 5px #000'; }
-  document.body.appendChild(dmg);
-  setTimeout(() => dmg.remove(), 1300);
+  document.body.appendChild(dmg); setTimeout(() => dmg.remove(), 1300);
 }
 
 document.getElementById('startBotBtn').addEventListener('click', () => {
@@ -1000,15 +765,12 @@ document.getElementById('startBotBtn').addEventListener('click', () => {
   const playerDeck = [...cards], botDeck = [...cards];
   battleState = { mode: 'bot', difficulty: selectedDifficulty, difficultyName: diff.name, playerCard: null, botCard: null, playerHand: [], turn: 'player', over: false, playerDeck, botDeck };
 
-  // Player gets their own card
   for (let i = 0; i < 3; i++) if (playerDeck.length > 0) battleState.playerHand.push(playerDeck[Math.floor(Math.random() * playerDeck.length)]);
   battleState.playerCard = makeBattleCard(playerDeck[Math.floor(Math.random() * playerDeck.length)]);
 
-  // Bot card gets HP = difficulty HP
+  // Bot gets its HP = difficulty HP (both hp AND maxHp)
   const botBase = botDeck[Math.floor(Math.random() * botDeck.length)];
-  battleState.botCard = makeBattleCard(botBase);
-  battleState.botCard.hp = diff.hp;
-  battleState.botCard.maxHp = diff.hp;
+  battleState.botCard = { ...botBase, hp: diff.hp, maxHp: diff.hp };
 
   document.getElementById('opponentLabel').textContent = diff.name;
   document.getElementById('opponentLabel').style.color = diff.color;
@@ -1047,11 +809,7 @@ document.getElementById('attackBtn').onclick = () => {
     setTimeout(() => { battleState.turn = 'bot'; updateBattleUI(); setTimeout(botTurn, 900); }, 700);
   });
 };
-document.getElementById('passTurnBtn').onclick = () => {
-  if (!battleState || battleState.over || battleState.turn !== 'player') return;
-  logBattle("You passed.");
-  battleState.turn = 'bot'; updateBattleUI(); setTimeout(botTurn, 900);
-};
+document.getElementById('passTurnBtn').onclick = () => { if (!battleState || battleState.over || battleState.turn !== 'player') return; logBattle("You passed."); battleState.turn = 'bot'; updateBattleUI(); setTimeout(botTurn, 900); };
 document.getElementById('useItemBtn').onclick = () => {
   if (!battleState || battleState.over || battleState.turn !== 'player') return;
   if (items.length === 0) { logBattle("No items!"); return; }
@@ -1069,23 +827,13 @@ function botTurn() {
   const roll = Math.random();
   if (roll < diff.attackChance) { executeBotAttack(diff.attacksPerTurn || 1, diff); }
   else {
-    const peaceful = [
-      () => logBattle("The bot is thinking..."),
-      () => logBattle("The bot plays with its cards."),
-      () => logBattle("The bot looks at you."),
-      () => { if (b) { b.hp = Math.min(b.maxHp, b.hp + 5); logBattle("The bot healed 5 HP."); Sound.heal(); updateBattleUI(); } },
-      () => { if (b) { logBattle("The bot does a little dance."); } }
-    ];
+    const peaceful = [() => logBattle("The bot is thinking..."), () => logBattle("The bot plays with its cards."), () => logBattle("The bot looks at you."), () => { if (b) { b.hp = Math.min(b.maxHp, b.hp + 5); logBattle("The bot healed 5 HP."); Sound.heal(); updateBattleUI(); } }, () => { if (b) { logBattle("The bot does a little dance."); } }];
     peaceful[Math.floor(Math.random() * peaceful.length)]();
-    updateBattleUI();
-    battleState.turn = 'player'; updateBattleUI();
+    updateBattleUI(); battleState.turn = 'player'; updateBattleUI();
   }
 }
 function executeBotAttack(remainingAttacks, diff) {
-  if (!battleState || battleState.over || remainingAttacks <= 0) {
-    if (battleState) { battleState.turn = 'player'; updateBattleUI(); }
-    return;
-  }
+  if (!battleState || battleState.over || remainingAttacks <= 0) { if (battleState) { battleState.turn = 'player'; updateBattleUI(); } return; }
   const attackerCard = battleState.botCard;
   let emoji = '💢';
   if (battleState.difficulty === 'knight') { emoji = ['🦌', '🗡️', '💜', '⛧'][Math.floor(Math.random() * 4)]; Sound.knightAttack(); }
@@ -1093,16 +841,10 @@ function executeBotAttack(remainingAttacks, diff) {
   const dmg = diff.dmg;
   logBattle(`${diff.name}'s ${attackerCard.name} attacks!`);
   doAttackAnimation('botSlot', 'playerSlot', emoji, () => {
-    // BOT attacks PLAYER's CARD
     battleState.playerCard.hp -= dmg;
     showDamageNumber('playerSlot', dmg);
     logBattle(`Your card took ${dmg} damage!`);
-    if (battleState.playerCard.hp <= 0) {
-      logBattle("Your card was defeated...");
-      battleState.over = true;
-      showLoseSequence();
-      return;
-    }
+    if (battleState.playerCard.hp <= 0) { logBattle("Your card was defeated..."); battleState.over = true; showLoseSequence(); return; }
     updateBattleUI();
     if (remainingAttacks > 1) setTimeout(() => executeBotAttack(remainingAttacks - 1, diff), 900);
     else setTimeout(() => { battleState.turn = 'player'; updateBattleUI(); }, 500);
@@ -1120,49 +862,18 @@ function showWinSequence(reward, difficulty) {
   const overlay = document.createElement('div'); overlay.className = 'result-overlay active';
   const textCls = isEpic ? 'result-text win epic-win' : 'result-text win';
   const text = difficulty === 'knight' ? 'KNIGHT SLAIN!' : (isEpic ? 'CRUSHED!' : 'YOU WIN!');
-  overlay.innerHTML = `<div class="${textCls}">${text}</div>`;
-  document.body.appendChild(overlay);
+  overlay.innerHTML = `<div class="${textCls}">${text}</div>`; document.body.appendChild(overlay);
   let sparkleCount = { easy: 30, normal: 60, hard: 100, insane: 180, knight: 300 }[difficulty] || 60;
-  for (let i = 0; i < sparkleCount; i++) {
-    setTimeout(() => {
-      const p = document.createElement('div');
-      if (difficulty === 'knight') p.className = 'particle purple';
-      else if (difficulty === 'insane') p.className = 'particle rainbow';
-      else p.className = 'particle gold';
-      p.style.left = Math.random() * window.innerWidth + 'px';
-      p.style.top = '-20px';
-      p.style.animation = `goldFall ${1.5 + Math.random() * 1.5}s ease-in forwards`;
-      document.body.appendChild(p);
-      setTimeout(() => p.remove(), 3500);
-    }, i * (difficulty === 'knight' ? 8 : 20));
-  }
+  for (let i = 0; i < sparkleCount; i++) { setTimeout(() => { const p = document.createElement('div'); if (difficulty === 'knight') p.className = 'particle purple'; else if (difficulty === 'insane') p.className = 'particle rainbow'; else p.className = 'particle gold'; p.style.left = Math.random() * window.innerWidth + 'px'; p.style.top = '-20px'; p.style.animation = `goldFall ${1.5 + Math.random() * 1.5}s ease-in forwards`; document.body.appendChild(p); setTimeout(() => p.remove(), 3500); }, i * (difficulty === 'knight' ? 8 : 20)); }
   setTimeout(() => {
     Sound.auraGain();
-    const auraFly = document.createElement('div');
-    auraFly.className = 'aura-flyer';
-    auraFly.textContent = '+' + reward + ' AURA';
+    const auraFly = document.createElement('div'); auraFly.className = 'aura-flyer'; auraFly.textContent = '+' + reward + ' AURA';
     if (difficulty === 'knight') { auraFly.style.color = '#a855f7'; auraFly.style.textShadow = '0 0 20px #a855f7, 0 0 40px #7c3aed, 3px 3px 0 #000'; }
-    auraFly.style.left = '50%'; auraFly.style.top = '50%';
-    auraFly.style.transform = 'translate(-50%, -50%) scale(0)';
-    document.body.appendChild(auraFly);
+    auraFly.style.left = '50%'; auraFly.style.top = '50%'; auraFly.style.transform = 'translate(-50%, -50%) scale(0)'; document.body.appendChild(auraFly);
     requestAnimationFrame(() => { auraFly.style.transform = 'translate(-50%, -50%) scale(1.5)'; });
-    setTimeout(() => {
-      const auraDisp = document.getElementById('auraDisplay');
-      const rect = auraDisp.getBoundingClientRect();
-      auraFly.style.transition = 'all 1s cubic-bezier(0.6, -0.3, 0.7, 1)';
-      auraFly.style.left = (rect.left + rect.width / 2) + 'px';
-      auraFly.style.top = (rect.top + rect.height / 2) + 'px';
-      auraFly.style.transform = 'translate(-50%, -50%) scale(0.3)';
-      auraFly.style.opacity = '0';
-      setTimeout(() => { auraFly.remove(); auraDisp.classList.add('pulse'); setTimeout(() => auraDisp.classList.remove('pulse'), 800); }, 1000);
-    }, 800);
+    setTimeout(() => { const auraDisp = document.getElementById('auraDisplay'); const rect = auraDisp.getBoundingClientRect(); auraFly.style.transition = 'all 1s cubic-bezier(0.6, -0.3, 0.7, 1)'; auraFly.style.left = (rect.left + rect.width / 2) + 'px'; auraFly.style.top = (rect.top + rect.height / 2) + 'px'; auraFly.style.transform = 'translate(-50%, -50%) scale(0.3)'; auraFly.style.opacity = '0'; setTimeout(() => { auraFly.remove(); auraDisp.classList.add('pulse'); setTimeout(() => auraDisp.classList.remove('pulse'), 800); }, 1000); }, 800);
   }, 800);
-  setTimeout(() => {
-    overlay.remove();
-    document.getElementById('battleSetup').classList.remove('hidden');
-    document.getElementById('battleArena').classList.add('hidden');
-    battleState = null;
-  }, isEpic ? 5000 : 4000);
+  setTimeout(() => { overlay.remove(); document.getElementById('battleSetup').classList.remove('hidden'); document.getElementById('battleArena').classList.add('hidden'); battleState = null; }, isEpic ? 5000 : 4000);
 }
 function showLoseSequence() {
   updateBattleUI();
@@ -1170,9 +881,7 @@ function showLoseSequence() {
   flashEl.style.background = 'linear-gradient(45deg, #7c3aed, #b066d9, #4c1d95)';
   flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash');
   Sound.defeat();
-  const overlay = document.createElement('div'); overlay.className = 'result-overlay active';
-  overlay.innerHTML = '<div class="result-text lose">YOU LOST</div>';
-  document.body.appendChild(overlay);
+  const overlay = document.createElement('div'); overlay.className = 'result-overlay active'; overlay.innerHTML = '<div class="result-text lose">YOU LOST</div>'; document.body.appendChild(overlay);
   for (let i = 0; i < 80; i++) { setTimeout(() => { const p = document.createElement('div'); p.className = 'particle purple'; p.style.left = Math.random() * window.innerWidth + 'px'; p.style.top = '-20px'; p.style.animation = `goldFall ${2 + Math.random() * 2}s ease-in forwards`; document.body.appendChild(p); setTimeout(() => p.remove(), 4000); }, i * 30); }
   setTimeout(() => { overlay.remove(); document.getElementById('battleSetup').classList.remove('hidden'); document.getElementById('battleArena').classList.add('hidden'); battleState = null; }, 4000);
 }
@@ -1184,21 +893,10 @@ function initPeer() {
   if (peer) return;
   peer = new Peer('PSTCG-' + Math.floor(1000 + Math.random() * 9000), { debug: 2 });
   peer.on('open', id => { document.getElementById('mpStatus').textContent = "Hosting! Code: " + id; flash("Share code: " + id); });
-  peer.on('connection', connection => {
-    conn = connection; document.getElementById('mpStatus').textContent = "Player connected!"; logBattle("Opponent connected!");
-    conn.on('data', data => handleNetworkData(data));
-    conn.on('close', () => { logBattle("Opponent disconnected."); if (battleState) battleState.over = true; updateBattleUI(); });
-  });
+  peer.on('connection', connection => { conn = connection; document.getElementById('mpStatus').textContent = "Player connected!"; logBattle("Opponent connected!"); conn.on('data', data => handleNetworkData(data)); conn.on('close', () => { logBattle("Opponent disconnected."); if (battleState) battleState.over = true; updateBattleUI(); }); });
 }
 document.getElementById('hostBtn').addEventListener('click', () => { if (cards.length === 0) { showToast('⚠️', 'Create cards first!'); return; } initPeer(); document.getElementById('mpStatus').textContent = "Starting host..."; });
-document.getElementById('joinBtn').addEventListener('click', () => {
-  const code = document.getElementById('joinCodeInput').value.trim();
-  if (!code) { showToast('⚠️', 'Enter host code!'); return; }
-  if (cards.length === 0) { showToast('⚠️', 'Create cards first!'); return; }
-  initPeer(); conn = peer.connect(code);
-  conn.on('open', () => { document.getElementById('mpStatus').textContent = "Syncing..."; conn.send({ type: 'SYNC', cards }); });
-  conn.on('data', data => handleNetworkData(data));
-});
+document.getElementById('joinBtn').addEventListener('click', () => { const code = document.getElementById('joinCodeInput').value.trim(); if (!code) { showToast('⚠️', 'Enter host code!'); return; } if (cards.length === 0) { showToast('⚠️', 'Create cards first!'); return; } initPeer(); conn = peer.connect(code); conn.on('open', () => { document.getElementById('mpStatus').textContent = "Syncing..."; conn.send({ type: 'SYNC', cards }); }); conn.on('data', data => handleNetworkData(data)); });
 function handleNetworkData(data) {
   if (data.type === 'SYNC') { cards = data.cards; saveData(); renderCollection(); conn.send({ type: 'SYNC_ACK', cards }); startMultiplayerBattle(true); }
   else if (data.type === 'SYNC_ACK') { cards = data.cards; saveData(); renderCollection(); startMultiplayerBattle(false); }
@@ -1228,14 +926,7 @@ function applyNetworkMove(data) {
     });
   }
 }
-document.getElementById('leaveBattleBtn').addEventListener('click', () => {
-  if (conn) { conn.close(); conn = null; }
-  if (peer) { peer.destroy(); peer = null; }
-  battleState = null;
-  document.getElementById('battleSetup').classList.remove('hidden');
-  document.getElementById('battleArena').classList.add('hidden');
-  document.getElementById('mpStatus').textContent = ""; flash("Left battle");
-});
+document.getElementById('leaveBattleBtn').addEventListener('click', () => { if (conn) { conn.close(); conn = null; } if (peer) { peer.destroy(); peer = null; } battleState = null; document.getElementById('battleSetup').classList.remove('hidden'); document.getElementById('battleArena').classList.add('hidden'); document.getElementById('mpStatus').textContent = ""; flash("Left battle"); });
 
 setLanguage(currentLang);
 document.getElementById('langSelect').value = currentLang;
