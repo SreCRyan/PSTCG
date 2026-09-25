@@ -68,31 +68,31 @@
   .card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(138px, 1fr)); gap: 18px 14px; padding: 12px 0; justify-items: center; }
   .glass-panel { background: var(--glass); border: 1px solid var(--glass-border); border-radius: 14px; padding: 14px; backdrop-filter: blur(10px); }
 
-  #battle.active { display: flex; flex-direction: column; height: calc(100vh - 104px); overflow: hidden; padding: 8px 18px; }
+  #battle.active { display: flex; flex-direction: column; height: calc(100vh - 104px); overflow: hidden; padding: 4px 12px; }
   #battleSetup { overflow-y: auto; flex: 1; }
-  #battleArena { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 8px; }
+  #battleArena { display: flex; flex-direction: column; flex: 1; min-height: 0; gap: 4px; }
   #battleArena.hidden { display: none !important; }
   #battleSetup.hidden { display: none !important; }
 
-  .fighter-block { display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0; }
-  .fighter-row { display: flex; align-items: center; gap: 20px; justify-content: center; width: 100%; }
+  .fighter-block { display: flex; flex-direction: column; align-items: center; gap: 3px; flex-shrink: 0; }
+  .fighter-row { display: flex; align-items: center; gap: 12px; justify-content: center; width: 100%; }
 
   .battle-slot {
-    width: 150px; height: 205px;
+    width: 105px; height: 155px;
     border: 2px dashed rgba(0,217,255,0.3);
-    border-radius: 12px;
+    border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
-    color: rgba(0,217,255,0.5); font-size: 12px; text-align: center;
-    padding: 6px; background: rgba(0,0,0,0.2);
+    color: rgba(0,217,255,0.5); font-size: 10px; text-align: center;
+    padding: 4px; background: rgba(0,0,0,0.2);
     position: relative; transition: all 0.3s;
     flex-shrink: 0;
   }
-  .battle-slot .card { width: 100% !important; padding: 6px; font-size: 10px; }
-  .battle-slot .card .card-img { font-size: 34px; margin-bottom: 4px; }
-  .battle-slot .card .card-name { font-size: 11px; margin-bottom: 3px; }
-  .battle-slot .card .card-stats { font-size: 9px; padding: 3px 5px; margin-bottom: 3px; }
-  .battle-slot .card .card-attack { font-size: 9px; padding: 3px 5px; }
-  .battle-slot .card .card-drop { font-size: 8px; padding: 2px 6px; }
+  .battle-slot .card { width: 100% !important; padding: 4px; font-size: 8px; }
+  .battle-slot .card .card-img { font-size: 20px; margin-bottom: 2px; }
+  .battle-slot .card .card-name { font-size: 9px; margin-bottom: 2px; }
+  .battle-slot .card .card-stats { font-size: 8px; padding: 2px 4px; margin-bottom: 2px; }
+  .battle-slot .card .card-attack { font-size: 8px; padding: 2px 4px; }
+  .battle-slot .card .card-drop { font-size: 7px; padding: 1px 5px; }
 
   .battle-slot.attacking-player { animation: playerLunge 0.6s ease; z-index: 10; }
   @keyframes playerLunge { 0% { transform: translateY(0); } 40% { transform: translateY(-50px) scale(1.15); } 60% { transform: translateY(-50px) scale(1.15); } 100% { transform: translateY(0); } }
@@ -103,12 +103,12 @@
   .battle-slot.hit-bot { animation: botHit 0.4s ease; }
   @keyframes botHit { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(12px); filter: brightness(2.5); } 40% { transform: translateX(-12px); filter: brightness(2.5); } 60% { transform: translateX(6px); } 80% { transform: translateX(-6px); } }
 
-  .hp-bar-wrap { position: relative; width: 300px; max-width: 90%; height: 22px; background: rgba(0,0,0,0.7); border-radius: 11px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 2px 6px rgba(0,0,0,0.8); }
+  .hp-bar-wrap { position: relative; width: 200px; max-width: 90%; height: 15px; background: rgba(0,0,0,0.7); border-radius: 8px; overflow: hidden; border: 1px solid rgba(255,255,255,0.15); box-shadow: inset 0 2px 6px rgba(0,0,0,0.8); }
   .hp-bar-fill { height: 100%; width: 100%; background: linear-gradient(90deg, #2ecc71, #27ae60); transition: width 0.5s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s; box-shadow: 0 0 12px rgba(46,204,113,0.6); }
   .hp-bar-fill.warn { background: linear-gradient(90deg, #f39c12, #e67e22); }
   .hp-bar-fill.danger { background: linear-gradient(90deg, #e74c3c, #c0392b); animation: hpDanger 0.3s infinite; }
   @keyframes hpDanger { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.8); } }
-  .hp-bar-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; z-index: 2; letter-spacing: 1px; }
+  .hp-bar-text { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; color: #fff; text-shadow: 1px 1px 3px #000; z-index: 2; letter-spacing: 1px; }
 
   .dmg-number { position: fixed; font-size: 32px; font-weight: 900; color: #ff4444; text-shadow: 0 0 14px #ff0000, 3px 3px 5px #000; pointer-events: none; z-index: 100; animation: dmgFloat 1.3s ease forwards; }
   @keyframes dmgFloat { 0% { transform: translate(-50%, 0) scale(0.5); opacity: 0; } 20% { transform: translate(-50%, -35px) scale(1.6); opacity: 1; } 100% { transform: translate(-50%, -110px) scale(1); opacity: 0; } }
@@ -128,17 +128,17 @@
   .diff-btn[data-diff="knight"] { color: #a855f7; border-color: #a855f7; font-family: 'Courier New', monospace; font-weight: 900; }
   .diff-btn[data-diff="knight"]:hover, .diff-btn[data-diff="knight"].selected { background: #a855f7; color: #fff; box-shadow: 0 0 25px #a855f7, 0 0 50px #7c3aed; }
 
-  .battle-log-compact { background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: 8px; padding: 6px 10px; font-size: 11px; height: 60px; overflow-y: auto; color: #a9cce3; font-family: 'Consolas', monospace; flex-shrink: 0; }
-  .hand-cards { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; padding: 4px 0; min-height: 155px; flex-shrink: 0; }
-  .hand-cards .card { width: 110px; padding: 5px; font-size: 10px; }
-  .hand-cards .card .card-img { font-size: 26px; margin-bottom: 3px; }
-  .hand-cards .card .card-name { font-size: 10px; margin-bottom: 3px; }
-  .hand-cards .card .card-stats { font-size: 9px; padding: 2px 4px; margin-bottom: 3px; }
-  .hand-cards .card .card-attack { font-size: 9px; padding: 3px 5px; }
-  .hand-cards .card .card-drop { font-size: 8px; padding: 2px 5px; }
+  .battle-log-compact { background: rgba(0,0,0,0.5); border: 1px solid var(--glass-border); border-radius: 6px; padding: 3px 7px; font-size: 9px; height: 34px; overflow-y: auto; color: #a9cce3; font-family: 'Consolas', monospace; flex-shrink: 0; }
+  .hand-cards { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; padding: 2px 0; min-height: 100px; flex-shrink: 0; }
+  .hand-cards .card { width: 72px; padding: 3px; font-size: 8px; }
+  .hand-cards .card .card-img { font-size: 16px; margin-bottom: 2px; }
+  .hand-cards .card .card-name { font-size: 8px; margin-bottom: 2px; }
+  .hand-cards .card .card-stats { font-size: 7px; padding: 1px 3px; margin-bottom: 2px; }
+  .hand-cards .card .card-attack { font-size: 7px; padding: 1px 3px; }
+  .hand-cards .card .card-drop { font-size: 6px; padding: 1px 3px; }
 
-  .action-row { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; padding: 8px 0; flex-shrink: 0; }
-  .action-row button { padding: 12px 26px; font-size: 14px; letter-spacing: 2px; }
+  .action-row { display: flex; gap: 6px; justify-content: center; flex-wrap: wrap; padding: 4px 0; flex-shrink: 0; }
+  .action-row button { padding: 7px 16px; font-size: 11px; letter-spacing: 1px; }
 
   .result-overlay { position: fixed; inset: 0; z-index: 1500; display: flex; align-items: center; justify-content: center; pointer-events: none; }
   .result-overlay.active { pointer-events: auto; background: rgba(0,0,0,0.55); backdrop-filter: blur(4px); }
@@ -260,12 +260,12 @@
   </div>
 
   <div id="battleArena" class="hidden">
-    <div style="text-align:center; font-size:14px; font-weight:bold; color:var(--gold); letter-spacing:3px; flex-shrink:0;" id="turnIndicator">WAITING...</div>
+    <div style="text-align:center; font-size:12px; font-weight:bold; color:var(--gold); letter-spacing:3px; flex-shrink:0;" id="turnIndicator">WAITING...</div>
 
-    <div id="battleField" class="glass-panel" style="flex:1; min-height:0; display:flex; flex-direction:column; gap:8px; padding:14px; overflow-y:auto; justify-content:flex-start;">
+    <div id="battleField" class="glass-panel" style="flex:1; min-height:0; display:flex; flex-direction:column; gap:4px; padding:8px; overflow-y:auto; justify-content:flex-start;">
 
       <div class="fighter-block">
-        <div style="color:#ff6b5b; font-weight:bold; font-size:14px; letter-spacing:2px;" id="opponentLabel">OPPONENT</div>
+        <div style="color:#ff6b5b; font-weight:bold; font-size:12px; letter-spacing:2px;" id="opponentLabel">OPPONENT</div>
         <div class="fighter-row">
           <div class="battle-slot" id="botSlot">No Active Card</div>
         </div>
@@ -279,11 +279,11 @@
           <div class="battle-slot" id="playerSlot">No Active Card</div>
         </div>
         <div class="hp-bar-wrap"><div class="hp-bar-fill" id="playerHPBar"></div><div class="hp-bar-text" id="playerHPText">-- / -- HP</div></div>
-        <div style="color:var(--accent); font-weight:bold; font-size:14px; letter-spacing:2px;">YOU</div>
+        <div style="color:var(--accent); font-weight:bold; font-size:12px; letter-spacing:2px;">YOU</div>
       </div>
     </div>
 
-    <div style="text-align:center; margin-top:6px; color:var(--text-dim); font-size:11px; letter-spacing:2px; flex-shrink:0;">YOUR HAND</div>
+    <div style="text-align:center; margin-top:2px; color:var(--text-dim); font-size:10px; letter-spacing:2px; flex-shrink:0;">YOUR HAND</div>
     <div class="hand-cards" id="playerHand"></div>
 
     <div class="action-row">
@@ -713,13 +713,13 @@ function updateBattleUI() {
   if (!battleState) return;
   const ps = document.getElementById('playerSlot'), bs = document.getElementById('botSlot');
   if (battleState.playerCard) {
-    ps.innerHTML = ''; ps.style.borderStyle = 'solid'; ps.style.borderColor = 'var(--accent)'; ps.style.padding = '6px';
+    ps.innerHTML = ''; ps.style.borderStyle = 'solid'; ps.style.borderColor = 'var(--accent)'; ps.style.padding = '4px';
     ps.appendChild(makeCardElement(battleState.playerCard, battleState.playerCard.hp));
-  } else { ps.textContent = 'No Active Card'; ps.style.borderStyle = 'dashed'; ps.style.padding = '10px'; }
+  } else { ps.textContent = 'No Active Card'; ps.style.borderStyle = 'dashed'; ps.style.padding = '8px'; }
   if (battleState.botCard) {
-    bs.innerHTML = ''; bs.style.borderStyle = 'solid'; bs.style.borderColor = '#ff6b5b'; bs.style.padding = '6px';
+    bs.innerHTML = ''; bs.style.borderStyle = 'solid'; bs.style.borderColor = '#ff6b5b'; bs.style.padding = '4px';
     bs.appendChild(makeCardElement(battleState.botCard, battleState.botCard.hp));
-  } else { bs.textContent = 'No Active Card'; bs.style.borderStyle = 'dashed'; bs.style.padding = '10px'; }
+  } else { bs.textContent = 'No Active Card'; bs.style.borderStyle = 'dashed'; bs.style.padding = '8px'; }
 
   if (battleState.playerCard) updateHpBar('playerHP', battleState.playerCard.hp, battleState.playerCard.maxHp);
   if (battleState.botCard) updateHpBar('botHP', battleState.botCard.hp, battleState.botCard.maxHp);
