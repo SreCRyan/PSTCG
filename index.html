@@ -1239,4 +1239,121 @@ function executeBotAttack(remainingAttacks, diff) {
     if (battleState.playerCard.hp <= 0) { logBattle("Your card was defeated..."); battleState.over = true; showLoseSequence(); return; }
     battleState.botCombo++;
     updateBattleUI();
-    if (remainingAttacks
+    if (remainingAttacks > 1) setTimeout(() => executeBotAttack(remainingAttacks - 1, diff), 900);
+    else setTimeout(() => { battleState.turn = 'player'; updateBattleUI(); }, 500);
+  });
+}
+function showWinSequence(reward, difficulty) {
+  updateBattleUI();
+  document.body.classList.remove('ult-ready');
+  const isEpic = difficulty === 'hard' || difficulty === 'knight';
+  const flashEl = document.getElementById('screenFlash');
+  if (difficulty === 'knight') flashEl.style.background = 'linear-gradient(45deg, #a855f7, #fff, #4c1d95, #fff, #a855f7)';
+  else if (difficulty === 'hard') flashEl.style.background = 'linear-gradient(45deg, #ff0000, #fff, #ff6600)';
+  else flashEl.style.background = 'linear-gradient(45deg, #ffdd44, #fff, #ffaa00)';
+  flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash');
+  Sound.victory();
+  showCallout('VICTORY!', '#ffdd44');
+  for (let i = 0; i < 200; i++) {
+    setTimeout(() => {
+      const c = document.createElement('div');
+      c.textContent = '💰';
+      c.style.cssText = `position:fixed; left:${Math.random()*100}vw; top:-40px; font-size:${20+Math.random()*20}px; pointer-events:none; z-index:1700;`;
+      document.body.appendChild(c);
+      c.animate([
+        { transform: `translateY(0) rotate(0deg)` },
+        { transform: `translateY(${window.innerHeight + 100}px) rotate(${720 + Math.random()*720}deg)` }
+      ], { duration: 1500 + Math.random()*1500, easing: 'ease-in' });
+      setTimeout(() => c.remove(), 3200);
+    }, i * 15);
+  }
+  const overlay = document.createElement('div'); overlay.className = 'result-overlay active';
+  const textCls = isEpic ? 'result-text win epic-win' : 'result-text win';
+  const text = difficulty === 'knight' ? 'KNIGHT SLAIN!' : (isEpic ? 'CRUSHED!' : 'YOU WIN!');
+  overlay.innerHTML = `<div class="${textCls}">${text}</div>`; document.body.appendChild(overlay);
+  let sparkleCount = { gogogaga: 30, easy: 60, normal: 100, hard: 180, knight: 300 }[difficulty] || 60;
+  for (let i = 0; i < sparkleCount; i++) { setTimeout(() => { const p = document.createElement('div'); if (difficulty === 'knight') p.className = 'particle purple'; else if (difficulty === 'hard') p.className = 'particle rainbow'; else p.className = 'particle gold'; p.style.left = Math.random() * window.innerWidth + 'px'; p.style.top = '-20px'; p.style.animation = `goldFall ${1.5 + Math.random() * 1.5}s ease-in forwards`; document.body.appendChild(p); setTimeout(() => p.remove(), 3500); }, i * (difficulty === 'knight' ? 8 : 20)); }
+  setTimeout(() => {
+    Sound.auraGain();
+    const auraFly = document.createElement('div'); auraFly.className = 'aura-flyer'; auraFly.textContent = '+' + reward + ' AURA';
+    if (difficulty === 'knight') { auraFly.style.color = '#a855f7'; auraFly.style.textShadow = '0 0 20px #a855f7, 0 0 40px #7c3aed, 3px 3px 0 #000'; }
+    auraFly.style.left = '50%'; auraFly.style.top = '50%'; auraFly.style.transform = 'translate(-50%, -50%) scale(0)'; document.body.appendChild(auraFly);
+    requestAnimationFrame(() => { auraFly.style.transform = 'translate(-50%, -50%) scale(1.5)'; });
+    setTimeout(() => { const auraDisp = document.getElementById('auraDisplay'); const rect = auraDisp.getBoundingClientRect(); auraFly.style.transition = 'all 1s cubic-bezier(0.6, -0.3, 0.7, 1)'; auraFly.style.left = (rect.left + rect.width / 2) + 'px'; auraFly.style.top = (rect.top + rect.height / 2) + 'px'; auraFly.style.transform = 'translate(-50%, -50%) scale(0.3)'; auraFly.style.opacity = '0'; setTimeout(() => { auraFly.remove(); auraDisp.classList.add('pulse'); setTimeout(() => auraDisp.classList.remove('pulse'), 800); }, 1000); }, 800);
+  }, 800);
+  setTimeout(() => { overlay.remove(); document.getElementById('battleSetup').classList.remove('hidden'); document.getElementById('battleArena').classList.add('hidden'); battleState = null; }, isEpic ? 5000 : 4000);
+}
+function showLoseSequence() {
+  updateBattleUI();
+  document.body.classList.remove('ult-ready');
+  const flashEl = document.getElementById('screenFlash');
+  flashEl.style.background = 'linear-gradient(45deg, #7c3aed, #b066d9, #4c1d95)';
+  flashEl.classList.remove('flash'); void flashEl.offsetWidth; flashEl.classList.add('flash');
+  Sound.defeat();
+  const overlay = document.createElement('div'); overlay.className = 'result-overlay active'; overlay.innerHTML = '<div class="result-text lose">YOU LOST</div>'; document.body.appendChild(overlay);
+  for (let i = 0; i < 80; i++) { setTimeout(() => { const p = document.createElement('div'); p.className = 'particle purple'; p.style.left = Math.random() * window.innerWidth + 'px'; p.style.top = '-20px'; p.style.animation = `goldFall ${2 + Math.random() * 2}s ease-in forwards`; document.body.appendChild(p); setTimeout(() => p.remove(), 4000); }, i * 30); }
+  setTimeout(() => { overlay.remove(); document.getElementById('battleSetup').classList.remove('hidden'); document.getElementById('battleArena').classList.add('hidden'); battleState = null; }, 4000);
+}
+const styleEl = document.createElement('style');
+styleEl.textContent = `@keyframes goldFall { 0% { transform: translateY(0) rotate(0); opacity: 1; } 100% { transform: translateY(${window.innerHeight + 100}px) rotate(720deg); opacity: 0.3; } }`;
+document.head.appendChild(styleEl);
+
+function initPeer() {
+  if (peer) return;
+  peer = new Peer('PSTCG-' + Math.floor(1000 + Math.random() * 9000), { debug: 2 });
+  peer.on('open', id => { document.getElementById('mpStatus').textContent = "Hosting! Code: " + id; flash("Share code: " + id); });
+  peer.on('connection', connection => { conn = connection; document.getElementById('mpStatus').textContent = "Player connected!"; logBattle("Opponent connected!"); conn.on('data', data => handleNetworkData(data)); conn.on('close', () => { logBattle("Opponent disconnected."); if (battleState) battleState.over = true; updateBattleUI(); }); });
+}
+document.getElementById('hostBtn').addEventListener('click', () => { if (cards.length === 0) { showToast('⚠️', 'Create cards first!'); return; } initPeer(); document.getElementById('mpStatus').textContent = "Starting host..."; });
+document.getElementById('joinBtn').addEventListener('click', () => { const code = document.getElementById('joinCodeInput').value.trim(); if (!code) { showToast('⚠️', 'Enter host code!'); return; } if (cards.length === 0) { showToast('⚠️', 'Create cards first!'); return; } initPeer(); conn = peer.connect(code); conn.on('open', () => { document.getElementById('mpStatus').textContent = "Syncing..."; conn.send({ type: 'SYNC', cards }); }); conn.on('data', data => handleNetworkData(data)); });
+function handleNetworkData(data) {
+  if (data.type === 'SYNC') { cards = data.cards; saveData(); renderCollection(); conn.send({ type: 'SYNC_ACK', cards }); startMultiplayerBattle(true); }
+  else if (data.type === 'SYNC_ACK') { cards = data.cards; saveData(); renderCollection(); startMultiplayerBattle(false); }
+  else if (data.type === 'MOVE') { applyNetworkMove(data); }
+}
+function startMultiplayerBattle(isHost) {
+  battleState = {
+    mode: 'multiplayer', isHost, playerCard: null, botCard: null,
+    playerHand: [], turn: isHost ? 'player' : 'bot', over: false,
+    difficulty: 'normal', difficultyName: 'PLAYER',
+    itemsAvailable: { ...itemCollection },
+    playerUlt: 0, botUlt: 0,
+    playerShield: false, botShield: false,
+    playerCombo: 0, botCombo: 0
+  };
+  for (let i = 0; i < 3; i++) battleState.playerHand.push(cards[Math.floor(Math.random() * cards.length)]);
+  battleState.playerCard = makeBattleCard(cards[Math.floor(Math.random() * cards.length)]);
+  battleState.botCard = makeBattleCard(cards[Math.floor(Math.random() * cards.length)]);
+  document.getElementById('opponentLabel').textContent = 'PLAYER';
+  document.getElementById('opponentLabel').style.color = '#ff6b5b';
+  document.getElementById('battleSetup').classList.add('hidden');
+  document.getElementById('battleArena').classList.remove('hidden');
+  document.getElementById('battleLog').innerHTML = '';
+  logBattle("Multiplayer battle started!"); updateBattleUI();
+}
+function applyNetworkMove(data) {
+  if (data.action === 'ATTACK') {
+    doAttackAnimation('botSlot', 'playerSlot', '💥', () => {
+      battleState.playerCard.hp -= data.damage;
+      showDamageNumber('playerSlot', data.damage, false, false, false);
+      logBattle(`Opponent attacked for ${data.damage}!`);
+      if (battleState.playerCard.hp <= 0) { battleState.over = true; showLoseSequence(); return; }
+      else { battleState.turn = 'player'; }
+      updateBattleUI();
+    });
+  }
+}
+document.getElementById('leaveBattleBtn').addEventListener('click', () => { if (conn) { conn.close(); conn = null; } if (peer) { peer.destroy(); peer = null; } battleState = null; document.body.classList.remove('ult-ready'); document.getElementById('battleSetup').classList.remove('hidden'); document.getElementById('battleArena').classList.add('hidden'); document.getElementById('mpStatus').textContent = ""; flash("Left battle"); });
+
+setLanguage(currentLang);
+document.getElementById('langSelect').value = currentLang;
+loadData();
+renderCollection();
+checkAdmin();
+updateAuraUI();
+loadRemoteData();
+unlockOnFirstInteraction();
+console.log("PSTCG loaded. Cards:", cards.length, "Items:", items.length, "Aura:", aura);
+</script>
+</body>
+</html>
