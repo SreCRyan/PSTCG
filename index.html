@@ -74,7 +74,7 @@
   #battleArena.hidden { display: none !important; }
   #battleSetup.hidden { display: none !important; }
 
-  .fighter-block { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+  .fighter-block { display: flex; flex-direction: column; align-items: center; gap: 8px; flex-shrink: 0; }
   .fighter-row { display: flex; align-items: center; gap: 20px; justify-content: center; width: 100%; }
 
   .battle-slot {
@@ -260,9 +260,9 @@
   </div>
 
   <div id="battleArena" class="hidden">
-    <div style="text-align:center; font-size:14px; font-weight:bold; color:var(--gold); letter-spacing:3px;" id="turnIndicator">WAITING...</div>
+    <div style="text-align:center; font-size:14px; font-weight:bold; color:var(--gold); letter-spacing:3px; flex-shrink:0;" id="turnIndicator">WAITING...</div>
 
-    <div id="battleField" class="glass-panel" style="flex:1; min-height:0; display:flex; flex-direction:column; gap:8px; padding:14px; overflow:hidden; justify-content:space-between;">
+    <div id="battleField" class="glass-panel" style="flex:1; min-height:0; display:flex; flex-direction:column; gap:8px; padding:14px; overflow-y:auto; justify-content:flex-start;">
 
       <div class="fighter-block">
         <div style="color:#ff6b5b; font-weight:bold; font-size:14px; letter-spacing:2px;" id="opponentLabel">OPPONENT</div>
@@ -283,7 +283,7 @@
       </div>
     </div>
 
-    <div style="text-align:center; margin-top:6px; color:var(--text-dim); font-size:11px; letter-spacing:2px;">YOUR HAND</div>
+    <div style="text-align:center; margin-top:6px; color:var(--text-dim); font-size:11px; letter-spacing:2px; flex-shrink:0;">YOUR HAND</div>
     <div class="hand-cards" id="playerHand"></div>
 
     <div class="action-row">
@@ -733,7 +733,6 @@ function updateBattleUI() {
   document.getElementById('attackBtn').disabled = !canAct;
   document.getElementById('passTurnBtn').disabled = !canAct;
 
-  // === ITEM BUTTON: shows remaining count for THIS battle ===
   const totalItemsLeft = battleState.itemsAvailable ? Object.values(battleState.itemsAvailable).reduce((a, b) => a + b, 0) : 0;
   const itemBtn = document.getElementById('useItemBtn');
   itemBtn.disabled = !canAct || totalItemsLeft === 0;
@@ -787,7 +786,6 @@ document.getElementById('startBotBtn').addEventListener('click', () => {
     mode: 'bot', difficulty: selectedDifficulty, difficultyName: diff.name,
     playerCard: null, botCard: null, playerHand: [], turn: 'player', over: false,
     playerDeck, botDeck,
-    // === BATTLE ITEM BAG: snapshot of your items, used up per-battle ===
     itemsAvailable: { ...itemCollection }
   };
 
@@ -841,7 +839,6 @@ document.getElementById('attackBtn').onclick = () => {
 };
 document.getElementById('passTurnBtn').onclick = () => { if (!battleState || battleState.over || battleState.turn !== 'player') return; logBattle("You passed."); battleState.turn = 'bot'; updateBattleUI(); setTimeout(botTurn, 900); };
 
-// ===== ITEM PICKER — items use a battle-only bag (reset each battle) =====
 document.getElementById('useItemBtn').onclick = () => {
   if (!battleState || battleState.over || battleState.turn !== 'player') return;
   openItemPicker();
@@ -851,7 +848,6 @@ function openItemPicker() {
   const grid = document.getElementById('itemPickerGrid');
   grid.innerHTML = '';
 
-  // Use BATTLE bag, not permanent collection
   const bag = battleState && battleState.itemsAvailable ? battleState.itemsAvailable : {};
   const availableItems = items.filter(i => (bag[i.id] || 0) > 0);
 
@@ -891,7 +887,6 @@ function useItemInBattle(item) {
   if (!battleState.playerCard || !battleState.botCard) { closeItemPicker(); return; }
   if ((battleState.itemsAvailable[item.id] || 0) <= 0) { closeItemPicker(); return; }
 
-  // === Consume from BATTLE BAG only. Permanent collection is untouched. ===
   battleState.itemsAvailable[item.id]--;
   if (battleState.itemsAvailable[item.id] <= 0) delete battleState.itemsAvailable[item.id];
 
@@ -1017,7 +1012,6 @@ function startMultiplayerBattle(isHost) {
     mode: 'multiplayer', isHost, playerCard: null, botCard: null,
     playerHand: [], turn: isHost ? 'player' : 'bot', over: false,
     difficulty: 'normal', difficultyName: 'PLAYER',
-    // battle item bag for multiplayer too
     itemsAvailable: { ...itemCollection }
   };
   for (let i = 0; i < 3; i++) battleState.playerHand.push(cards[Math.floor(Math.random() * cards.length)]);
